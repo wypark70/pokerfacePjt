@@ -7,11 +7,11 @@ var myBadukApp = angular.module('badukApp', ['d3']);
 myBadukApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/home', {
-            templateUrl: 'views/home.html',
+            templateUrl: 'home.html',
             controller: 'homeCtrl'
         })
         .when('/deagook', {
-            templateUrl: 'views/deagook.html',
+            templateUrl: 'deagook.html',
             controller: 'deagookCtrl'
         })
         .otherwise({

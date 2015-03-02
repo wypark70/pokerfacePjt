@@ -132,7 +132,7 @@ myBadukApp.controller("deagookCtrl", function ($scope) {
             .attr('opacity', 0)
             .style('fill', data.fill)
             .transition()
-            .duration(1000)
+            .duration(500)
             .attr('opacity', data.opacity)
             .style('fill', data.fill);
         $scope.$apply();

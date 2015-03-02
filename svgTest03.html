@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style>
+    </style>
+    <script src="js/d3.js"></script>
+</head>
+<body>
+    <script>
+        var svg = d3.select("body")
+            .append("svg")
+                .attr("width", 800)
+                .attr("height", 600)
+                .append("g")
+                    .attr("transform", "translate(50,50)");
+        var tree = d3.layout.tree()
+            .size([400, 500]);
+        d3.json("data-files/myTreeData.json", function(data) {
+            var nodes = tree.nodes(data);
+            var links = tree.links(nodes);
+
+            console.log(nodes);
+
+            var node = svg.selectAll(".node")
+                .data(nodes)
+                .enter()
+                .append("g")
+                    .attr("class", "node")
+                    .attr("transform", function(d) { return "translate(" + d.y + ", " + d.x + ")"; });
+            node.append("circle")
+                .attr("r", 5)
+                .attr("fill", "steelblue");
+            node.append("text")
+                .text(function(d) { return d.name });
+
+            var diagonal = d3.svg.diagonal()
+                .projection(function(d) { return [d.y, d.x]; });
+            svg.selectAll(".link")
+                .data(links)
+                .enter()
+                .append("path")
+                    .attr("class", "link")
+                    .attr("fill", "none")
+                    .attr("stroke", "#ADADAD")
+                    .attr("d", diagonal);
+
+        });
+    </script>
+</body>
+</html>

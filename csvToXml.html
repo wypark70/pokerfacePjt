@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>csvToXml</title>
+
+    <link href="css/infragistics.theme.css" rel="stylesheet" />
+    <link href="css/infragistics.css" rel="stylesheet" />
+    <link href="css/infragistics.ui.treegrid.css" rel="stylesheet" />
+    <script src="js/modernizr-latest.js"></script>
+    <script src="libs/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <script src="libs/jquery/plugin/jquery-ui.min.js"></script>
+    <script src="js/infragistics.core.js"></script>
+    <script src="js/infragistics.lob.js"></script>
+    <script src="js/infragistics.ui.treegrid.js"></script>
+    <script src="js/json2.js"></script>
+    <script src="libs/jquery/plugin/jquery.csv-0.71.js"></script>
+    <script src="libs/jquery/plugin/jquery.json2xml.js"></script>
+    <style>
+        #grid_container {
+            width: 100%;
+        }
+        body {
+            font: 12px "Segoe UI",Helvetica,Tahoma,Arial,Verdana,sans-serif;
+            min-width: 280px;
+            min-height: 700px;
+            color: #495555;
+        }
+    </style>
+
+    <link rel="stylesheet" href="css/codemirror.css">
+    <link rel="stylesheet" href="css/dialog.css">
+    <script src="js/codemirror.js"></script>
+    <script src="js/dialog.js"></script>
+    <script src="js/searchcursor.js"></script>
+    <script src="js/clike.js"></script>
+    <script src="js/matchbrackets.js"></script>
+    <script src="js/xml.js"></script>
+    <script src="js/vim.js"></script>
+    <style type="text/css">
+        .CodeMirror {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+
+<fieldset style="float: left;">
+    <legend>Soruce CSV file</legend>
+    CSV 파일 선택: <input id="the-file-input" type="file" accept=".csv">
+</fieldset>
+
+<fieldset>
+    <legend>XML Options</legend>
+    rootName: <input id="rootName" type="text" value="columns">&nbsp;&nbsp;
+    objectName: <input id="objectName" type="text" value="column">
+</fieldset>
+
+<div id="tabs">
+    <ul>
+        <li id="tab1"><a href="#tabs-1">csv source</a></li>
+        <li id="tab2"><a href="#tabs-2">to json</a></li>
+        <li id="tab3"><a href="#tabs-3">to xml</a></li>
+        <li id="tab4"><a href="#tabs-4">to grid</a></li>
+    </ul>
+    <div id="tabs-1" style="padding: 0px;">
+        <textarea id="csvData" name="csvData">Name,Required,Index,Condition,Value
+Ver,True,0,&gt;=,0
+Time,True,1,&gt;=,0
+Instance,True,2,&gt;=,0
+NE_Type,True,3,&gt;=,0
+NE_ID,True,4,&gt;=,0</textarea>
+    </div>
+    <div id="tabs-2" style="padding: 0px;">
+        <textarea id="json" name="json"></textarea>
+        <div id="jsonDiv"></div>
+    </div>
+    <div id="tabs-3" style="padding: 0px;">
+        <textarea id="xmlCode" name="xmlCode"></textarea>
+    </div>
+    <div id="tabs-4" style="padding: 0px;">
+        <div id="gridDiv"></div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        var csvEditor = CodeMirror.fromTextArea(document.getElementById("csvData"), {
+            lineNumbers: true,
+            mode: "xml",
+            keyMap: "vim",
+            matchBrackets: true,
+            showCursorWhenSelecting: true
+        });
+
+        var jsonEditor = CodeMirror.fromTextArea(document.getElementById("json"), {
+            lineNumbers: true,
+            matchBrackets: true,
+            continueComments: "Enter",
+            extraKeys: {"Ctrl-Q": "toggleComment"}
+        });
+
+        var xmlEditor = CodeMirror.fromTextArea(document.getElementById("xmlCode"), {
+            lineNumbers: true,
+            mode: "xml",
+            keyMap: "vim",
+            matchBrackets: true,
+            showCursorWhenSelecting: true
+        });
+
+        $("#tabs").tabs({
+            activate: function(event, ui) {
+                var csvData = csvEditor.getValue();
+                var data = $.csv.toObjects(csvData);
+                var tabId = $(ui.newTab).attr("id");
+                if ("tab1" == tabId) {
+                    csvEditor.refresh();
+                }
+                else if ("tab2" == tabId) {
+                    jsonEditor.setValue(JSON.stringify(data, null, '\t'));
+                    jsonEditor.refresh();
+                }
+                else if ("tab3" == tabId) {
+                    var newData = new Array();
+                    $.each(data, function() {
+                        newData.push($.extend(this, {"Value": {"Condition": "&gt;=", "Value": "0"}}));
+                    });
+                    console.log(JSON.stringify(newData, null, '\t'));
+                    var data2 = eval("({" + $("#objectName").val() + ": newData})");
+                    var xmlCode = $.json2xml(data2, {rootTagName: $("#rootName").val(), formatOutput: true});
+                    xmlEditor.setValue(xmlCode);
+                    xmlEditor.refresh();
+                }
+                else if ("tab4" == tabId) {
+                    var $gridDiv = $("#gridDiv");
+                    var $gridTable = $('<table id="grid"></table>');
+                    $gridDiv.empty();
+                    $gridDiv.append($gridTable);
+                    $gridTable.igGrid({
+                        dataSource: data,
+                        features: [
+                            {name: "Filtering", type: "local"},
+                            {name: "Sorting", type: "local"},
+                            {name: 'Paging', type: "local", pageSize: 10}
+                        ]
+                    });
+                }
+            }
+        });
+        $("#the-file-input").change(function(evt) {
+            var file = evt.target.files[0];
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function(event) {
+                var csvData = event.target.result;
+                csvEditor.setValue(csvData);
+                $("#tabs").tabs("option", "active", 0);
+            };
+            reader.onerror = function () {
+                alert('Unable to read ' + file.fileName);
+            };
+        });
+    });
+</script>
+</body>
+</html>

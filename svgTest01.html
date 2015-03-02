@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<style>
+    body {
+        margin: 0px;
+        padding: 5px;
+    }
+    #baseSvg {
+        background-image: url("./images/Diffusion/inkinwater7.jpg");
+        background-size: cover;
+    }
+    #pan line {
+        stroke: dimgray;
+        stroke-width: 1;
+    }
+    #pan circle {
+        fill: dimgray;
+    }
+    #gibo circle {
+        stroke: black;
+        stroke-width: 3;
+    }
+    #contentDiv {
+        border: solid #006666 thin;
+        padding: 0px;
+        margin-top: 5px;
+    }
+    #contentDiv2 {
+        border: solid #006666 thin;
+        padding: 0px;
+        text-align: center;
+        padding: 5px;
+    }
+    button {
+        height: 30px;
+    }
+</style>
+<body>
+<div id="contentDiv2">
+    <button>◀</button>
+    <button>■</button>
+    <button>▶</button>
+</div>
+<div id="contentDiv"></div>
+<script src="libs/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script type="text/javascript">
+(function() {
+    var svg = d3.select("#contentDiv").append("svg").attr("id", "baseSvg");
+    //var width = document.body.clientWidth;
+    //var height = document.body.clientWidth;
+    var width = $("#contentDiv").width();
+    var height = $("#contentDiv").width();
+    var showSeq = true;
+    var dx = width / 20;
+    var dy = height / 20;
+    var minX = dx;
+    var maxX = dx * 19;
+    var minY = dy;
+    var maxY = dy * 19;
+    var pan = svg.append("g").attr("id", "pan");
+    var gibo = svg.append("g").attr("id", "gibo");
+
+    //svg.call(d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoom));
+    svg.attr({"width": width, "height": height});
+
+    svg.on("click", function() {
+        var pos = $("#contentDiv").position();
+        console.log(pos);
+        var x = Math.round((event.clientX + document.body.scrollLeft - pos.left)/ dx);
+        var y = Math.round((event.clientY + document.body.scrollTop - pos.top) / dy);
+        var isDisableArea = x < 1 || x > 19 || y < 1 || y > 19;
+        var tmpArr = giboDataArray.filter(function(v) { return x == v.x && y == v.y; });
+        console.log(tmpArr.length);
+        if (!isDisableArea && tmpArr.length == 0) {
+            giboDataArray.push({seq: giboDataArray.length + 1, x: x, y: y});
+            refreshGibo();
+        }
+    });
+
+    function createPanLine() {
+        var lineDatas = new Array();
+        for (var i = 1; i < 20; i++) {
+            lineDatas.push({'x1': minX, 'y1': dy * i, 'x2': maxX, 'y2': dy * i});
+            lineDatas.push({'x1': dx * i, 'y1': minY, 'x2': dx * i, 'y2': maxY});
+        }
+
+        /*
+        var dotDataArr = new Array();
+        for(var i = 1; i < 5; i++) {
+            for(var j = 1; j < 20; j++) {
+                if (i == 1) dotDataArr.push({x: dx * j, y: minY});
+                else if (i == 2) dotDataArr.push({x: maxX, y: dy * j});
+                else if (i == 3) dotDataArr.push({x: dx * j, y: maxY});
+                else  dotDataArr.push({x: minX, y: dy * j});
+            }
+        }
+
+        for (i in dotDataArr) {
+            for (j in dotDataArr) {
+                if (i == j) continue;
+                lineDatas.push({'x1': dotDataArr[i].x, 'y1': dotDataArr[i].y, 'x2': dotDataArr[j].x, 'y2': dotDataArr[j].y});
+            }
+        }
+        */
+
+        var d3PanData = pan.selectAll('line').data(lineDatas);
+        var d3PanDataLine = d3PanData.enter().append('line');
+        d3PanData.attr({'x1': function(d) {return d.x1}, 'y1': function(d) {return d.y1}, 'x2': function(d) {return d.x2}, 'y2': function(d) {return d.y2}});
+        d3PanDataLine.attr({'x1': function(d) {return d.x1}, 'y1': function(d) {return d.y1}, 'x2': function(d) {return d.x2}, 'y2': function(d) {return d.y2}});
+    }
+
+    function createPanDot() {
+        var dotDatas = new Array();
+        dotDatas.push({x: dx * 4, y: dy * 4});
+        dotDatas.push({x: dx * 10, y: dy * 4});
+        dotDatas.push({x: dx * 16, y: dy * 4});
+        dotDatas.push({x: dx * 4, y: dy * 10});
+        dotDatas.push({x: dx * 10, y: dy * 10});
+        dotDatas.push({x: dx * 16, y: dy * 10});
+        dotDatas.push({x: dx * 4, y: dy * 16});
+        dotDatas.push({x: dx * 10, y: dy * 16});
+        dotDatas.push({x: dx * 16, y: dy * 16});
+        var panDotData = pan.selectAll('circle').data(dotDatas);
+        var panDotCircle = panDotData.enter().append('circle');
+        panDotData.attr({"cx": function(d) {return d.x;}, "cy": function(d) {return d.y;}, "r": Math.min(dx, dy) / 11});
+        panDotCircle.attr({"cx": function(d) {return d.x;}, "cy": function(d) {return d.y;}, "r": Math.min(dx, dy) / 11});
+    }
+
+    var giboDataArray = new Array();
+    function createGiboData() {
+        if (giboDataArray.length > 0) {
+            giboDataArray.forEach(function(v, i) {
+                v.x = parseInt(Math.random() * 19) + 1;
+                v.y = parseInt(Math.random() * 19) + 1;
+            });
+        }
+        else {
+            for(var i = 1; i < 20; i ++) {
+                for(var j = 1; j < 20; j ++) {
+                    var newData = {seq: giboDataArray.length, x: parseInt(Math.random() * 19) + 1, y: parseInt(Math.random() * 19) + 1};
+                    //var newData = {seq: giboDataArray.length, x: i, y: j};
+                    var tmpArr = giboDataArray.filter(function(v) { return newData.x == v.x && newData.y == v.y; });
+                    if (tmpArr.length == 0) giboDataArray.push(newData);
+                }
+            }
+        }
+    }
+
+    function initGibo() {
+        var giboData = gibo.selectAll('g').data(giboDataArray, function(d) {return giboDataArray.indexOf(d)});
+        var giboDataG = giboData.enter().append('g');
+        var giboDataGRect = giboDataG.append("rect");
+        var giboDataGCircle = giboDataG.append('circle');
+        giboDataG.on("click", function(v, i) {
+            event.stopPropagation();
+            event.preventDefault();
+            giboDataArray.splice(giboDataArray.indexOf(v), 1);
+            giboDataArray.forEach(function(w, j) {
+                w.seq = j + 1;
+            });
+            refreshGibo();
+        });
+        giboDataG.attr({"transform": function (d) {return "translate(" + ((10 * dx) - (dx / 2)) + ", " + ((10 * dy) - (dy / 2)) + ")"}});
+        giboDataGRect.attr({"x": 0, "Y": 0, "width": dx, "height": dy, "opacity": 0});
+        giboDataGCircle.attr({"cx": dx / 2, "cy": dy / 2, "r": Math.min(dx, dy) / 2 - 1});
+        giboDataGCircle.style("fill", function(d) {return d.seq % 2 == 0 ? 'white' : 'black'});
+        //giboData.select("circle").attr({"cx": dx / 2, "cy": dy / 2, "r": Math.min(dx, dy) / 2 - 2}).style("fill", function(d) {return d.seq % 2 == 0 ? 'white' : 'black'});
+        if (showSeq) {
+            //giboData.select("text").text(function (d) {return d.seq;}).attr({"dx": dx / 2, "dy": dy / 2 + 5, "text-anchor": "middle"}).style("fill", function(d) {return d.seq % 2 == 0 ? 'black' : 'white'});
+            var giboDataGText = giboDataG.append('text');
+            giboDataGText.text(function (d) {return d.seq});
+            giboDataGText.attr({"dx": dx / 2, "dy": dy / 2 + 5, "text-anchor": "middle"});
+            giboDataGText.style({"fill": function(d) {return d.seq % 2 == 0 ? 'black' : 'white'}, "font-size": "12px", "font-weight": "bold"});
+        }
+    }
+
+    function refreshGibo() {
+        var giboData = gibo.selectAll('g').data(giboDataArray, function(d) {return giboDataArray.indexOf(d)});
+        var giboDataG = giboData.enter().append('g');
+        var giboDataGRect = giboDataG.append("rect");
+        var giboDataGCircle = giboDataG.append('circle');
+        giboDataG.on("click", function(v, i) {
+            event.stopPropagation();
+            event.preventDefault();
+            giboDataArray.splice(giboDataArray.indexOf(v), 1);
+            giboDataArray.forEach(function(w, j) {
+                w.seq = j + 1;
+            });
+            refreshGibo();
+        });
+        giboData.transition().duration(100).delay(function(e, i) {return i * 10}).ease("bounce").attr({"transform": function (d) {return "translate(" + ((d.x * dx) - (dx / 2)) + ", " + ((d.y * dy) - (dy / 2)) + ")"}});
+        giboData.selectAll("rect").attr({"x": 0, "Y": 0, "width": dx, "height": dy, "opacity": 0});
+        giboData.selectAll("circle").attr({"cx": dx / 2, "cy": dy / 2, "r": Math.min(dx, dy) / 2 - 2});
+        giboData.selectAll("text").attr({"dx": dx / 2, "dy": dy / 2 + 5, "text-anchor": "middle"});
+
+        giboDataG.attr({"transform": function (d) {return "translate(" + ((d.x * dx) - (dx / 2)) + ", " + ((d.y * dy) - (dy / 2)) + ")"}});
+        giboDataGRect.attr({"x": 0, "Y": 0, "width": dx, "height": dy, "opacity": 0});
+        giboDataGCircle.attr({"cx": dx / 2, "cy": dy / 2, "r": Math.min(dx, dy) / 2 - 1});
+        giboDataGCircle.style("fill", function(d) {return d.seq % 2 == 0 ? 'white' : 'black'});
+        //giboData.select("circle").attr({"cx": dx / 2, "cy": dy / 2, "r": Math.min(dx, dy) / 2 - 2}).style("fill", function(d) {return d.seq % 2 == 0 ? 'white' : 'black'});
+        if (showSeq) {
+            //giboData.select("text").text(function (d) {return d.seq;}).attr({"dx": dx / 2, "dy": dy / 2 + 5, "text-anchor": "middle"}).style("fill", function(d) {return d.seq % 2 == 0 ? 'black' : 'white'});
+            var giboDataGText = giboDataG.append('text');
+            giboDataGText.text(function (d) {return d.seq});
+            giboDataGText.attr({"dx": dx / 2, "dy": dy / 2 + 5, "text-anchor": "middle"});
+            giboDataGText.style({"fill": function(d) {return d.seq % 2 == 0 ? 'black' : 'white'}, "font-size": "12px", "font-weight": "bold"});
+        }
+        giboData.exit().remove();
+    }
+
+    function uniqID(r) {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0;
+            var v = (c == 'x') ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    window.addEventListener('resize', function(event){
+        //var width = document.body.clientWidth;
+        //var height = document.body.clientWidth;
+        var width = $("#contentDiv").width();
+        var height = $("#contentDiv").width();
+        svg.attr({"width": width, "height": height});
+        svg.attr({"width": width, "height": height});
+        dx = width / 20;
+        dy = height / 20;
+        minX = dx;
+        maxX = dx * 19;
+        minY = dy;
+        maxY = dy * 19;
+        createPanLine();
+        createPanDot();
+        createGiboData();
+        refreshGibo();
+    });
+
+    function zoom() {
+        if (d3.event.scale == 1) {
+            pan.attr("transform", "translate(0, 0)scale(" + d3.event.scale + ")");
+            gibo.attr("transform", "translate(0, 0)scale(" + d3.event.scale + ")");
+        }
+        else {
+            pan.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            gibo.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        }
+    }
+
+    createPanLine();
+    createPanDot();
+    createGiboData();
+    initGibo();
+    refreshGibo();
+})();
+</script>
+
+</body>
+</html>

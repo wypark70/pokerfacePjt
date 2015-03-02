@@ -1,0 +1,44 @@
+<style>
+    svg {
+        background-image: url("../../images/Diffusion/inkinwater13.jpg");
+        background-size: cover;
+    }
+    #panGroup line {
+        stroke: #000000;
+        stroke-width: 3;
+    }
+    #panGroup rect {
+        fill: yellow;
+    }
+    #giboGroup circle {
+        stroke: #000000;
+        stroke-width: 1;
+    }
+    #squaresGroup rect {
+        stroke: #000000;
+        stroke-width: 1;
+    }
+</style>
+
+<div class="alert alert-info" role="alert">
+    <strong>circlesLength: </strong> {{circles.length}}<br />
+    <strong>squaresLength: </strong> {{squares.length}}
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <button type="button" class="btn btn-xs btn-info" ng-click="addCircles()">Add circles</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="clearCircles()">Clear circles</button>
+        <button type="button" ng-class="toggleCircleBtnClass" ng-click="toggleCircleVisibility()">Toggle circle visibility</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="addSquares()">Add squares</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="clearSquares()">Clear squares</button>
+        <button type="button" ng-class="toggleSquaresBtnClass" ng-click="toggleSquareVisibility()">Toggle square visibility</button>
+    </div>
+    <div class="panel-body">
+        <svg viewBox="0 0 2000 2000">
+            <g id="panGroup" d3 d3-data="lines" d3-renderer="lineRenderer"></g>
+            <g id="squaresGroup" d3 d3-data="squares" d3-renderer="squareRenderer" ng-show="$parent.showSquares"></g>
+            <g id="giboGroup" d3 d3-data="circles" d3-renderer="circleRenderer" ng-show="$parent.showCircles"></g>
+        </svg>
+    </div>
+</div>

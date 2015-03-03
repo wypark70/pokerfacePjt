@@ -31,8 +31,8 @@ define(
 
         //공통 컨트롤러 설정 - 모든 컨트롤러에서 공통적으로 사용하는 부분들 선언
         app.config(config);
-        app.controller(homeCtrl);
-        app.controller(deagookCtrl);
+        app.controller('homeCtrl', homeCtrl);
+        app.controller('deagookCtrl', deagookCtrl);
 
         return app;
     }

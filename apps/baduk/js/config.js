@@ -8,11 +8,11 @@ define([], function() {
     function config($routeProvider) {
         $routeProvider
             .when('/home', {
-                templateUrl: 'home.html',
+                templateUrl: 'view/home.html',
                 controller: 'homeCtrl'
             })
             .when('/deagook', {
-                templateUrl: 'deagook.html',
+                templateUrl: 'view/deagook.html',
                 controller: 'deagookCtrl'
             })
             .otherwise({

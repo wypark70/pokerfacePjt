@@ -5,9 +5,9 @@
 //requireJS 모듈 선언 - [myApp 앵귤러 모듈]
 define(
     [
-        'apps/baduk/config',
-        'apps/baduk/homeCtrl',
-        'apps/baduk/deagookCtrl'
+        'apps/baduk/js/config',
+        'apps/baduk/js/controller/homeCtrl',
+        'apps/baduk/js/controller/deagookCtrl'
     ],
 
     /*

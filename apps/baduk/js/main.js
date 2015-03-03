@@ -39,7 +39,7 @@ requirejs.config({
         'angular': 'libs/angularjs/1.1.5/angular',
         'd3': 'libs/d3/3.0.8/d3.min',
         'angular-d3': 'js/angular-d3',
-        'badukApp': 'apps/baduk/badukApp'
+        'badukApp': 'apps/baduk/js/badukApp'
     },
 
     /*

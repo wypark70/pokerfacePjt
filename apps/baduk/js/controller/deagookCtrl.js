@@ -6,6 +6,7 @@
 
 define([], function() {
     function deagookCtrl($scope) {
+        $scope.$emit('updateCSS', ['../../css/deagook.css']);
         $scope.showCircles = true;
         $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-info'];
         $scope.showSquares = true;

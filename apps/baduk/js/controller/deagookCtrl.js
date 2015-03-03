@@ -55,7 +55,7 @@ define([], function() {
                 .attr('class', 'panCircle')
                 .style('fill', function(d) { return d.fill; })
                 .transition()
-                .duration(5000)
+                .duration(2000)
                 .attr('opacity', function(d) { return d.opacity; })
                 .attr('cx', function(d) { return d.cx; })
                 .attr('cy', function(d) { return d.cy; })
@@ -110,6 +110,14 @@ define([], function() {
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
                 .attr('r', 0)
+                .remove();
+            var t = el.selectAll("text").data($scope.circles);
+            t.enter()
+                .append('text')
+                .text(function (d, i) {return i + 1;})
+                .attr({"dx": function(d) {return d.cx;}, "dy": function(d) {return d.cy + 5;}, "text-anchor": "middle"})
+                .style({"fill": function(d) {return 'black' === d.fill ? 'white' : 'black';}, "font-size": "12px", "font-weight": "bold"});
+            t.exit()
                 .remove();
         };
         $scope.addCircles = function() {

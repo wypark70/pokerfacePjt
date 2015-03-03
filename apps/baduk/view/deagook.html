@@ -1,13 +1,15 @@
 <link rel="stylesheet" href="css/deagook.css">
 
 <div class="alert alert-info" role="alert">
+    <strong>panCirclesLength: </strong> {{panCircles.length}}<br />
     <strong>circlesLength: </strong> {{circles.length}}<br />
     <strong>squaresLength: </strong> {{squares.length}}
 </div>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <button type="button" class="btn btn-xs btn-info" ng-click="addCircles()">Add circles</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="addCirclesRandom()">Add circles</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="removeCircle()">물르기</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="clearCircles()">Clear circles</button>
         <button type="button" ng-class="toggleCircleBtnClass" ng-click="toggleCircleVisibility()">Toggle circle visibility</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="addSquares()">Add squares</button>
@@ -16,9 +18,9 @@
     </div>
     <div class="panel-body">
         <svg viewBox="0 0 2000 2000">
-            <g id="panGroup" d3 d3-data="lines" d3-renderer="lineRenderer"></g>
             <g id="squaresGroup" d3 d3-data="squares" d3-renderer="squareRenderer" ng-show="$parent.showSquares"></g>
-            <g id="giboGroup" d3 d3-data="circles" d3-renderer="circleRenderer" ng-show="$parent.showCircles"></g>
+            <g id="panGroup" d3 d3-data="lines" d3-renderer="panRenderer"></g>
+            <g id="giboGroup" d3 d3-data="circles" d3-renderer="giboRenderer" ng-show="$parent.showCircles"></g>
         </svg>
     </div>
 </div>

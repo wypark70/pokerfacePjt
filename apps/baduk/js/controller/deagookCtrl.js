@@ -13,6 +13,7 @@ define([], function() {
         $scope.currentDolColor = "black";
         $scope.lines = [];
         $scope.dotCircles = [];
+        $scope.panCircles = [];
         $scope.circles = [];
         $scope.squares = [];
         $scope.width = 2000;
@@ -23,7 +24,7 @@ define([], function() {
         $scope.startY = $scope.dy;
         $scope.endX = $scope.width - $scope.dx;
         $scope.endY = $scope.height - $scope.dy;
-        $scope.lineRenderer = function(el, data) {
+        $scope.panRenderer = function(el, data) {
             var l = el.selectAll('line').data($scope.lines);
             l.enter()
                 .append('line')
@@ -31,15 +32,31 @@ define([], function() {
                 .attr("y1", function(d) { return d.y1; })
                 .attr("x2", function(d) { return d.x2; })
                 .attr("y2", function(d) { return d.y2; });
-            var c = el.selectAll('circle').data($scope.dotCircles);
+            var c = el.selectAll('circle.dotCircle').data($scope.dotCircles);
             c.enter()
                 .append("circle")
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
                 .attr('opacity', function(d) { return d.opacity; })
+                .attr('class', 'dotCircle')
                 .style('fill', function(d) { return d.fill; })
                 .transition()
                 .duration(1000)
+                .attr('cx', function(d) { return d.cx; })
+                .attr('cy', function(d) { return d.cy; })
+                .attr('r', function(d) { return d.r;});
+            var d = el.selectAll('circle.panCircle').data($scope.panCircles);
+            d.enter()
+                .append('circle')
+                .on("click", $scope.addCircles)
+                .attr('cx', $scope.width / 2)
+                .attr('cy', $scope.height / 2)
+                .attr('opacity', 1)
+                .attr('class', 'panCircle')
+                .style('fill', function(d) { return d.fill; })
+                .transition()
+                .duration(5000)
+                .attr('opacity', function(d) { return d.opacity; })
                 .attr('cx', function(d) { return d.cx; })
                 .attr('cy', function(d) { return d.cy; })
                 .attr('r', function(d) { return d.r;});
@@ -62,19 +79,27 @@ define([], function() {
                 $scope.dotCircles.push({cx: $scope.dx * d.x, cy: $scope.dy * d.y, r: 15, fill: "black", opacity: 1});
             })
         };
+        $scope.addPanCircles = function() {
+            var r = Math.min($scope.dx, $scope.dy) / 2 - 2;
+            for(var x = 1; x < 20; x++) {
+                for(var y = 1; y < 20; y++) {
+                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: r, fill: "red", opacity: 0.10});
+                }
+            }
+        };
         $scope.addLines();
         $scope.addDotCircles();
-        $scope.circleRenderer = function(el, data) {
+        $scope.addPanCircles();
+        $scope.giboRenderer = function(el, data) {
             var d = el.selectAll('circle').data($scope.circles);
             d.enter()
                 .append('circle')
-                .on("click", $scope.updateCircle)
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
-                .attr('opacity', 1)
+                .attr('opacity', 0)
                 .style('fill', function(d) { return d.fill; })
                 .transition()
-                .duration(1000)
+                .duration(100)
                 .attr('opacity', function(d) { return d.opacity; })
                 .attr('cx', function(d) { return d.cx; })
                 .attr('cy', function(d) { return d.cy; })
@@ -88,17 +113,21 @@ define([], function() {
                 .remove();
         };
         $scope.addCircles = function() {
-            if ($scope.circles.length > 0) {
-                return false;
-            }
+            var data = d3.select(this).data()[0];
+            $scope.circles.push({cx: data.cx, cy: data.cy, r: data.r, fill: $scope.currentDolColor, opacity: 1});
+            $scope.currentDolColor = "black" == $scope.currentDolColor ? "white" : "black";
+            $scope.$apply();
+        };
+        $scope.addCirclesRandom = function() {
             var r = Math.min($scope.dx, $scope.dy) / 2 - 2;
-            for(var x = 1; x < 20; x++) {
-                for(var y = 1; y < 20; y++) {
-                    $scope.circles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: r, fill: "green", opacity: 0});
-                }
+            for (var i = 0; i < 50; i++) {
+                var x = Math.round(Math.random() * 18) + 1;
+                var y = Math.round(Math.random() * 18) + 1;
+                $scope.circles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: r, fill: $scope.currentDolColor, opacity: 1});
+                $scope.currentDolColor = "black" == $scope.currentDolColor ? "white" : "black";
             }
         };
-        $scope.addCircles();
+        //$scope.addCircles();
         $scope.updateCircle = function() {
             var data = d3.select(this).data()[0];
             if ("green" == data.fill) {
@@ -119,8 +148,14 @@ define([], function() {
                 .style('fill', data.fill);
             $scope.$apply();
         };
+        $scope.removeCircle = function() {
+            for(var i = 0; i < 5; i++) {
+                $scope.circles.pop();
+            }
+        };
         $scope.clearCircles = function() {
             $scope.circles = [];
+            $scope.currentDolColor = "black";
         };
         $scope.toggleCircleVisibility = function() {
             $scope.showCircles = !$scope.showCircles;
@@ -153,10 +188,10 @@ define([], function() {
         };
         $scope.addSquares = function() {
             for (var i = 0; i < 50; i++) {
-                var x = (Math.round((Math.random() * ($scope.endX - $scope.startX) / $scope.dx)) + 1) *  $scope.dx;
-                var y = (Math.round((Math.random() * ($scope.endY - $scope.startY) / $scope.dy)) + 1) *  $scope.dy;
+                var x = Math.round((Math.random() * 18)) + 1;
+                var y = Math.round((Math.random() * 18)) + 1;
                 var s = Math.min($scope.dx, $scope.dy) * 0.75 ;
-                $scope.squares.push({x: x, y: y, size: s});
+                $scope.squares.push({x: x * $scope.dx, y: y * $scope.dy, size: s});
                 //$scope.squares.push({x: Math.random() * $scope.width, y: Math.random() * $scope.height, size: Math.random() * 50});
             }
         };

@@ -6,7 +6,6 @@
 
 define([], function() {
     function homeCtrl($scope) {
-        $scope.$emit('updateCSS', ['../../css/main.css']);
         $scope.message = "Hello !!!!";
     };
     homeCtrl.$inject = ['$scope'];

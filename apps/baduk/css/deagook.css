@@ -3,6 +3,9 @@ svg {
     background-size: cover;
     opacity: 0.75;
 }
+.panel-body{
+    padding: 2px;
+}
 #panGroup line {
     stroke: #000000;
     stroke-width: 3;

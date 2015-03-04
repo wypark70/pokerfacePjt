@@ -1,17 +1,53 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Pragma" content="no-cache">
     <link rel="stylesheet" href="../../libs/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../libs/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <style>
+    <style type="text/css">
         body {
             margin: 0px;
             padding: 5px;
         }
+        #mainContainer {
+            min-width: 650px;
+        }
+        .reveal-animation {
+            /* Chrome, Safari, Opera */
+            -webkit-animation-name: enter_sequence;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-timing-function: linear;
+            /*
+            -webkit-animation-delay: 2s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-direction: alternate;
+            -webkit-animation-play-state: running;
+            */
+            /* Standard syntax */
+            animation-name: enter_sequence;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            /*
+            animation-delay: 2s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-play-state: running;
+            */
+        }
+        /* Chrome, Safari, Opera */
+        @-webkit-keyframes enter_sequence {
+            from { opacity:0.75; }
+            to { opacity:1; }
+        }
+        /* Standard syntax */
+        @keyframes enter_sequence {
+            from { opacity:0.75; }
+            to { opacity:1; }
+        }
     </style>
 </head>
 <body>
-<div class="container theme-showcase" role="main">
+<div id="mainContainer" class="container theme-showcase" role="main" ng-controller="indexCtrl">
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
@@ -21,13 +57,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/home">빡대기바둑</a>
+                <a class="navbar-brand" href="#/home">{{appName}}</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#/home">대기실</a></li>
-                    <li><a href="#/deagook">대국실</a></li>
-                    <li><a href="#/gibo">기보감상</a></li>
+                    <li ng-class="menu.class" ng-repeat="menu in menus"><a href="{{menu.url}}">{{menu.name}}</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
@@ -44,9 +78,9 @@
             </div>
         </div>
     </nav>
-    <ng-view></ng-view>
+    <div ng-view></div>
 </div>
-
+<script type="text/javascript" src="indexCtrl.js"></script>
 <script type="text/javascript" data-main="js/main" src="../../libs/requirejs/2.1.16/require.js"></script>
 
 </body>

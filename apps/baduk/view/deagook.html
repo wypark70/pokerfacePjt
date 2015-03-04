@@ -1,12 +1,6 @@
 <link rel="stylesheet" href="css/deagook.css">
 
-<div class="alert alert-info" role="alert">
-    <strong>panCirclesLength: </strong> {{panCircles.length}}<br />
-    <strong>circlesLength: </strong> {{circles.length}}<br />
-    <strong>squaresLength: </strong> {{squares.length}}
-</div>
-
-<div class="panel panel-default">
+<div class="panel panel-default reveal-animation">
     <div class="panel-heading">
         <button type="button" class="btn btn-xs btn-info" ng-click="addCirclesRandom()">Add circles</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="removeCircle()">물르기</button>
@@ -23,4 +17,10 @@
             <g id="giboGroup" d3 d3-data="circles" d3-renderer="giboRenderer" ng-show="$parent.showCircles"></g>
         </svg>
     </div>
+</div>
+
+<div class="alert alert-info reveal-animation" role="alert">
+    <strong>panCirclesLength: </strong> {{panCircles.length}}<br />
+    <strong>circlesLength: </strong> {{circles.length}}<br />
+    <strong>squaresLength: </strong> {{squares.length}}
 </div>

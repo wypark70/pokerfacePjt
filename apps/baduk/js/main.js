@@ -16,9 +16,7 @@ requirejs.config({
      data-main 속성은 require.js를 위한 특별한 속성으로 require.js는 스크립트 로딩을 시작하기 위해 이 부분을 체크한다.
      */
     baseUrl:'../../',
-
-
-
+    urlArgs: "bust=" +  (new Date()).getTime(),
     /*
      paths:
      path는 baseUrl 아래에서 직접적으로 찾을 수 없는 모듈명들을 위해 경로를 매핑해주는 속성이다.
@@ -54,7 +52,8 @@ requirejs.config({
         'angular-d3': {
             deps: ['angular', 'd3']
         }
-    }
+    },
+    waitSeconds: 15
 });
 
 

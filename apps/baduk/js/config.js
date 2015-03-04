@@ -15,6 +15,10 @@ define([], function() {
                 templateUrl: 'view/deagook.html',
                 controller: 'deagookCtrl'
             })
+            .when('/gibo', {
+                templateUrl: 'view/gibo.html',
+                controller: 'giboCtrl'
+            })
             .otherwise({
                 redirectTo: '/home'
             });

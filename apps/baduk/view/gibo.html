@@ -5,7 +5,45 @@
         /images/ColorSplash/colorsplash10.jpg
     </div>
     <div class="panel-body">
-        <svg viewBox="0 0 2000 2000">
+        <svg viewBox="0 0 600 250"
+             xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Example feImage - Examples of feImage use</title>
+            <desc>Three examples of using feImage, the first showing the
+                default rendering, the second showing the image fit
+                to a box and the third showing the image
+                shifted and clipped.</desc>
+            <defs>
+                <filter id="Default">
+                    <feImage xlink:href="../../images/ColorSplash/colorsplash5.jpg" />
+                </filter>
+                <filter id="Fitted" primitiveUnits="objectBoundingBox">
+                    <feImage xlink:href="../../images/ColorSplash/colorsplash5.jpg" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none"/>
+                </filter>
+                <filter id="Shifted">
+                    <feImage xlink:href="../../images/ColorSplash/colorsplash5.jpg" x="500" y="5"/>
+                </filter>
+            </defs>
+            <rect fill="none" stroke="blue" x="1" y="1" width="598" height="248"/>
+            <g>
+                <rect x="50"  y="25" width="100" height="200" filter="url(#Default)"/>
+                <rect x="50"  y="25" width="100" height="200" fill="none" stroke="green"/>
+                <rect x="250" y="25" width="100" height="200" filter="url(#Fitted)"/>
+                <rect x="250" y="25" width="100" height="200" fill="none" stroke="green"/>
+                <rect x="450" y="25" width="100" height="200" filter="url(#Shifted)"/>
+                <rect x="450" y="25" width="100" height="200" fill="none" stroke="green"/>
+            </g>
+        </svg>
+        <svg viewBox="0 0 120 120">
+            <polygon points="60,30 90,90 30,90" fill="green">
+                <animateTransform attributeName="transform"
+                                  attributeType="XML"
+                                  type="rotate"
+                                  from="0 60 70"
+                                  to="360 60 70"
+                                  dur="7s"
+                                  repeatCount="indefinite"/>
+            </polygon>
         </svg>
     </div>
 </div>

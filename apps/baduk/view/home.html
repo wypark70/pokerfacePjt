@@ -5,7 +5,24 @@
         /images/ColorSplash/colorsplash7.jpg
     </div>
     <div class="panel-body">
-        <svg viewBox="0 0 2000 2000">
+        <svg viewBox="0 0 120 120">
+            <defs>
+                <filter id="Fitted" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse">
+                    <feImage xlink:href="../../images/ColorSplash/colorsplash5.jpg" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none"/>
+                </filter>
+            </defs>
+            <!-- Draw the outline of the motion path in grey, along
+                 with 2 small circles at key points -->
+            <path d="M10,110 A120,120 -45 0,1 110 10 A120,120 -45 0,1 10,110" stroke="lightgrey" stroke-width="2" fill="none" id="theMotionPath"/>
+            <circle cx="10" cy="110" r="3" fill="lightgrey" filter="url(#Fitted)" />
+            <circle cx="110" cy="10" r="3" fill="lightgrey" filter="url(#Fitted)" />
+            <!-- Here is a red circle which will be moved along the motion path. -->
+            <circle cx="" cy="" r="5" fill="red" filter="url(#Fitted)">
+                <!-- Define the motion path animation -->
+                <animateMotion dur="6s" repeatCount="indefinite">
+                    <mpath xlink:href="#theMotionPath"/>
+                </animateMotion>
+            </circle>
         </svg>
     </div>
 </div>

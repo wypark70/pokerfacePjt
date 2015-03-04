@@ -8,16 +8,10 @@ svg {
 }
 #panGroup line {
     stroke: #000000;
-    stroke-width: 3;
-}
-#panGroup rect {
-    fill: yellow;
+    stroke-width: 2;
 }
 #giboGroup circle {
-    stroke: #000000;
-    stroke-width: 1;
+
 }
 #squaresGroup rect {
-    stroke: #000000;
-    stroke-width: 1;
 }

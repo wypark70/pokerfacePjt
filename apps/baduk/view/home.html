@@ -5,24 +5,74 @@
         /images/ColorSplash/colorsplash7.jpg
     </div>
     <div class="panel-body">
-        <svg viewBox="0 0 120 120">
+        <svg viewBox="0 0 300 270">
             <defs>
-                <filter id="Fitted" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse">
+                <filter id="filter0" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse">
                     <feImage xlink:href="../../images/ColorSplash/colorsplash5.jpg" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none"/>
                 </filter>
+                <radialGradient id="gradient_3D_red" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
+                    <stop stop-color="white" offset="0"/>
+                    <stop stop-color="rgb(255,0,0)" offset="25%"/>
+                    <stop stop-color="rgb(192,0,0)" offset="50%"/>
+                    <stop stop-color="rgb(127,0,0)" offset="70%"/>
+                    <stop stop-color="rgb(64,0,0)" offset="85%"/>
+                    <stop stop-color="rgb(0,0,0)" offset="100%"/>
+                </radialGradient>
+                <radialGradient id="gradient_3D_yellow" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
+                    <stop stop-color="white" offset="0"/>
+                    <stop stop-color="rgb(255,255,0)" offset="25%"/>
+                    <stop stop-color="rgb(192,192,0)" offset="50%"/>
+                    <stop stop-color="rgb(127,127,0)" offset="70%"/>
+                    <stop stop-color="rgb(64,64,0)" offset="85%"/>
+                    <stop stop-color="rgb(0,0,0)" offset="100%"/>
+                </radialGradient>
+                <radialGradient id="gradient_3D_blue" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
+                    <stop stop-color="white" offset="0"/>
+                    <stop stop-color="rgb(0,0,255)" offset="25%"/>
+                    <stop stop-color="rgb(0,0,192)" offset="50%"/>
+                    <stop stop-color="rgb(0,0,127)" offset="70%"/>
+                    <stop stop-color="rgb(0,0,64)" offset="85%"/>
+                    <stop stop-color="rgb(0,0,0)" offset="100%"/>
+                </radialGradient>
+                <clipPath id = "clip0">
+                    <circle cx="" cy="" r="20" />
+                </clipPath>
+                <clipPath id = "clip1">
+                    <circle cx="150" cy="135" r="20" />
+                </clipPath>
             </defs>
-            <!-- Draw the outline of the motion path in grey, along
-                 with 2 small circles at key points -->
-            <path d="M10,110 A120,120 -45 0,1 110 10 A120,120 -45 0,1 10,110" stroke="lightgrey" stroke-width="2" fill="none" id="theMotionPath"/>
-            <circle cx="10" cy="110" r="3" fill="lightgrey" filter="url(#Fitted)" />
-            <circle cx="110" cy="10" r="3" fill="lightgrey" filter="url(#Fitted)" />
-            <!-- Here is a red circle which will be moved along the motion path. -->
-            <circle cx="" cy="" r="5" fill="red" filter="url(#Fitted)">
-                <!-- Define the motion path animation -->
-                <animateMotion dur="6s" repeatCount="indefinite">
+            <circle cx="150" cy="135" r="20" filter="url(#filter0)" clip-path="url(#clip1)"/>
+            <path d="M150,20 L240,240 L30,90 L270,90 L60,240 Z" fill="blue" opacity=".25" stroke="lightgrey" stroke-width="3" id="theMotionPath"/>
+            <circle cx="" cy="" r="20" fill="url(#gradient_3D_red)">
+                <animateMotion dur="1s" repeatCount="indefinite">
                     <mpath xlink:href="#theMotionPath"/>
                 </animateMotion>
             </circle>
+            <circle cx="" cy="" r="20" fill="url(#gradient_3D_yellow)">
+                <animateMotion dur="3s" repeatCount="indefinite">
+                    <mpath xlink:href="#theMotionPath"/>
+                </animateMotion>
+            </circle>
+            <circle cx="" cy="" r="20" fill="url(#gradient_3D_blue)">
+                <animateMotion dur="5s" repeatCount="indefinite">
+                    <mpath xlink:href="#theMotionPath"/>
+                </animateMotion>
+            </circle>
+            <circle cx="" cy="" r="20" filter="url(#filter0)" clip-path="url(#clip0)">
+                <animateMotion dur="7s" repeatCount="indefinite">
+                    <mpath xlink:href="#theMotionPath"/>
+                </animateMotion>
+            </circle>
+            <irmage xlink:href="../../images/ColorSplash/colorsplash5.jpg" x="0" y="0" width="100%" height="100%"/>
+        </svg>
+        <svg style="display:none;">
+            <defs>
+                <image height="300" id="animal" width="200" xlink:href="../../images/ColorSplash/colorsplash5.jpg"/>
+            </defs>
+        </svg>
+        <svg height="300px" style="display: block;margin:0 auto;" title="동물" width="200px">
+            <image height="300" width="200" xlink:href="../../images/ColorSplash/colorsplash5.jpg"/>
+            <use xlink:href="#animal"></use>
         </svg>
     </div>
 </div>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style>
+    </style>
+    <script src="libs/snapsvg/0.3.0/snap.svg.js"></script>
+</head>
+<body>
+    <script>
+        // First, let's create our drawing surface out of an existing SVG element
+        // If you want to create a new surface just provide dimensions
+        // like s = Snap(800, 600);
+        var s = Snap(800, 600);
+        // Let's create a big circle in the middle:
+        var bigCircle = s.circle(150, 150, 100);
+        // By default it is black, let's change its attributes
+        bigCircle.attr({
+            fill: "#bada55",
+            stroke: "#000",
+            strokeWidth: 5
+        });
+        // Now let's create another small circle:
+        var smallCircle = s.circle(100, 150, 70);
+        // Let's put this small circle and another one into a group:
+        var discs = s.group(smallCircle, s.circle(200, 150, 70));
+        // Now we can change attributes for the whole group
+        discs.attr({
+            fill: "#fff"
+        });
+        // Now more interesting stuff
+        // Let's assign this group as a mask for our big circle
+        bigCircle.attr({
+            mask: discs
+        });
+        // Despite our small circle being part of a group
+        // and part of a mask we can still access it:
+        smallCircle.animate({r: 50}, 1000);
+        // We don’t have a reference for second small circle,
+        // but we can easily grab it with CSS selectors:
+        discs.select("circle:nth-child(2)").animate({r: 50}, 1000);
+        // Now let's create pattern
+        var p = s.path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
+            fill: "none",
+            stroke: "#bada55",
+            strokeWidth: 5
+        });
+        // To create a pattern,
+        // just specify dimensions in the pattern method:
+        p = p.pattern(0, 0, 10, 10);
+        // Then use it as a fill on the big circle
+        bigCircle.attr({
+            fill: p
+        });
+        // We can also grab a pattern from an SVG
+        // already embedded into our page
+        discs.attr({
+            fill: Snap("#pattern")
+        });
+        // Let's change the fill of the circles to gradient
+        // This string means relative radial gradient
+        // from white to black
+        discs.attr({fill: "r()#fff-#000"});
+        // Note that we have two gradients, one for each circle
+        // If we want them to share one gradient,
+        // we need to use an absolute gradient with capital R
+        discs.attr({fill: "R(150, 150, 100)#fff-#000"});
+        // Of course we can animate color as well
+        p.select("path").animate({stroke: "#f00"}, 1000);
+
+        var gropArr = [{name: 'Clubs', code: 'C'}, {name: 'Diamonds', code: 'D'}, {name: 'Hearts', code: 'H'}, {name: 'Spades', code: 'S'}];
+        var cardArr = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        var cardPath = 'images/SVG_Vector_Playing_Cards_Version_1.3/52-Individual-Color-Vector-Playing_Cards-1.3_(SVG-Format_Crop_Marks)';
+        gropArr.forEach(function(v, i) {
+            cardArr.forEach(function(w, j) {
+                Snap.load(cardPath + '/' + v.name + '/' + w + v.code + '.svg', function (f) {
+                    var g = s.group(f.select("#layer1"));
+                    s.append(g);
+                    var move = function(dx,dy) {
+                        this.attr({
+                            transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
+                        });
+                    }
+                    var start = function() {
+                        this.data('origTransform', this.transform().local );
+                    }
+                    var stop = function() {
+                        console.log('finished dragging');
+                    }
+                    g.animate({transform: "r45t100,0s0.5"}, 3000);
+                    g.drag(move, start, stop);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

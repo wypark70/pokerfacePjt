@@ -10,7 +10,7 @@ define([], function() {
         $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-info'];
         $scope.showSquares = true;
         $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
-        $scope.currentDolColor = 'black';
+        $scope.currentDolColor = 'url(#gradient_3D_blue)';
         $scope.lines = [];
         $scope.dotCircles = [];
         $scope.panCircles = [];
@@ -83,7 +83,7 @@ define([], function() {
         $scope.addPanCircles = function() {
             for(var x = 1; x < 20; x++) {
                 for(var y = 1; y < 20; y++) {
-                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_blue)', opacity: 0.25});
+                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_white)', opacity: 0.25});
                 }
             }
             d3.shuffle($scope.panCircles);

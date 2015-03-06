@@ -5,94 +5,89 @@
     <meta charset="utf-8">
     <style>
     </style>
+    <script src="libs/jquery/1.9.1/jquery-1.9.1.min.js"></script>
     <script src="libs/snapsvg/0.3.0/snap.svg.js"></script>
 </head>
 <body>
+    <svg id="mainSvg" viewBox="0  0 3060 3060">
+        <defs>
+            <image id="animal" width="1920" height="1200" xlink:href="images/ColorSplash/colorsplash5.jpg" />
+            <filter id="filter1" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse">
+                <feImage xlink:href="images/ColorSplash/colorsplash1.jpg" x="-1530" y="-1530" width="100%" height="100%" preserveAspectRatio="none" />
+            </filter>
+            <filter id="filter2" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse">
+                <feImage xlink:href="images/ColorSplash/colorsplash2.jpg" width="100%" height="100%" preserveAspectRatio="none" />
+            </filter>
+            <radialGradient id="gradient_3D_blue" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
+                <stop stop-color="white" offset="0" />
+                <stop stop-color="rgb(0,0,255)" offset="25%" />
+                <stop stop-color="rgb(0,0,192)" offset="50%" />
+                <stop stop-color="rgb(0,0,127)" offset="70%" />
+                <stop stop-color="rgb(0,0,64)" offset="85%" />
+                <stop stop-color="rgb(0,0,0)" offset="100%" />
+            </radialGradient>
+            <circle id="blueBall" r="500" cx="0" cy="0" fill="url(#gradient_3D_blue)" />
+        </defs>
+        <g id="myGroup" transform="translate(1530, 1530) scale(1, -1)">
+            <g opacity="0.75" transform="translate(0, 0) scale(1, -1)">
+                <use xlink:href="#blueBall" cx="0" cy="0" />
+                <use xlink:href="#animal" x="-960" y="-600" />
+                <circle r="100", cx="0", cy="0" filer="url(#filter1)" />
+                <circle r="50%", cx="0", cy="0" filer="url(#filter2)" />
+                <circle r="50%", cx="-50%", cy="0" fill="url(#pattern15142-1)" opacity="0.75" />
+                <circle r="50%", cx="50%", cy="0" fill="url(#pattern15142-1)" opacity="0.75" />
+                <circle r="50%", cx="0", cy="50%" fill="url(#pattern15142-1)" opacity="0.75" />
+                <circle r="50%", cx="0", cy="-50%" fill="url(#pattern15142-1)" opacity="0.75" />
+            </g>
+        </g>
+    </svg>
+    <svg id="subSvg" viewBox="0  0 3060 3060">
+        <defs>
+            <clipPath id="clip1" transform="translate(1530, 1530) scale(1, -1)">
+                <circle r="50%", cx="0", cy="0" />
+            </clipPath>
+            <filter id="filter3" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse" transform="translate(-1530, -1530) scale(1, -1)">
+                <feImage xlink:href="images/ColorSplash/colorsplash2.jpg" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" />
+            </filter>
+        </defs>
+        <g id="myGroup" transform="translate(1530, 1530) scale(1, -1)">
+            <g transform="translate(0, 0) scale(1, -1)">
+                <circle r="50%", cx="0", cy="0" stroke="red" stroke-width="10" />
+                <rect x="-1530", y="-1530" width="3060" height="3060" stroke="red" stroke-width="100" fill="url(#gradient_3D_blue)" />
+            </g>
+        </g>
+    </svg>
+    <div id="resultDiv" style="display: none"></div>
     <script>
-        // First, let's create our drawing surface out of an existing SVG element
-        // If you want to create a new surface just provide dimensions
-        // like s = Snap(800, 600);
-        var s = Snap(800, 600);
-        // Let's create a big circle in the middle:
-        var bigCircle = s.circle(150, 150, 100);
-        // By default it is black, let's change its attributes
-        bigCircle.attr({
-            fill: "#bada55",
-            stroke: "#000",
-            strokeWidth: 5
-        });
-        // Now let's create another small circle:
-        var smallCircle = s.circle(100, 150, 70);
-        // Let's put this small circle and another one into a group:
-        var discs = s.group(smallCircle, s.circle(200, 150, 70));
-        // Now we can change attributes for the whole group
-        discs.attr({
-            fill: "#fff"
-        });
-        // Now more interesting stuff
-        // Let's assign this group as a mask for our big circle
-        bigCircle.attr({
-            mask: discs
-        });
-        // Despite our small circle being part of a group
-        // and part of a mask we can still access it:
-        smallCircle.animate({r: 50}, 1000);
-        // We don’t have a reference for second small circle,
-        // but we can easily grab it with CSS selectors:
-        discs.select("circle:nth-child(2)").animate({r: 50}, 1000);
-        // Now let's create pattern
-        var p = s.path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
-            fill: "none",
-            stroke: "#bada55",
-            strokeWidth: 5
-        });
-        // To create a pattern,
-        // just specify dimensions in the pattern method:
-        p = p.pattern(0, 0, 10, 10);
-        // Then use it as a fill on the big circle
-        bigCircle.attr({
-            fill: p
-        });
-        // We can also grab a pattern from an SVG
-        // already embedded into our page
-        discs.attr({
-            fill: Snap("#pattern")
-        });
-        // Let's change the fill of the circles to gradient
-        // This string means relative radial gradient
-        // from white to black
-        discs.attr({fill: "r()#fff-#000"});
-        // Note that we have two gradients, one for each circle
-        // If we want them to share one gradient,
-        // we need to use an absolute gradient with capital R
-        discs.attr({fill: "R(150, 150, 100)#fff-#000"});
-        // Of course we can animate color as well
-        p.select("path").animate({stroke: "#f00"}, 1000);
+        $("#resultDiv").load("images/SVG_Vector_Playing_Cards_Version_1.3/52-Combined-Color-Vector-Playing-Cards-1.3_(SVG-Format).svg", loadCallback1);
+        function loadCallback1() {
 
+            var $g = $("#resultDiv").find("svg>g");
+            $("#mainSvg").append($("#resultDiv").find("defs:first"));
+            $("#cardGroup").append($g);
+            var $qh = $("#cardGroup").find("#3H").clone();
+            $qh.attr("transform","translate(0, 0) scale(1, -1)");
+            $qh.append('<circle r="500", cx="0", cy="0" fill="red" />')
+            $("#myGroup").append($qh);
+        }
+        /*
         var gropArr = [{name: 'Clubs', code: 'C'}, {name: 'Diamonds', code: 'D'}, {name: 'Hearts', code: 'H'}, {name: 'Spades', code: 'S'}];
         var cardArr = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        var cardPath = 'images/SVG_Vector_Playing_Cards_Version_1.3/52-Individual-Color-Vector-Playing_Cards-1.3_(SVG-Format_Crop_Marks)';
+        var cardPath = 'images/SVG_Vector_Playing_Cards_Version_1.3/52-Individual-Color-Vector-Playing_Cards-1.3_(SVG-Format_No_Crop_Marks)';
         gropArr.forEach(function(v, i) {
             cardArr.forEach(function(w, j) {
-                Snap.load(cardPath + '/' + v.name + '/' + w + v.code + '.svg', function (f) {
-                    var g = s.group(f.select("#layer1"));
-                    s.append(g);
-                    var move = function(dx,dy) {
-                        this.attr({
-                            transform: this.data('origTransform') + (this.data('origTransform') ? "T" : "t") + [dx, dy]
-                        });
-                    }
-                    var start = function() {
-                        this.data('origTransform', this.transform().local );
-                    }
-                    var stop = function() {
-                        console.log('finished dragging');
-                    }
-                    g.animate({transform: "r45t100,0s0.5"}, 3000);
-                    g.drag(move, start, stop);
-                });
+                var $tmpDiv = $("<div></div>").load(cardPath + '/' + v.name + '/' + w + v.code + '.svg', loadCallback);
+                function loadCallback() {
+                    var $layer1 = $tmpDiv.find("#layer1");
+                    $layer1.attr("id", v.name + w);
+                    $layer1.css("z-index", ((i + 1) * 100) + j);
+                    $layer1.attr("transform", "translate(" + (-1700 + j * 225) + ", " + (-1200 + i * 350) + ")");
+                    //$layer1.attr("transform", "translate(0, 0) scale(1, -1)");
+                    $("#svgManinGroup").append($layer1);
+                }
             });
         });
+        */
     </script>
 </body>
 </html>

@@ -10,7 +10,7 @@ define([], function() {
         $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-info'];
         $scope.showSquares = true;
         $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
-        $scope.currentDolColor = 'url(#gradient_3D_blue)';
+        $scope.currentDolColor = 'url(#gradient_3D_black)';
         $scope.lines = [];
         $scope.dotCircles = [];
         $scope.panCircles = [];
@@ -83,7 +83,7 @@ define([], function() {
         $scope.addPanCircles = function() {
             for(var x = 1; x < 20; x++) {
                 for(var y = 1; y < 20; y++) {
-                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_white)', opacity: 0.25});
+                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_gray)', opacity: 0.25});
                 }
             }
             d3.shuffle($scope.panCircles);
@@ -121,7 +121,7 @@ define([], function() {
                 .duration(1000)
                 .text(function (d, i) {return i + 1;})
                 .attr({"dx": function(d) {return d.cx;}, "dy": function(d) {return d.cy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return 'url(#gradient_3D_red)' === d.fill ? 'url(#gradient_3D_blue)' : 'url(#gradient_3D_red)';}, "font-size": "40", "font-weight": "bold"});
+                .style({"fill": function(d) {return 'url(#gradient_3D_white)' === d.fill ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';}, "font-size": "40", "font-weight": "bold"});
             t.exit()
                 .transition()
                 .duration(1000)
@@ -132,7 +132,7 @@ define([], function() {
         $scope.addCircles = function() {
             var data = d3.select(this).data()[0];
             $scope.circles.push({cx: data.cx, cy: data.cy, r: data.r, fill: $scope.currentDolColor, opacity: 1});
-            $scope.currentDolColor = 'url(#gradient_3D_red)' == $scope.currentDolColor ? 'url(#gradient_3D_blue)' : 'url(#gradient_3D_red)';
+            $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
             $scope.$apply();
         };
         $scope.addCirclesRandom = function() {
@@ -140,7 +140,7 @@ define([], function() {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
                 $scope.circles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: $scope.currentDolColor, opacity: 1});
-                $scope.currentDolColor = 'url(#gradient_3D_red)' == $scope.currentDolColor ? 'url(#gradient_3D_blue)' : 'url(#gradient_3D_red)';
+                $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
             }
         };
         //$scope.addCircles();
@@ -151,7 +151,7 @@ define([], function() {
         };
         $scope.clearCircles = function() {
             $scope.circles = [];
-            $scope.currentDolColor = 'url(#gradient_3D_red)';
+            $scope.currentDolColor = 'url(#gradient_3D_white)';
         };
         $scope.toggleCircleVisibility = function() {
             $scope.showCircles = !$scope.showCircles;

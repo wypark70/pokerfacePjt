@@ -100,14 +100,14 @@ define([], function() {
                 .attr('opacity', 0)
                 .style('fill', function(d) { return d.fill; })
                 .transition()
-                .duration(1000)
+                .duration(10)
                 .attr('opacity', function(d) { return d.opacity; })
                 .attr('cx', function(d) { return d.cx; })
                 .attr('cy', function(d) { return d.cy; })
                 .attr('r', function(d) { return d.r;});
             c.exit()
                 .transition()
-                .duration(1000)
+                .duration(10)
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
                 .attr('r', 0)
@@ -118,13 +118,13 @@ define([], function() {
                 .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0px", "font-weight": "bold"})
                 .transition()
-                .duration(1000)
+                .duration(10)
                 .text(function (d, i) {return i + 1;})
                 .attr({"dx": function(d) {return d.cx;}, "dy": function(d) {return d.cy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return 'url(#gradient_3D_white)' === d.fill ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';}, "font-size": "40", "font-weight": "bold"});
             t.exit()
                 .transition()
-                .duration(1000)
+                .duration(10)
                 .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
                 .remove();
@@ -145,9 +145,8 @@ define([], function() {
         };
         //$scope.addCircles();
         $scope.removeCircle = function() {
-            for(var i = 0; i < 5; i++) {
-                $scope.circles.pop();
-            }
+            $scope.circles.pop();
+            $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
         };
         $scope.clearCircles = function() {
             $scope.circles = [];

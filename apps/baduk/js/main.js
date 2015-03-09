@@ -51,6 +51,9 @@ requirejs.config({
         },
         'angular-d3': {
             deps: ['angular', 'd3']
+        },
+        'badukApp': {
+            deps: ['angular-d3']
         }
     },
     waitSeconds: 15

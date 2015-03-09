@@ -93,8 +93,11 @@ define([], function() {
         $scope.addPanCircles();
         $scope.giboRenderer = function(el, data) {
             var c = el.selectAll('circle').data($scope.circles);
+            c.attr('opacity', function(d) { return d.opacity; })
+                .attr('r', function(d) { return d.r;})
             c.enter()
                 .append('circle')
+                .on("click", $scope.hideCircles)
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
                 .attr('opacity', 0)
@@ -113,6 +116,7 @@ define([], function() {
                 .attr('r', 0)
                 .remove();
             var t = el.selectAll("text").data($scope.circles);
+            t.style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"});
             t.enter()
                 .append('text')
                 .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle"})
@@ -134,6 +138,18 @@ define([], function() {
             $scope.circles.push({cx: data.cx, cy: data.cy, r: data.r, fill: $scope.currentDolColor, opacity: 1});
             $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
             $scope.$apply();
+        };
+        $scope.hideCircles = function() {
+            var data = d3.select(this).data()[0];
+            var clickData = $scope.circles.filter(function(d) {
+                return d.cx == data.cx && d.cy == data.cy;
+            });
+            $scope.circles[$scope.circles.indexOf(data)].r = 0;
+            $scope.circles[$scope.circles.indexOf(data)].fill = "none";
+            $scope.$apply();
+            console.log($scope.circles.indexOf(data));
+            console.log(data);
+            console.log(clickData);
         };
         $scope.addCirclesRandom = function() {
             for (var i = 0; i < 50; i++) {

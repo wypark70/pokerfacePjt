@@ -1,7 +1,5 @@
 svg {
-    background-image: url("../../../images/ColorSplash/colorsplash5.jpg");
-    background-size: cover;
-    opacity: 0.75;
+    background-color: darkgoldenrod;
 }
 .panel-body{
     padding: 2px;

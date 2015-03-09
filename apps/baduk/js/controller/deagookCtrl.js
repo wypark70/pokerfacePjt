@@ -54,7 +54,7 @@ define([], function() {
                 .attr('cy', $scope.height / 2)
                 .attr('opacity', 1)
                 .attr('class', 'panCircle')
-                .style('fill', function(d) { return d.fill; })
+                .style({'fill': function(d) { return d.fill; }, "cursor": "hand"})
                 .transition()
                 .duration(1000)
                 .attr('opacity', function(d) { return d.opacity; })
@@ -83,7 +83,7 @@ define([], function() {
         $scope.addPanCircles = function() {
             for(var x = 1; x < 20; x++) {
                 for(var y = 1; y < 20; y++) {
-                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_gray)', opacity: 0.25});
+                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_gray)', opacity: 0});
                 }
             }
             d3.shuffle($scope.panCircles);
@@ -94,20 +94,22 @@ define([], function() {
         $scope.giboRenderer = function(el, data) {
             var c = el.selectAll('circle').data($scope.circles);
             c.attr('opacity', function(d) { return d.opacity; })
-                .attr('r', function(d) { return d.r;})
+                .attr('cx', function(d) { return d.cx; })
+                .attr('cy', function(d) { return d.cy; })
+                .attr('r', function(d) { return d.r; });
             c.enter()
                 .append('circle')
                 .on("click", $scope.hideCircles)
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
                 .attr('opacity', 0)
-                .style('fill', function(d) { return d.fill; })
+                .style({'fill': function(d) { return d.fill; }, "cursor": "hand"})
                 .transition()
                 .duration(10)
                 .attr('opacity', function(d) { return d.opacity; })
                 .attr('cx', function(d) { return d.cx; })
                 .attr('cy', function(d) { return d.cy; })
-                .attr('r', function(d) { return d.r;});
+                .attr('r', function(d) { return d.r; });
             c.exit()
                 .transition()
                 .duration(1000)
@@ -116,20 +118,22 @@ define([], function() {
                 .attr('r', 0)
                 .remove();
             var t = el.selectAll("text").data($scope.circles);
-            t.style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"});
+            t.attr('opacity', function(d) { return d.opacity; })
+                .text(function (d, i) {return d.opacity == 0 ? '' : i + 1;});
             t.enter()
                 .append('text')
+                .on("click", $scope.hideCircles)
                 .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0px", "font-weight": "bold"})
                 .transition()
                 .duration(10)
                 .text(function (d, i) {return i + 1;})
                 .attr({"dx": function(d) {return d.cx;}, "dy": function(d) {return d.cy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return 'url(#gradient_3D_white)' === d.fill ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';}, "font-size": "40", "font-weight": "bold"});
+                .style({"fill": function(d) {return 'url(#gradient_3D_white)' === d.fill ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
             t.exit()
                 .transition()
                 .duration(1000)
-                .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle"})
+                .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle", "cursor": "hand"})
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
                 .remove();
         };
@@ -141,15 +145,11 @@ define([], function() {
         };
         $scope.hideCircles = function() {
             var data = d3.select(this).data()[0];
-            var clickData = $scope.circles.filter(function(d) {
-                return d.cx == data.cx && d.cy == data.cy;
-            });
-            $scope.circles[$scope.circles.indexOf(data)].r = 0;
-            $scope.circles[$scope.circles.indexOf(data)].fill = "none";
+            var curData = $scope.circles[$scope.circles.indexOf(data)];
+            curData.r = 0;
+            curData.opacity = 0;
+            curData.fill = "none";
             $scope.$apply();
-            console.log($scope.circles.indexOf(data));
-            console.log(data);
-            console.log(clickData);
         };
         $scope.addCirclesRandom = function() {
             for (var i = 0; i < 50; i++) {
@@ -159,14 +159,13 @@ define([], function() {
                 $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
             }
         };
-        //$scope.addCircles();
         $scope.removeCircle = function() {
             $scope.circles.pop();
             $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
         };
         $scope.clearCircles = function() {
             $scope.circles = [];
-            $scope.currentDolColor = 'url(#gradient_3D_white)';
+            $scope.currentDolColor = 'url(#gradient_3D_black)';
         };
         $scope.toggleCircleVisibility = function() {
             $scope.showCircles = !$scope.showCircles;

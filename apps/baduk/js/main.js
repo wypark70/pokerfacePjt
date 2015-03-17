@@ -30,7 +30,6 @@ requirejs.config({
      path는 또한 아래와 같이 특정 라이브러리 경로 선언을 위해 사용될 수 있는데, path 매핑 코드는 자동적으로 .js 확장자를 붙여서 모듈명을 매핑한다.
      */
     paths:{
-
         //뒤에 js 확장자는 생략한다.
         'jquery': 'libs/jquery/1.9.1/jquery-1.9.1.min',
         'bootstrap': 'libs/bootstrap/3.3.2/js/bootstrap.min',

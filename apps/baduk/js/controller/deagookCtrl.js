@@ -36,31 +36,33 @@ define([], function() {
             var c1 = el.selectAll('circle.dotCircle').data($scope.dotCircles);
             c1.enter()
                 .append("circle")
-                .attr('cx', $scope.width / 2)
-                .attr('cy', $scope.height / 2)
-                .attr('opacity', function(d) { return d.opacity; })
                 .attr('class', 'dotCircle')
+                .attr('cx', 10 * $scope.dx)
+                .attr('cy', 10 * $scope.dy)
+                .attr('r', 0)
+                .attr('opacity', 0)
                 .style('fill', function(d) { return d.fill; })
                 .transition()
                 .duration(1000)
-                .attr('cx', function(d) { return d.cx; })
-                .attr('cy', function(d) { return d.cy; })
-                .attr('r', function(d) { return d.r;});
+                .attr('cx', function(d) { return d.x * $scope.dx; })
+                .attr('cy', function(d) { return d.y * $scope.dy; })
+                .attr('r', function(d) { return d.r;})
+                .attr('opacity', function(d) { return d.opacity; });
             var c2 = el.selectAll('circle.panCircle').data($scope.panCircles);
             c2.enter()
                 .append('circle')
-                .on("click", $scope.addCircles)
-                .attr('cx', $scope.width / 2)
-                .attr('cy', $scope.height / 2)
-                .attr('opacity', 1)
                 .attr('class', 'panCircle')
+                .attr('cx', 10 * $scope.dx)
+                .attr('cy', 10 * $scope.dy)
+                .attr('opacity', 1)
                 .style({'fill': function(d) { return d.fill; }, "cursor": "hand"})
                 .transition()
                 .duration(1000)
+                .attr('cx', function(d) { return d.x * $scope.dx; })
+                .attr('cy', function(d) { return d.y * $scope.dy; })
+                .attr('r', function(d) { return d.r;})
                 .attr('opacity', function(d) { return d.opacity; })
-                .attr('cx', function(d) { return d.cx; })
-                .attr('cy', function(d) { return d.cy; })
-                .attr('r', function(d) { return d.r;});
+                .on("click", $scope.addCircles);
         };
         $scope.addLines = function() {
             d3.range($scope.startX, $scope.endX + 1, $scope.dx).forEach(function(d) {
@@ -77,13 +79,13 @@ define([], function() {
                 {x:16, y:4}, {x:16, y:10}, {x:16, y:16}
             ];
             dotArr.forEach(function(d) {
-                $scope.dotCircles.push({cx: $scope.dx * d.x, cy: $scope.dy * d.y, r: 7, fill: 'black', opacity: 1});
+                $scope.dotCircles.push({x: d.x, y: d.y, r: 7, fill: 'black', opacity: 1});
             })
         };
         $scope.addPanCircles = function() {
             for(var x = 1; x < 20; x++) {
                 for(var y = 1; y < 20; y++) {
-                    $scope.panCircles.push({cx: x *  $scope.dx, cy: y * $scope.dy, r: $scope.r, fill: 'url(#gradient_3D_gray)', opacity: 0});
+                    $scope.panCircles.push({x: x, c: y, r: $scope.r, fill: 'url(#gradient_3D_gray)', opacity: 0});
                 }
             }
             d3.shuffle($scope.panCircles);
@@ -99,7 +101,6 @@ define([], function() {
                 .attr('r', function(d) { return d.r; });
             c.enter()
                 .append('circle')
-                .on("click", $scope.hideCircles)
                 .attr('cx', $scope.width / 2)
                 .attr('cy', $scope.height / 2)
                 .attr('opacity', 0)
@@ -109,7 +110,8 @@ define([], function() {
                 .attr('opacity', function(d) { return d.opacity; })
                 .attr('cx', function(d) { return d.cx; })
                 .attr('cy', function(d) { return d.cy; })
-                .attr('r', function(d) { return d.r; });
+                .attr('r', function(d) { return d.r; })
+                .on("click", $scope.hideCircles);
             c.exit()
                 .transition()
                 .duration(1000)
@@ -122,14 +124,14 @@ define([], function() {
                 .text(function (d, i) {return d.opacity == 0 ? '' : i + 1;});
             t.enter()
                 .append('text')
-                .on("click", $scope.hideCircles)
                 .attr({"dx": function(d) {return $scope.width / 2;}, "dy": function(d) {return $scope.height / 2;}, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0px", "font-weight": "bold"})
                 .transition()
                 .duration(10)
                 .text(function (d, i) {return i + 1;})
                 .attr({"dx": function(d) {return d.cx;}, "dy": function(d) {return d.cy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return 'url(#gradient_3D_white)' === d.fill ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
+                .style({"fill": function(d) {return 'url(#gradient_3D_white)' === d.fill ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"})
+                .on("click", $scope.hideCircles);
             t.exit()
                 .transition()
                 .duration(1000)

@@ -155,11 +155,14 @@ define([], function() {
             $scope.$apply();
         };
         $scope.addCirclesRandom = function() {
-            for (var i = 0; i < 50; i++) {
+            for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
-                $scope.circles.push({x: x, y: y, r: $scope.r, fill: $scope.currentDolColor, opacity: 1});
-                $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
+                var tmpArr = $scope.circles.filter(function(d) { return x == d.x && y == d.y });
+                if (tmpArr.length == 0) {
+                    $scope.circles.push({x: x, y: y, r: $scope.r, fill: $scope.currentDolColor, opacity: 1});
+                    $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
+                }
             }
         };
         $scope.removeCircle = function() {

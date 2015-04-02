@@ -4,11 +4,10 @@
 
 'use strict';
 
-define([], function() {
+define([], function () {
     function homeCtrl($scope) {
         $scope.message = "Hello !!!!";
     };
     homeCtrl.$inject = ['$scope'];
     return homeCtrl;
 });
-

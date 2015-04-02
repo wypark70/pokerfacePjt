@@ -4,11 +4,10 @@
 
 'use strict';
 
-define([], function() {
+define([], function () {
     function giboCtrl($scope) {
         $scope.message = "Hello !!!!";
     };
     giboCtrl.$inject = ['$scope'];
     return giboCtrl;
 });
-

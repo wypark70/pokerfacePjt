@@ -31,7 +31,7 @@ requirejs.config({
      */
     paths:{
         //뒤에 js 확장자는 생략한다.
-        'jquery': 'libs/jquery/1.9.1/jquery-1.9.1.min',
+        'jquery': 'libs/jquery/2.1.3/jquery-2.1.3',
         'bootstrap': 'libs/bootstrap/3.3.2/js/bootstrap.min',
         'angular': 'libs/angularjs/1.1.5/angular',
         'd3': 'libs/d3/3.0.8/d3.min',

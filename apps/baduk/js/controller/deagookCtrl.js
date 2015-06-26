@@ -142,9 +142,22 @@ define([], function() {
         $scope.addCircles = function() {
             var data = d3.select(this).data()[0];
             console.log(new Date(), ": ", data);
-            $scope.circles.push({x: data.x, y: data.y, r: data.r, fill: $scope.currentDolColor, opacity: 1});
+            var newCircle = {x: data.x, y: data.y, r: data.r, fill: $scope.currentDolColor, opacity: 1};
+            $scope.circles.push(newCircle);
             $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
             $scope.$apply();
+            var linkedStoneArr = $scope.getLinkedStone(newCircle);
+            var blankCnt = $scope.getBlankCntStoneArr(linkedStoneArr);
+            if (linkedStoneArr.length > 0 && blankCnt < 1) {
+                linkedStoneArr.forEach(function(stone) {
+                    var curData = $scope.circles[$scope.circles.indexOf(stone)];
+                    curData.r = 0;
+                    curData.opacity = 0;
+                    curData.fill = "none";
+                });
+                $scope.$apply();
+            }
+            $("#currentStoneInfo").text("{x: " + newCircle.x + ", y: " + newCircle.y + "} >>>> " + blankCnt);
         };
         $scope.hideCircles = function() {
             var data = d3.select(this).data()[0];

@@ -146,18 +146,7 @@ define([], function() {
             $scope.circles.push(newCircle);
             $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
             $scope.$apply();
-            var linkedStoneArr = $scope.getLinkedStone(newCircle);
-            var blankCnt = $scope.getBlankCntStoneArr(linkedStoneArr);
-            if (linkedStoneArr.length > 0 && blankCnt < 1) {
-                linkedStoneArr.forEach(function(stone) {
-                    var curData = $scope.circles[$scope.circles.indexOf(stone)];
-                    curData.r = 0;
-                    curData.opacity = 0;
-                    curData.fill = "none";
-                });
-                $scope.$apply();
-            }
-            $("#currentStoneInfo").text("{x: " + newCircle.x + ", y: " + newCircle.y + "} >>>> " + blankCnt);
+            $scope.hideStone(newCircle);
         };
         $scope.hideCircles = function() {
             var data = d3.select(this).data()[0];
@@ -177,18 +166,13 @@ define([], function() {
             $scope.$apply();
             */
         };
-        $scope.getLinkedStone = function(baseStone) {
-            var linkedStoneArr = [];
-            $scope.findLinkedStone2(baseStone, linkedStoneArr);
-            return linkedStoneArr;
-        };
         $scope.findLinkedStone = function(baseStone, linkedStoneArr) {
             linkedStoneArr.push(baseStone);
             var filteredStone = $scope.circles.filter(function(d) {
-                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.fill === d.fill;
-                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.fill === d.fill;
-                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.fill === d.fill;
-                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.fill === d.fill;
+                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.fill === d.fill && d.r > 0;
+                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.fill === d.fill && d.r > 0;
+                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.fill === d.fill && d.r > 0;
+                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.fill === d.fill && d.r > 0;
                 return isNorthStone || isEastStone || isSouthStone || isWestStone;
             });
             if (filteredStone.length > 0) {
@@ -200,17 +184,28 @@ define([], function() {
                 });
             }
         };
-        $scope.findLinkedStone2 = function(baseStone, linkedStoneArr) {
+        $scope.hideStone = function(baseStone) {
             var filteredStone = $scope.circles.filter(function(d) {
-                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.fill != d.fill;
-                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.fill != d.fill;
-                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.fill != d.fill;
-                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.fill != d.fill;
+                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.fill != d.fill && d.r > 0;
+                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.fill != d.fill && d.r > 0;
+                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.fill != d.fill && d.r > 0;
+                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.fill != d.fill && d.r > 0;
                 return isNorthStone || isEastStone || isSouthStone || isWestStone;
             });
             if (filteredStone.length > 0) {
                 filteredStone.forEach(function(stone) {
-                    $scope.findLinkedStone(stone, linkedStoneArr);
+                    var tmpLinkedStoneArr = [];
+                    $scope.findLinkedStone(stone, tmpLinkedStoneArr);
+                    var blankCnt = $scope.getBlankCntStoneArr(tmpLinkedStoneArr);
+                    if (tmpLinkedStoneArr.length > 0 && blankCnt < 1) {
+                        tmpLinkedStoneArr.forEach(function(tmpStone) {
+                            var curData = $scope.circles[$scope.circles.indexOf(tmpStone)];
+                            curData.r = 0;
+                            curData.opacity = 0;
+                            curData.fill = "none";
+                        });
+                        $scope.$apply();
+                    }
                 });
             }
         };
@@ -230,12 +225,14 @@ define([], function() {
                 maxBlankCnt --;
             }
             var filteredStone = $scope.circles.filter(function(d) {
-                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y;
-                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y;
-                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y;
-                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y;
+                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && d.r > 0;
+                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && d.r > 0;
+                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && d.r > 0;
+                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && d.r > 0;
                 return isNorthStone || isEastStone || isSouthStone || isWestStone;
             });
+            console.log("maxBlankCnt: ", maxBlankCnt);
+            console.log("filteredStone.length: ", filteredStone.length);
             return maxBlankCnt - filteredStone.length;
         };
         $scope.addCirclesRandom = function() {

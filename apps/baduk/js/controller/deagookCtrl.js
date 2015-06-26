@@ -150,21 +150,6 @@ define([], function() {
         };
         $scope.hideCircles = function() {
             var data = d3.select(this).data()[0];
-            var linkedStoneArr = $scope.getLinkedStone(data);
-            linkedStoneArr.forEach(function(stone) {
-                var curData = $scope.circles[$scope.circles.indexOf(stone)];
-                curData.opacity = 0.25;
-                $scope.$apply();
-            });
-            var blankCnt = $scope.getBlankCntStoneArr(linkedStoneArr);
-            $("#currentStoneInfo").text("{x: " + data.x + ", y: " + data.y + "} >>>> " + blankCnt);
-            /*
-            var curData = $scope.circles[$scope.circles.indexOf(data)];
-            curData.r = 0;
-            curData.opacity = 0;
-            curData.fill = "none";
-            $scope.$apply();
-            */
         };
         $scope.findLinkedStone = function(baseStone, linkedStoneArr) {
             linkedStoneArr.push(baseStone);

@@ -181,7 +181,7 @@ define([], function() {
                 filteredStone.forEach(function(stone) {
                     var tmpLinkedStoneArr = [];
                     $scope.findLinkedStone(stone, tmpLinkedStoneArr);
-                    var blankCnt = $scope.getBlankCntStoneArr(tmpLinkedStoneArr);
+                    var blankCnt = $scope.getLinkedBlankCnt(tmpLinkedStoneArr);
                     if (tmpLinkedStoneArr.length > 0 && blankCnt < 1) {
                         tmpLinkedStoneArr.forEach(function(tmpStone) {
                             var curData = $scope.circles[$scope.circles.indexOf(tmpStone)];
@@ -194,31 +194,28 @@ define([], function() {
                 });
             }
         };
-        $scope.getBlankCntStoneArr = function(linkedStoneArr) {
+        $scope.getLinkedBlankCnt = function(linkedStoneArr) {
             var blankCnt = 0;
             linkedStoneArr.forEach(function(stone) {
-                blankCnt += $scope.getBlankCntByStone(stone);
+                var maxBlankCnt = 4;
+                if (stone.x < 2 || stone.x > 18) {
+                    maxBlankCnt --;
+                }
+                if (stone.y < 2 || stone.y > 18) {
+                    maxBlankCnt --;
+                }
+                var filteredStone = $scope.circles.filter(function(d) {
+                    var isNorthStone = stone.x === d.x && stone.y - 1 === d.y && d.r > 0;
+                    var isEastStone = stone.x === d.x + 1 && stone.y === d.y && d.r > 0;
+                    var isSouthStone = stone.x === d.x && stone.y + 1 === d.y && d.r > 0;
+                    var isWestStone = stone.x === d.x - 1 && stone.y === d.y && d.r > 0;
+                    return isNorthStone || isEastStone || isSouthStone || isWestStone;
+                });
+                console.log("maxBlankCnt: ", maxBlankCnt);
+                console.log("filteredStone.length: ", filteredStone.length);
+                blankCnt += maxBlankCnt - filteredStone.length;
             });
             return blankCnt;
-        };
-        $scope.getBlankCntByStone = function(baseStone) {
-            var maxBlankCnt = 4;
-            if (baseStone.x < 2 || baseStone.x > 18) {
-                maxBlankCnt --;
-            }
-            if (baseStone.y < 2 || baseStone.y > 18) {
-                maxBlankCnt --;
-            }
-            var filteredStone = $scope.circles.filter(function(d) {
-                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && d.r > 0;
-                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && d.r > 0;
-                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && d.r > 0;
-                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && d.r > 0;
-                return isNorthStone || isEastStone || isSouthStone || isWestStone;
-            });
-            console.log("maxBlankCnt: ", maxBlankCnt);
-            console.log("filteredStone.length: ", filteredStone.length);
-            return maxBlankCnt - filteredStone.length;
         };
         $scope.addCirclesRandom = function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {

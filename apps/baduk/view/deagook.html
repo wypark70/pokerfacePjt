@@ -5,7 +5,7 @@
         <button type="button" class="btn btn-xs btn-info" ng-click="addStoneRandom()">Add circles</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="removeStone()">물르기</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="clearStone()">Clear circles</button>
-        <button type="button" ng-class="toggleStoneBtnClass" ng-click="toggleStoneVisibility()">Toggle circle visibility</button>
+        <button type="button" ng-class="toggleGiboBtnClass" ng-click="toggleGiboVisibility()">Toggle circle visibility</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="addSquares()">Add squares</button>
         <button type="button" class="btn btn-xs btn-info" ng-click="clearSquares()">Clear squares</button>
         <button type="button" ng-class="toggleSquaresBtnClass" ng-click="toggleSquareVisibility()">Toggle square visibility</button>
@@ -63,7 +63,7 @@
             </defs>
             <g id="panGroup" d3 d3-data="panData" d3-renderer="panRenderer"></g>
             <g id="squaresGroup" d3 d3-data="squareData" d3-renderer="squareRenderer" ng-show="$parent.showSquares"></g>
-            <g id="giboGroup" d3 d3-data="giboData" d3-renderer="giboRenderer" ng-show="$parent.showStone"></g>
+            <g id="giboGroup" d3 d3-data="giboData" d3-renderer="giboRenderer" ng-show="$parent.showGibo"></g>
         </svg>
     </div>
 </div>

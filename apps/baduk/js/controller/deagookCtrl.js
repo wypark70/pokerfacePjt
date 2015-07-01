@@ -6,8 +6,8 @@
 
 define([], function() {
     function deagookCtrl($scope) {
-        $scope.showStone = true;
-        $scope.toggleStoneBtnClass = ['btn', 'btn-xs', 'btn-info'];
+        $scope.showGibo = true;
+        $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
         $scope.showSquares = true;
         $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
 
@@ -113,12 +113,8 @@ define([], function() {
             var data = d3.select(this).data()[0];
             var newStone = {x: data.x, y: data.y, r: data.r, idxNo: $scope.giboData.stones.length, isShow: true};
             var paeArr = $scope.paeArr.filter(function(d) {return d.x === newStone.x && d.y === newStone.y});
-            console.log("paeArr.length: " + paeArr.length);
-            console.log($scope.paeArr);
-            console.log(newStone);
             if (paeArr.length > 0) {
                 var paeData = paeArr[0];
-                console.log("{paeData.idxNo: " + paeData.idxNo + ", newStone.idxNo: " + newStone.idxNo + "}");
                 if (paeData.idxNo + 1 === newStone.idxNo) {
                     return false;
                 }
@@ -241,10 +237,10 @@ define([], function() {
         $scope.clearStone = function() {
             $scope.giboData.stones = [];
         };
-        $scope.toggleStoneVisibility = function() {
-            $scope.showStone = !$scope.showStone;
-            if($scope.showStone) $scope.toggleStoneBtnClass = ['btn', 'btn-xs', 'btn-info'];
-            else $scope.toggleStoneBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+        $scope.toggleGiboVisibility = function() {
+            $scope.showGibo = !$scope.showGibo;
+            if($scope.showGibo) $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
+            else $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-danger'];
         };
         $scope.squareRenderer = function(el, data) {
             var rect = el.selectAll('rect').data(data.squares);

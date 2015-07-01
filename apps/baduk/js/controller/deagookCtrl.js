@@ -26,13 +26,14 @@ define([], function() {
         $scope.endY = $scope.height - $scope.dy;
         $scope.r = Math.min($scope.dx, $scope.dy) / 2 - 5;
         $scope.panRenderer = function(el, data) {
+            console.log(data);
             var l = el.selectAll('line').data($scope.lines);
             l.enter()
                 .append('line')
-                .attr("x1", function(d) { return d.x1; })
-                .attr("y1", function(d) { return d.y1; })
-                .attr("x2", function(d) { return d.x2; })
-                .attr("y2", function(d) { return d.y2; });
+                .attr("x1", function(d) {return d.x1;})
+                .attr("y1", function(d) {return d.y1;})
+                .attr("x2", function(d) {return d.x2;})
+                .attr("y2", function(d) {return d.y2;});
             var c1 = el.selectAll('circle.dotCircle').data($scope.dotCircles);
             c1.enter()
                 .append("circle")
@@ -41,13 +42,13 @@ define([], function() {
                 .attr('cy', 10 * $scope.dy)
                 .attr('r', 0)
                 .attr('opacity', 0)
-                .style('fill', function(d) { return d.fill; })
+                .style('fill', function(d) {return d.fill;})
                 .transition()
                 .duration(1000)
-                .attr('cx', function(d) { return d.x * $scope.dx; })
-                .attr('cy', function(d) { return d.y * $scope.dy; })
-                .attr('r', function(d) { return d.r;})
-                .attr('opacity', function(d) { return d.opacity; });
+                .attr('cx', function(d) {return d.x * $scope.dx;})
+                .attr('cy', function(d) {return d.y * $scope.dy;})
+                .attr('r', function(d) {return d.r;})
+                .attr('opacity', function(d) {return d.opacity;});
             var c2 = el.selectAll('circle.panCircle').data($scope.panCircles);
             c2.enter()
                 .append('circle')
@@ -56,13 +57,13 @@ define([], function() {
                 .attr('cx', 10 * $scope.dx)
                 .attr('cy', 10 * $scope.dy)
                 .attr('opacity', 1)
-                .style({'fill': function(d) { return d.fill; }, "cursor": "hand"})
+                .style({'fill': function(d) {return d.fill; }, "cursor": "hand"})
                 .transition()
                 .duration(1000)
-                .attr('cx', function(d) { return d.x * $scope.dx; })
-                .attr('cy', function(d) { return d.y * $scope.dy; })
-                .attr('r', function(d) { return d.r;})
-                .attr('opacity', function(d) { return d.opacity; });
+                .attr('cx', function(d) {return d.x * $scope.dx;})
+                .attr('cy', function(d) {return d.y * $scope.dy;})
+                .attr('r', function(d) {return d.r;})
+                .attr('opacity', function(d) {return d.opacity;});
         };
         $scope.addLines = function() {
             d3.range($scope.startX, $scope.endX + 1, $scope.dx).forEach(function(d) {
@@ -94,24 +95,25 @@ define([], function() {
         $scope.addDotCircles();
         $scope.addPanCircles();
         $scope.giboRenderer = function(el, data) {
-            var c = el.selectAll('circle').data($scope.circles);
-            c.attr('opacity', function(d) { return d.opacity; })
-                .attr('cx', function(d) { return d.x * $scope.dx; })
-                .attr('cy', function(d) { return d.y * $scope.dy; })
-                .attr('r', function(d) { return d.r; });
+            console.log(data);
+            var c = el.selectAll('circle').data(data);
+            c.attr('opacity', function(d) {return d.opacity;})
+                .attr('cx', function(d) {return d.x * $scope.dx;})
+                .attr('cy', function(d) {return d.y * $scope.dy;})
+                .attr('r', function(d) {return d.r;});
             c.enter()
                 .append('circle')
                 .on("click", $scope.hideCircles)
                 .attr('cx', 10 * $scope.dx)
                 .attr('cy', 10 * $scope.dy)
                 .attr('opacity', 0)
-                .style({'fill': function(d) { return d.fill; }, "cursor": "hand"})
+                .style({'fill': function(d) {console.log(d); return d.fill; }, "cursor": "hand"})
                 .transition()
                 .duration(10)
-                .attr('opacity', function(d) { return d.opacity; })
-                .attr('cx', function(d) { return d.x * $scope.dx; })
-                .attr('cy', function(d) { return d.y * $scope.dy; })
-                .attr('r', function(d) { return d.r; });
+                .attr('opacity', function(d) {return d.opacity;})
+                .attr('cx', function(d) {return d.x * $scope.dx;})
+                .attr('cy', function(d) {return d.y * $scope.dy;})
+                .attr('r', function(d) {return d.r;});
             c.exit()
                 .transition()
                 .duration(1000)
@@ -120,7 +122,7 @@ define([], function() {
                 .attr('r', 0)
                 .remove();
             var t = el.selectAll("text").data($scope.circles);
-            t.attr('opacity', function(d) { return d.opacity; })
+            t.attr('opacity', function(d) {return d.opacity;})
                 .text(function (d, i) {return d.opacity == 0 ? '' : i + 1;});
             t.enter()
                 .append('text')
@@ -144,30 +146,52 @@ define([], function() {
             console.log(new Date(), ": ", data);
             var newCircle = {x: data.x, y: data.y, r: data.r, fill: $scope.currentDolColor, opacity: 1};
             $scope.circles.push(newCircle);
-            $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
-            $scope.$apply();
             $scope.hideStone(newCircle);
+            var linkedStone = $scope.findLinkedStone(newCircle);
+            var linkedBlankCnt = $scope.getLinkedBlankCnt(linkedStone);
+            if (linkedBlankCnt == 0) {
+                $scope.circles.pop();
+            }
+            else {
+                $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
+            }
+            $scope.$apply();
         };
         $scope.hideCircles = function() {
+            /*
             var data = d3.select(this).data()[0];
-        };
-        $scope.findLinkedStone = function(baseStone, linkedStoneArr) {
-            linkedStoneArr.push(baseStone);
-            var filteredStone = $scope.circles.filter(function(d) {
-                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.fill === d.fill && d.r > 0;
-                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.fill === d.fill && d.r > 0;
-                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.fill === d.fill && d.r > 0;
-                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.fill === d.fill && d.r > 0;
-                return isNorthStone || isEastStone || isSouthStone || isWestStone;
+            var baseStone = $scope.circles[$scope.circles.indexOf(data)];
+            $scope.findLinkedStone(baseStone).forEach(function(stone) {
+                var circle = $scope.circles[$scope.circles.indexOf(stone)];
+                circle.opacity = 0.5;
             });
-            if (filteredStone.length > 0) {
-                filteredStone.forEach(function(stone) {
-                    var isExistsLinkedStoneArr = linkedStoneArr.filter(function(d) {return stone.x === d.x && stone.y === d.y && stone.fill === d.fill;}).length > 0;
-                    if (!isExistsLinkedStoneArr) {
-                        $scope.findLinkedStone(stone, linkedStoneArr);
-                    }
+            $scope.$apply();
+            */
+        };
+        $scope.findLinkedStone = function(baseStone) {
+            function getLinkedStone(baseStone) {
+                linkedStoneArr.push(baseStone);
+                var filteredStone = $scope.circles.filter(function (d) {
+                    var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.fill === d.fill && d.r > 0;
+                    var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.fill === d.fill && d.r > 0;
+                    var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.fill === d.fill && d.r > 0;
+                    var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.fill === d.fill && d.r > 0;
+                    return isNorthStone || isEastStone || isSouthStone || isWestStone;
                 });
+                if (filteredStone.length > 0) {
+                    filteredStone.forEach(function (stone) {
+                        var isExistsLinkedStoneArr = linkedStoneArr.filter(function (d) {
+                                return stone.x === d.x && stone.y === d.y && stone.fill === d.fill;
+                            }).length > 0;
+                        if (!isExistsLinkedStoneArr) {
+                            getLinkedStone(stone);
+                        }
+                    });
+                }
             }
+            var linkedStoneArr = [];
+            getLinkedStone(baseStone);
+            return linkedStoneArr;
         };
         $scope.hideStone = function(baseStone) {
             var filteredStone = $scope.circles.filter(function(d) {
@@ -179,8 +203,7 @@ define([], function() {
             });
             if (filteredStone.length > 0) {
                 filteredStone.forEach(function(stone) {
-                    var tmpLinkedStoneArr = [];
-                    $scope.findLinkedStone(stone, tmpLinkedStoneArr);
+                    var tmpLinkedStoneArr = $scope.findLinkedStone(stone);
                     var blankCnt = $scope.getLinkedBlankCnt(tmpLinkedStoneArr);
                     if (tmpLinkedStoneArr.length > 0 && blankCnt < 1) {
                         tmpLinkedStoneArr.forEach(function(tmpStone) {
@@ -189,7 +212,6 @@ define([], function() {
                             curData.opacity = 0;
                             curData.fill = "none";
                         });
-                        $scope.$apply();
                     }
                 });
             }
@@ -221,7 +243,7 @@ define([], function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
-                var tmpArr = $scope.circles.filter(function(d) { return x == d.x && y == d.y });
+                var tmpArr = $scope.circles.filter(function(d) {return x == d.x && y == d.y });
                 if (tmpArr.length == 0) {
                     $scope.circles.push({x: x, y: y, r: $scope.r, fill: $scope.currentDolColor, opacity: 1});
                     $scope.currentDolColor = 'url(#gradient_3D_white)' == $scope.currentDolColor ? 'url(#gradient_3D_black)' : 'url(#gradient_3D_white)';
@@ -254,10 +276,10 @@ define([], function() {
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
-                .attr('x', function(d) { return d.x * $scope.dx - d.size / 2; })
-                .attr('y', function(d) { return d.y * $scope.dy - d.size / 2; })
-                .attr('width', function(d) { return d.size; })
-                .attr('height', function(d) { return d.size; });
+                .attr('x', function(d) {return d.x * $scope.dx - d.size / 2;})
+                .attr('y', function(d) {return d.y * $scope.dy - d.size / 2;})
+                .attr('width', function(d) {return d.size;})
+                .attr('height', function(d) {return d.size;});
             r.exit()
                 .transition()
                 .duration(1000)

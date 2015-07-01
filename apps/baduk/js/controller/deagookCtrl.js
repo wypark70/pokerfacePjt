@@ -10,6 +10,7 @@ define([], function() {
         $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-info'];
         $scope.showSquares = true;
         $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
+
         $scope.width = 2000;
         $scope.height = 2000;
         $scope.dx = $scope.width / 20;
@@ -29,40 +30,24 @@ define([], function() {
             var line = el.selectAll('line').data(data.lines);
             line.enter()
                 .append('line')
-                .attr("x1", function(d) {return d.x1;})
-                .attr("y1", function(d) {return d.y1;})
-                .attr("x2", function(d) {return d.x2;})
-                .attr("y2", function(d) {return d.y2;});
+                .attr({"x1": function(d) {return d.x1;}, "y1": function(d) {return d.y1;}, "x2": function(d) {return d.x2;}, "y2": function(d) {return d.y2;}});
             var crc1 = el.selectAll('circle.dotCircle').data(data.dotCircles);
             crc1.enter()
                 .append("circle")
-                .attr('class', 'dotCircle')
-                .attr('cx', 10 * $scope.dx)
-                .attr('cy', 10 * $scope.dy)
-                .attr('r', 0)
-                .attr('opacity', 0)
+                .attr({'class': 'dotCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0, 'opacity': 0})
                 .style('fill', 'black')
                 .transition()
                 .duration(1000)
-                .attr('cx', function(d) {return d.x * $scope.dx;})
-                .attr('cy', function(d) {return d.y * $scope.dy;})
-                .attr('r', function(d) {return d.r;})
-                .attr('opacity', 1);
+                .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
             var crc2 = el.selectAll('circle.panCircle').data(data.panCircles);
             crc2.enter()
                 .append('circle')
                 .on("click", $scope.addCircles)
-                .attr('class', 'panCircle')
-                .attr('cx', 10 * $scope.dx)
-                .attr('cy', 10 * $scope.dy)
-                .attr('opacity', 1)
+                .attr({'class': 'panCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 1})
                 .style({'fill': function(d) {return d.fill; }, "cursor": "hand"})
                 .transition()
                 .duration(1000)
-                .attr('cx', function(d) {return d.x * $scope.dx;})
-                .attr('cy', function(d) {return d.y * $scope.dy;})
-                .attr('r', function(d) {return d.r;})
-                .attr('opacity', 0);
+                .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 0});
         };
         $scope.addLines = function() {
             d3.range($scope.startX, $scope.endX + 1, $scope.dx).forEach(function(d) {
@@ -96,29 +81,19 @@ define([], function() {
         $scope.giboRenderer = function(el, data) {
             console.log(data);
             var crcl = el.selectAll('circle').data(data.circles);
-            crcl.attr('opacity', 1)
-                .attr('cx', function(d) {return d.x * $scope.dx;})
-                .attr('cy', function(d) {return d.y * $scope.dy;})
-                .attr('r', function(d) {return d.r;});
+            crcl.attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
             crcl.enter()
                 .append('circle')
                 .on("click", $scope.hideCircles)
-                .attr('cx', 10 * $scope.dx)
-                .attr('cy', 10 * $scope.dy)
-                .attr('opacity', 0)
+                .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 0})
                 .style({'fill': function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }, "cursor": "hand"})
                 .transition()
                 .duration(10)
-                .attr('opacity', 1)
-                .attr('cx', function(d) {return d.x * $scope.dx;})
-                .attr('cy', function(d) {return d.y * $scope.dy;})
-                .attr('r', function(d) {return d.r;});
+                .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
             crcl.exit()
                 .transition()
                 .duration(1000)
-                .attr('cx', 10 * $scope.dx)
-                .attr('cy', 10 * $scope.dy)
-                .attr('r', 0)
+                .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0})
                 .remove();
             var text = el.selectAll("text").data(data.circles);
             text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
@@ -240,7 +215,7 @@ define([], function() {
                 var y = Math.round(Math.random() * 18) + 1;
                 var tmpArr = $scope.giboData.circles.filter(function(d) {return x == d.x && y == d.y });
                 if (tmpArr.length == 0) {
-                    $scope.giboData.circles.push({x: x, y: y, r: $scope.r, idxNo: $scope.giboData.circles.length, opacity: 1});
+                    $scope.giboData.circles.push({x: x, y: y, r: $scope.r, idxNo: $scope.giboData.circles.length, isShow: true});
                 }
             }
         };
@@ -259,27 +234,17 @@ define([], function() {
             var rect = el.selectAll('rect').data(data.squares);
             rect.enter()
                 .append('rect')
-                .attr('x', 10 * $scope.dx)
-                .attr('y', 10 * $scope.dy)
-                .attr('width', 0)
-                .attr('height', 0)
-                .attr('filter', "url(#f4)")
+                .attr({'x': 10 * $scope.dx, 'y': 10 * $scope.dy, 'width': 0, 'height': 0, 'filter': "url(#f4)"})
                 .style('fill', function() {return 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';})
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
-                .attr('x', function(d) {return d.x * $scope.dx - d.size / 2;})
-                .attr('y', function(d) {return d.y * $scope.dy - d.size / 2;})
-                .attr('width', function(d) {return d.size;})
-                .attr('height', function(d) {return d.size;});
+                .attr({'x': function(d) {return d.x * $scope.dx - d.size / 2;}, 'y': function(d) {return d.y * $scope.dy - d.size / 2;}, 'width': function(d) {return d.size;}, 'height': function(d) {return d.size;}});
             rect.exit()
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
-                .attr('x', 10 * $scope.dx)
-                .attr('y', 10 * $scope.dy)
-                .attr('width', 0)
-                .attr('height', 0)
+                .attr({'x': 10 * $scope.dx, 'y': 10 * $scope.dy, 'width': 0, 'height': 0})
                 .remove();
             var text = el.selectAll("text").data(data.squares);
             var textColor = 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';

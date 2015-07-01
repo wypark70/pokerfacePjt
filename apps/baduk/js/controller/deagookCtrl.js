@@ -6,8 +6,8 @@
 
 define([], function() {
     function deagookCtrl($scope) {
-        $scope.showCircles = true;
-        $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-info'];
+        $scope.showStone = true;
+        $scope.toggleStoneBtnClass = ['btn', 'btn-xs', 'btn-info'];
         $scope.showSquares = true;
         $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
 
@@ -22,7 +22,7 @@ define([], function() {
         $scope.r = Math.min($scope.dx, $scope.dy) / 2 - 5;
 
         $scope.panData = {lines: [], dotCircles: [], panCircles: []};
-        $scope.giboData = {circles: []};
+        $scope.giboData = {stones: []};
         $scope.squareData = {squares: []};
 
         $scope.panRenderer = function(el, data) {
@@ -42,7 +42,7 @@ define([], function() {
             var crc2 = el.selectAll('circle.panCircle').data(data.panCircles);
             crc2.enter()
                 .append('circle')
-                .on("click", $scope.addCircles)
+                .on("click", $scope.addStone)
                 .attr({'class': 'panCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 1})
                 .style({'fill': function(d) {return d.fill; }, "cursor": "hand"})
                 .transition()
@@ -80,7 +80,7 @@ define([], function() {
         $scope.addPanCircles();
         $scope.giboRenderer = function(el, data) {
             console.log(data);
-            var crcl = el.selectAll('circle').data(data.circles);
+            var crcl = el.selectAll('circle').data(data.stones);
             crcl.attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
             crcl.enter()
                 .append('circle')
@@ -95,7 +95,7 @@ define([], function() {
                 .duration(1000)
                 .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0})
                 .remove();
-            var text = el.selectAll("text").data(data.circles);
+            var text = el.selectAll("text").data(data.stones);
             text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
                 .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
             text.enter()
@@ -115,25 +115,25 @@ define([], function() {
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
                 .remove();
         };
-        $scope.addCircles = function() {
+        $scope.addStone = function() {
             var data = d3.select(this).data()[0];
             console.log(new Date(), ": ", data);
-            var newCircle = {x: data.x, y: data.y, r: data.r, idxNo: $scope.giboData.circles.length, isShow: true};
-            $scope.giboData.circles.push(newCircle);
-            $scope.hideStone(newCircle);
-            var linkedStone = $scope.findLinkedStone(newCircle);
+            var newStone = {x: data.x, y: data.y, r: data.r, idxNo: $scope.giboData.stones.length, isShow: true};
+            $scope.giboData.stones.push(newStone);
+            $scope.hideStone(newStone);
+            var linkedStone = $scope.findLinkedStone(newStone);
             var linkedBlankCnt = $scope.getLinkedBlankCnt(linkedStone);
             if (linkedBlankCnt == 0) {
-                $scope.giboData.circles.pop();
+                $scope.giboData.stones.pop();
             }
             $scope.$apply();
         };
         $scope.hideCircles = function() {
             /*
             var data = d3.select(this).data()[0];
-            var baseStone = $scope.giboData.circles[$scope.giboData.circles.indexOf(data)];
+            var baseStone = $scope.giboData.stones[$scope.giboData.stones.indexOf(data)];
             $scope.findLinkedStone(baseStone).forEach(function(stone) {
-                var circle = $scope.giboData.circles[$scope.giboData.circles.indexOf(stone)];
+                var circle = $scope.giboData.stones[$scope.giboData.stones.indexOf(stone)];
                 circle.opacity = 0.5;
             });
             $scope.$apply();
@@ -142,7 +142,7 @@ define([], function() {
         $scope.findLinkedStone = function(baseStone) {
             function getLinkedStone(baseStone) {
                 linkedStoneArr.push(baseStone);
-                var filteredStone = $scope.giboData.circles.filter(function (d) {
+                var filteredStone = $scope.giboData.stones.filter(function (d) {
                     var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.r > 0;
                     var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.r > 0;
                     var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.r > 0;
@@ -165,7 +165,7 @@ define([], function() {
             return linkedStoneArr;
         };
         $scope.hideStone = function(baseStone) {
-            var filteredStone = $scope.giboData.circles.filter(function(d) {
+            var filteredStone = $scope.giboData.stones.filter(function(d) {
                 var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.idxNo % 2 != d.idxNo % 2 && d.r > 0;
                 var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.idxNo % 2 != d.idxNo % 2 && d.r > 0;
                 var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.idxNo % 2 != d.idxNo % 2 && d.r > 0;
@@ -178,7 +178,7 @@ define([], function() {
                     var blankCnt = $scope.getLinkedBlankCnt(tmpLinkedStoneArr);
                     if (tmpLinkedStoneArr.length > 0 && blankCnt < 1) {
                         tmpLinkedStoneArr.forEach(function(tmpStone) {
-                            var curData = $scope.giboData.circles[$scope.giboData.circles.indexOf(tmpStone)];
+                            var curData = $scope.giboData.stones[$scope.giboData.stones.indexOf(tmpStone)];
                             curData.r = 0;
                             curData.isShow = false;
                         });
@@ -196,7 +196,7 @@ define([], function() {
                 if (stone.y < 2 || stone.y > 18) {
                     maxBlankCnt --;
                 }
-                var filteredStone = $scope.giboData.circles.filter(function(d) {
+                var filteredStone = $scope.giboData.stones.filter(function(d) {
                     var isNorthStone = stone.x === d.x && stone.y - 1 === d.y && d.r > 0;
                     var isEastStone = stone.x === d.x + 1 && stone.y === d.y && d.r > 0;
                     var isSouthStone = stone.x === d.x && stone.y + 1 === d.y && d.r > 0;
@@ -209,26 +209,26 @@ define([], function() {
             });
             return blankCnt;
         };
-        $scope.addCirclesRandom = function() {
+        $scope.addStoneRandom = function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
-                var tmpArr = $scope.giboData.circles.filter(function(d) {return x == d.x && y == d.y });
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return x == d.x && y == d.y });
                 if (tmpArr.length == 0) {
-                    $scope.giboData.circles.push({x: x, y: y, r: $scope.r, idxNo: $scope.giboData.circles.length, isShow: true});
+                    $scope.giboData.stones.push({x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true});
                 }
             }
         };
-        $scope.removeCircle = function() {
-            $scope.giboData.circles.pop();
+        $scope.removeStone = function() {
+            $scope.giboData.stones.pop();
         };
-        $scope.clearCircles = function() {
-            $scope.giboData.circles = [];
+        $scope.clearStone = function() {
+            $scope.giboData.stones = [];
         };
-        $scope.toggleCircleVisibility = function() {
-            $scope.showCircles = !$scope.showCircles;
-            if($scope.showCircles) $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-info'];
-            else $scope.toggleCircleBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+        $scope.toggleStoneVisibility = function() {
+            $scope.showStone = !$scope.showStone;
+            if($scope.showStone) $scope.toggleStoneBtnClass = ['btn', 'btn-xs', 'btn-info'];
+            else $scope.toggleStoneBtnClass = ['btn', 'btn-xs', 'btn-danger'];
         };
         $scope.squareRenderer = function(el, data) {
             var rect = el.selectAll('rect').data(data.squares);

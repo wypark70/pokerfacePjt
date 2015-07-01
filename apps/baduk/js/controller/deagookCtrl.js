@@ -26,7 +26,6 @@ define([], function() {
         $scope.squareData = {squares: []};
 
         $scope.panRenderer = function(el, data) {
-            console.log(data);
             var line = el.selectAll('line').data(data.lines);
             line.enter()
                 .append('line')
@@ -49,15 +48,13 @@ define([], function() {
                 .duration(1000)
                 .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 0});
         };
-        $scope.addLines = function() {
+        $scope.initPanData = function() {
             d3.range($scope.startX, $scope.endX + 1, $scope.dx).forEach(function(d) {
                 $scope.panData.lines.push({x1: d, y1: $scope.startY, x2: d, y2: $scope.endY});
             });
             d3.range($scope.startY, $scope.endY + 1, $scope.dy).forEach(function(d) {
                 $scope.panData.lines.push({x1: $scope.startX, y1: d, x2: $scope.endX, y2: d});
             });
-        };
-        $scope.addDotCircles = function() {
             var dotArr = [
                 {x:4, y:4}, {x:4, y:10}, {x:4, y:16},
                 {x:10, y:4}, {x:10, y:10}, {x:10, y:16},
@@ -65,9 +62,7 @@ define([], function() {
             ];
             dotArr.forEach(function(d) {
                 $scope.panData.dotCircles.push({x: d.x, y: d.y, r: 7});
-            })
-        };
-        $scope.addPanCircles = function() {
+            });
             for(var x = 1; x < 20; x++) {
                 for(var y = 1; y < 20; y++) {
                     $scope.panData.panCircles.push({x: x, y: y, r: $scope.r});
@@ -75,16 +70,13 @@ define([], function() {
             }
             d3.shuffle($scope.panData.panCircles);
         };
-        $scope.addLines();
-        $scope.addDotCircles();
-        $scope.addPanCircles();
+        $scope.initPanData();
         $scope.giboRenderer = function(el, data) {
-            console.log(data);
             var crcl = el.selectAll('circle').data(data.stones);
             crcl.attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
             crcl.enter()
                 .append('circle')
-                .on("click", $scope.hideCircles)
+                .on("click", $scope.logLinkedStone)
                 .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 0})
                 .style({'fill': function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }, "cursor": "hand"})
                 .transition()
@@ -100,7 +92,7 @@ define([], function() {
                 .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
             text.enter()
                 .append('text')
-                .on("click", $scope.hideCircles)
+                .on("click", $scope.logLinkedStone)
                 .attr({"dx": function(d) {return 10 * $scope.dx;}, "dy": function(d) {return 10 * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return d.fill;}, "font-size": "0px", "font-weight": "bold"})
                 .transition()
@@ -128,16 +120,10 @@ define([], function() {
             }
             $scope.$apply();
         };
-        $scope.hideCircles = function() {
-            /*
+        $scope.logLinkedStone = function() {
             var data = d3.select(this).data()[0];
             var baseStone = $scope.giboData.stones[$scope.giboData.stones.indexOf(data)];
-            $scope.findLinkedStone(baseStone).forEach(function(stone) {
-                var circle = $scope.giboData.stones[$scope.giboData.stones.indexOf(stone)];
-                circle.opacity = 0.5;
-            });
-            $scope.$apply();
-            */
+            console.log($scope.findLinkedStone(baseStone));
         };
         $scope.findLinkedStone = function(baseStone) {
             function getLinkedStone(baseStone) {

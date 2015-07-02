@@ -136,7 +136,7 @@ define([], function() {
             }
 
             $scope.giboData.stones.push(stone);
-            $scope.hideStone(stone);
+            $scope.hideStones(stone);
             var linkedStone = $scope.findLinkedStone(stone);
             var linkedBlankCnt = $scope.getLinkedBlankCnt(linkedStone);
             if (linkedBlankCnt == 0) {
@@ -175,7 +175,7 @@ define([], function() {
             getLinkedStone(baseStone);
             return linkedStoneArr;
         };
-        $scope.hideStone = function(baseStone) {
+        $scope.hideStones = function(baseStone) {
             var linkedStoneArr = $scope.findLinkedStone(baseStone);
             var blankCnt = $scope.getLinkedBlankCnt(linkedStoneArr);
             var dieStoneArr = [];
@@ -247,6 +247,8 @@ define([], function() {
         };
         $scope.clearStone = function() {
             $scope.giboData.stones = [];
+            $scope.blackDieStones = [];
+            $scope.whiteDieStones = [];
         };
         $scope.toggleGiboVisibility = function() {
             $scope.isShowGibo = !$scope.isShowGibo;

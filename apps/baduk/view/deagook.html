@@ -63,8 +63,8 @@
                 </radialGradient>
             </defs>
             <g id="panGroup" d3 d3-data="panData" d3-renderer="panRenderer"></g>
-            <g id="squaresGroup" d3 d3-data="squareData" d3-renderer="squareRenderer" ng-show="$parent.showSquares"></g>
-            <g id="giboGroup" d3 d3-data="giboData" d3-renderer="giboRenderer" ng-show="$parent.showGibo"></g>
+            <g id="squaresGroup" d3 d3-data="squareData" d3-renderer="squareRenderer" ng-show="$parent.isShowSquares"></g>
+            <g id="giboGroup" d3 d3-data="giboData" d3-renderer="giboRenderer" ng-show="$parent.isShowGibo"></g>
         </svg>
     </div>
 </div>
@@ -73,5 +73,6 @@
     <strong>panCirclesLength: </strong> {{panData.panCircles.length}}<br />
     <strong>circlesLength: </strong> {{giboData.stones.length}}<br />
     <strong>squaresLength: </strong> {{squareData.squares.length}}<br />
-    <span id="currentStoneInfo"></span>
+    <strong>blackDelCnt: </strong> {{blackDieStones.length}}<br />
+    <strong>whiteDelCnt: </strong> {{whiteDieStones.length}}<br />
 </div>

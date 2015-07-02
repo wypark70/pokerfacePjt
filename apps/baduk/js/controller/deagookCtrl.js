@@ -6,9 +6,9 @@
 
 define([], function() {
     function deagookCtrl($scope) {
-        $scope.showGibo = true;
+        $scope.isShowGibo = true;
         $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
-        $scope.showSquares = true;
+        $scope.isShowSquares = true;
         $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
 
         $scope.width = 2000;
@@ -30,21 +30,24 @@ define([], function() {
         $scope.giboData = {stones: []};
         $scope.squareData = {squares: []};
 
+        $scope.blackDieStones = [];
+        $scope.whiteDieStones = [];
+
         $scope.panRenderer = function(el, data) {
             var line = el.selectAll('line').data(data.lines);
             line.enter()
                 .append('line')
                 .attr({"x1": function(d) {return d.x1;}, "y1": function(d) {return d.y1;}, "x2": function(d) {return d.x2;}, "y2": function(d) {return d.y2;}});
-            var crc1 = el.selectAll('circle.dotCircle').data(data.dotCircles);
-            crc1.enter()
+            var cir1 = el.selectAll('circle.dotCircle').data(data.dotCircles);
+            cir1.enter()
                 .append("circle")
                 .attr({'class': 'dotCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0, 'opacity': 0})
                 .style('fill', 'black')
                 .transition()
                 .duration(1000)
                 .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
-            var crc2 = el.selectAll('circle.panCircle').data(data.panCircles);
-            crc2.enter()
+            var cir2 = el.selectAll('circle.panCircle').data(data.panCircles);
+            cir2.enter()
                 .append('circle')
                 .on("click", $scope.addStone)
                 .attr({'class': 'panCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 1})
@@ -77,9 +80,9 @@ define([], function() {
         };
         $scope.initPanData();
         $scope.giboRenderer = function(el, data) {
-            var crcl = el.selectAll('circle').data(data.stones);
-            crcl.attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
-            crcl.enter()
+            var cir1 = el.selectAll('circle').data(data.stones);
+            cir1.attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
+            cir1.enter()
                 .append('circle')
                 .on("click", $scope.logLinkedStone)
                 .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 0})
@@ -87,34 +90,32 @@ define([], function() {
                 .transition()
                 .duration(10)
                 .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
-            crcl.exit()
+            cir1.exit()
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
                 .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0})
                 .remove();
-            if ($scope.isShowNumber) {
-                var text = el.selectAll("text").data(data.stones);
-                text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
-                    .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
-                text.enter()
-                    .append('text')
-                    .on("click", $scope.logLinkedStone)
-                    .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
-                    .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)"; }, "font-size": "0px", "font-weight": "bold"})
-                    .transition()
-                    .duration(10)
-                    .text(function (d) {return d.idxNo + 1;})
-                    .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                    .style({"fill": function(d) {return d.idxNo % 2 == 0 ? 'url(#gradient_3D_white)' : 'url(#gradient_3D_black)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
-                text.exit()
-                    .transition()
-                    .duration(1000)
-                    .delay(function(d, i) {return i * 10;})
-                    .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-size": "0"})
-                    .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
-                    .remove();
-            }
+            var text = el.selectAll("text").data(data.stones);
+            text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
+                .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
+            text.enter()
+                .append('text')
+                .on("click", $scope.logLinkedStone)
+                .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
+                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)"; }, "font-size": "0px", "font-weight": "bold"})
+                .transition()
+                .duration(10)
+                .text(function (d) {return d.idxNo + 1;})
+                .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
+                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? 'url(#gradient_3D_white)' : 'url(#gradient_3D_black)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
+            text.exit()
+                .transition()
+                .duration(1000)
+                .delay(function(d, i) {return i * 10;})
+                .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-size": "0"})
+                .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
+                .remove();
         };
         $scope.addStone = function() {
             var data = d3.select(this).data()[0];
@@ -141,6 +142,8 @@ define([], function() {
             if (linkedBlankCnt == 0) {
                 $scope.giboData.stones.pop();
             }
+            $scope.blackDieStones = $scope.giboData.stones.filter(function(d) {return d.idxNo % 2 === 0 && !d.isShow});
+            $scope.whiteDieStones = $scope.giboData.stones.filter(function(d) {return d.idxNo % 2 === 1 && !d.isShow});
         };
         $scope.logLinkedStone = function() {
             var data = d3.select(this).data()[0];
@@ -246,8 +249,8 @@ define([], function() {
             $scope.giboData.stones = [];
         };
         $scope.toggleGiboVisibility = function() {
-            $scope.showGibo = !$scope.showGibo;
-            if($scope.showGibo) $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
+            $scope.isShowGibo = !$scope.isShowGibo;
+            if($scope.isShowGibo) $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
             else $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-danger'];
         };
         $scope.toggleNumberVisibility = function() {
@@ -309,8 +312,8 @@ define([], function() {
             $scope.squareData.squares = [];
         };
         $scope.toggleSquareVisibility = function() {
-            $scope.showSquares = !$scope.showSquares;
-            if($scope.showSquares) $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
+            $scope.isShowSquares = !$scope.isShowSquares;
+            if($scope.isShowSquares) $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
             else $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-danger'];
         };
     }

@@ -252,7 +252,7 @@ define([], function() {
         };
         $scope.toggleNumberVisibility = function() {
             $scope.isShowNumber = !$scope.isShowNumber;
-            if($scope.isShowNumber) {
+            if ($scope.isShowNumber) {
                 $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-info'];
                 $("text", "#giboGroup").show();
             }

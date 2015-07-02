@@ -23,6 +23,7 @@ define([], function() {
 
         $scope.paeArr = [];
 
+        $scope.isShowNumber = true;
         $scope.panData = {lines: [], dotCircles: [], panCircles: []};
         $scope.giboData = {stones: []};
         $scope.squareData = {squares: []};
@@ -87,27 +88,31 @@ define([], function() {
             crcl.exit()
                 .transition()
                 .duration(1000)
+                .delay(function(d, i) {return i * 10;})
                 .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0})
                 .remove();
-            var text = el.selectAll("text").data(data.stones);
-            text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
-                .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
-            text.enter()
-                .append('text')
-                .on("click", $scope.logLinkedStone)
-                .attr({"dx": function(d) {return 10 * $scope.dx;}, "dy": function(d) {return 10 * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.fill;}, "font-size": "0px", "font-weight": "bold"})
-                .transition()
-                .duration(10)
-                .text(function (d) {return d.idxNo + 1;})
-                .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? 'url(#gradient_3D_white)' : 'url(#gradient_3D_black)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
-            text.exit()
-                .transition()
-                .duration(1000)
-                .attr({"dx": function(d) {return 10 * $scope.dx;}, "dy": function(d) {return 10 * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
-                .remove();
+            if ($scope.isShowNumber) {
+                var text = el.selectAll("text").data(data.stones);
+                text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
+                    .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
+                text.enter()
+                    .append('text')
+                    .on("click", $scope.logLinkedStone)
+                    .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
+                    .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)"; }, "font-size": "0px", "font-weight": "bold"})
+                    .transition()
+                    .duration(10)
+                    .text(function (d) {return d.idxNo + 1;})
+                    .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
+                    .style({"fill": function(d) {return d.idxNo % 2 == 0 ? 'url(#gradient_3D_white)' : 'url(#gradient_3D_black)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
+                text.exit()
+                    .transition()
+                    .duration(1000)
+                    .delay(function(d, i) {return i * 10;})
+                    .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-size": "0"})
+                    .style({"fill": function(d) {return d.fill;}, "font-size": "0", "font-weight": "bold"})
+                    .remove();
+            }
         };
         $scope.addStone = function() {
             var data = d3.select(this).data()[0];
@@ -181,8 +186,8 @@ define([], function() {
                     var tmpLinkedStoneArr = $scope.findLinkedStone(stone);
                     var tmpBlankCnt = $scope.getLinkedBlankCnt(tmpLinkedStoneArr);
                     if (tmpLinkedStoneArr.length > 0 && tmpBlankCnt < 1) {
-                        tmpLinkedStoneArr.forEach(function(tmpStone) {
-                            var curData = $scope.giboData.stones[$scope.giboData.stones.indexOf(tmpStone)];
+                        tmpLinkedStoneArr.forEach(function(linkedStone) {
+                            var curData = $scope.giboData.stones[$scope.giboData.stones.indexOf(linkedStone)];
                             curData.r = 0;
                             curData.isShow = false;
                             var tmpStone = {};
@@ -224,11 +229,10 @@ define([], function() {
         };
         $scope.addStoneRandom = function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
-                var x = Math.round(Math.random() * 18) + 1;
-                var y = Math.round(Math.random() * 18) + 1;
-                var tmpArr = $scope.giboData.stones.filter(function(d) {return x == d.x && y == d.y});
+                var tmpData = {x: Math.round(Math.random() * 18) + 1, y: Math.round(Math.random() * 18) + 1};
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === tmpData.x && d.y === tmpData.y});
                 if (tmpArr.length == 0) {
-                    var newStone = {x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
+                    var newStone = {x: tmpData.x, y: tmpData.y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
                     $scope.updateStonesData(newStone);
                 }
             }
@@ -266,12 +270,12 @@ define([], function() {
                 .append('text')
                 .text(function (d, i) {return i + 1;})
                 .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return textColor;}, "font-size": "0", "font-weight": "bold"})
+                .style({"fill": textColor, "font-size": "0", "font-weight": "bold"})
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
                 .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return textColor;}, "font-size": "40", "font-weight": "bold"});
+                .style({"fill": textColor, "font-size": "40", "font-weight": "bold"});
             text.exit()
                 .transition()
                 .duration(1000)
@@ -285,7 +289,7 @@ define([], function() {
                 var x = Math.round((Math.random() * 18)) + 1;
                 var y = Math.round((Math.random() * 18)) + 1;
                 var s = $scope.r * 2 - 10;
-                $scope.squares.push({x: x, y: y, size: s});
+                $scope.squareData.squares.push({x: x, y: y, size: s});
             }
         };
         $scope.clearSquares = function() {

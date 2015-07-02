@@ -43,7 +43,7 @@ define([], function() {
             var crc2 = el.selectAll('circle.panCircle').data(data.panCircles);
             crc2.enter()
                 .append('circle')
-                .on("click", $scope.addStone)
+                .attr("click", $scope.addStone)
                 .attr({'class': 'panCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 1})
                 .style({'fill': function(d) {return d.fill; }, "cursor": "hand"})
                 .transition()
@@ -112,10 +112,14 @@ define([], function() {
         $scope.addStone = function() {
             var data = d3.select(this).data()[0];
             var newStone = {x: data.x, y: data.y, r: data.r, idxNo: $scope.giboData.stones.length, isShow: true};
-            var paeArr = $scope.paeArr.filter(function(d) {return d.x === newStone.x && d.y === newStone.y});
+            $scope.updateStonesData(newStone);
+            $scope.$apply();
+        };
+        $scope.updateStonesData = function(stone) {
+            var paeArr = $scope.paeArr.filter(function(d) {return d.x === stone.x && d.y === stone.y});
             if (paeArr.length > 0) {
                 var paeData = paeArr[0];
-                if (paeData.idxNo + 1 === newStone.idxNo) {
+                if (paeData.idxNo + 1 === stone.idxNo) {
                     return false;
                 }
                 else {
@@ -123,14 +127,13 @@ define([], function() {
                 }
             }
 
-            $scope.giboData.stones.push(newStone);
-            $scope.hideStone(newStone);
-            var linkedStone = $scope.findLinkedStone(newStone);
+            $scope.giboData.stones.push(stone);
+            $scope.hideStone(stone);
+            var linkedStone = $scope.findLinkedStone(stone);
             var linkedBlankCnt = $scope.getLinkedBlankCnt(linkedStone);
             if (linkedBlankCnt == 0) {
                 $scope.giboData.stones.pop();
             }
-            $scope.$apply();
         };
         $scope.logLinkedStone = function() {
             var data = d3.select(this).data()[0];
@@ -215,8 +218,6 @@ define([], function() {
                     var isWestStone = stone.x === d.x - 1 && stone.y === d.y && d.r > 0;
                     return isNorthStone || isEastStone || isSouthStone || isWestStone;
                 });
-                console.log("maxBlankCnt: ", maxBlankCnt);
-                console.log("filteredStone.length: ", filteredStone.length);
                 blankCnt += maxBlankCnt - filteredStone.length;
             });
             return blankCnt;
@@ -225,9 +226,10 @@ define([], function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
-                var tmpArr = $scope.giboData.stones.filter(function(d) {return x == d.x && y == d.y });
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return x == d.x && y == d.y});
                 if (tmpArr.length == 0) {
-                    $scope.giboData.stones.push({x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true});
+                    var newStone = {x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
+                    $scope.updateStonesData(newStone);
                 }
             }
         };

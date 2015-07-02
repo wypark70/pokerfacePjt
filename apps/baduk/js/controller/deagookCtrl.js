@@ -43,7 +43,7 @@ define([], function() {
             var crc2 = el.selectAll('circle.panCircle').data(data.panCircles);
             crc2.enter()
                 .append('circle')
-                .attr("click", $scope.addStone)
+                .on("click", $scope.addStone)
                 .attr({'class': 'panCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 1})
                 .style({'fill': function(d) {return d.fill; }, "cursor": "hand"})
                 .transition()

@@ -235,7 +235,7 @@ define([], function() {
         $scope.addStoneRandom = function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
                 var tmpData = {x: Math.round(Math.random() * 18) + 1, y: Math.round(Math.random() * 18) + 1};
-                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === tmpData.x && d.y === tmpData.y});
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === tmpData.x && d.y === tmpData.y && d.isShow});
                 if (tmpArr.length == 0) {
                     var newStone = {x: tmpData.x, y: tmpData.y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
                     $scope.updateStonesData(newStone);

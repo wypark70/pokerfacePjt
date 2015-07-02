@@ -24,6 +24,8 @@ define([], function() {
         $scope.paeArr = [];
 
         $scope.isShowNumber = true;
+        $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-info'];
+
         $scope.panData = {lines: [], dotCircles: [], panCircles: []};
         $scope.giboData = {stones: []};
         $scope.squareData = {squares: []};
@@ -247,6 +249,17 @@ define([], function() {
             $scope.showGibo = !$scope.showGibo;
             if($scope.showGibo) $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
             else $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+        };
+        $scope.toggleNumberVisibility = function() {
+            $scope.isShowNumber = !$scope.isShowNumber;
+            if($scope.isShowNumber) {
+                $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-info'];
+                $("text", "#giboGroup").show();
+            }
+            else {
+                $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+                $("text", "#giboGroup").hide();
+            }
         };
         $scope.squareRenderer = function(el, data) {
             var rect = el.selectAll('rect').data(data.squares);

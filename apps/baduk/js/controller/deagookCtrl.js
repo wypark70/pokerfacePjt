@@ -7,9 +7,9 @@
 define([], function() {
     function deagookCtrl($scope) {
         $scope.isShowGibo = true;
-        $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
+        $scope.toggleGiboBtnClass = ["btn", "btn-xs", "btn-info"];
         $scope.isShowSquares = true;
-        $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
+        $scope.toggleSquaresBtnClass = ["btn", "btn-xs", "btn-info"];
 
         $scope.width = 2000;
         $scope.height = 2000;
@@ -24,7 +24,7 @@ define([], function() {
         $scope.paeArr = [];
 
         $scope.isShowNumber = true;
-        $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-info'];
+        $scope.toggleNumberBtnClass = ["btn", "btn-xs", "btn-info"];
 
         $scope.panData = {lines: [], dotCircles: [], panCircles: []};
         $scope.giboData = {stones: []};
@@ -34,27 +34,27 @@ define([], function() {
         $scope.whiteDieStones = [];
 
         $scope.panRenderer = function(el, data) {
-            var line = el.selectAll('line').data(data.lines);
+            var line = el.selectAll("line").data(data.lines);
             line.enter()
-                .append('line')
+                .append("line")
                 .attr({"x1": function(d) {return d.x1;}, "y1": function(d) {return d.y1;}, "x2": function(d) {return d.x2;}, "y2": function(d) {return d.y2;}});
-            var cir1 = el.selectAll('circle.dotCircle').data(data.dotCircles);
+            var cir1 = el.selectAll("circle.dotCircle").data(data.dotCircles);
             cir1.enter()
                 .append("circle")
-                .attr({'class': 'dotCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0, 'opacity': 0})
-                .style('fill', 'black')
+                .attr({"class": "dotCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "r": 0, "opacity": 0})
+                .style("fill", "black")
                 .transition()
                 .duration(1000)
-                .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
-            var cir2 = el.selectAll('circle.panCircle').data(data.panCircles);
+                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
+            var cir2 = el.selectAll("circle.panCircle").data(data.panCircles);
             cir2.enter()
-                .append('circle')
+                .append("circle")
                 .on("click", $scope.addStone)
-                .attr({'class': 'panCircle', 'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 1})
-                .style({'fill': function(d) {return d.fill; }, "cursor": "hand"})
+                .attr({"class": "panCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 1})
+                .style({"fill": "url(#gradient_3D_red)", "cursor": "hand"})
                 .transition()
                 .duration(1000)
-                .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 0});
+                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 0});
         };
         $scope.initPanData = function() {
             d3.range($scope.startX, $scope.endX + 1, $scope.dx).forEach(function(d) {
@@ -80,27 +80,26 @@ define([], function() {
         };
         $scope.initPanData();
         $scope.giboRenderer = function(el, data) {
-            var cir1 = el.selectAll('circle').data(data.stones);
-            cir1.attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
+            var cir1 = el.selectAll("circle").data(data.stones);
+            cir1.attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
             cir1.enter()
-                .append('circle')
+                .append("circle")
                 .on("click", $scope.logLinkedStone)
-                .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'opacity': 0})
-                .style({'fill': function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }, "cursor": "hand"})
+                .attr({"cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 0})
+                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }, "cursor": "hand"})
                 .transition()
                 .duration(10)
-                .attr({'cx': function(d) {return d.x * $scope.dx;}, 'cy': function(d) {return d.y * $scope.dy;}, 'r': function(d) {return d.r;}, 'opacity': 1});
+                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
             cir1.exit()
                 .transition()
                 .duration(10)
-                .delay(function(d, i) {return i * 10;})
-                .attr({'cx': 10 * $scope.dx, 'cy': 10 * $scope.dy, 'r': 0})
+                .attr({"cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "r": 0})
                 .remove();
             var text = el.selectAll("text").data(data.stones);
-            text.attr('opacity', function (d) {return d.isShow ? 1 : 0;})
+            text.attr("opacity", function (d) {return d.isShow ? 1 : 0;})
                 .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
             text.enter()
-                .append('text')
+                .append("text")
                 .on("click", $scope.logLinkedStone)
                 .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)"; }, "font-size": "0px", "font-weight": "bold"})
@@ -108,11 +107,10 @@ define([], function() {
                 .duration(10)
                 .text(function (d) {return d.idxNo + 1;})
                 .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? 'url(#gradient_3D_white)' : 'url(#gradient_3D_black)';}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
+                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)";}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
             text.exit()
                 .transition()
                 .duration(10)
-                .delay(function(d, i) {return i * 10;})
                 .text("")
                 .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-size": "0"})
                 .style({"font-size": "0"})
@@ -258,40 +256,40 @@ define([], function() {
         };
         $scope.toggleGiboVisibility = function() {
             $scope.isShowGibo = !$scope.isShowGibo;
-            if($scope.isShowGibo) $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-info'];
-            else $scope.toggleGiboBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+            if($scope.isShowGibo) $scope.toggleGiboBtnClass = ["btn", "btn-xs", "btn-info"];
+            else $scope.toggleGiboBtnClass = ["btn", "btn-xs", "btn-danger"];
         };
         $scope.toggleNumberVisibility = function() {
             $scope.isShowNumber = !$scope.isShowNumber;
             if ($scope.isShowNumber) {
-                $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-info'];
+                $scope.toggleNumberBtnClass = ["btn", "btn-xs", "btn-info"];
                 $("text", "#giboGroup").show();
             }
             else {
-                $scope.toggleNumberBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+                $scope.toggleNumberBtnClass = ["btn", "btn-xs", "btn-danger"];
                 $("text", "#giboGroup").hide();
             }
         };
         $scope.squareRenderer = function(el, data) {
-            var rect = el.selectAll('rect').data(data.squares);
+            var rect = el.selectAll("rect").data(data.squares);
             rect.enter()
-                .append('rect')
-                .attr({'x': 10 * $scope.dx, 'y': 10 * $scope.dy, 'width': 0, 'height': 0, 'filter': "url(#f4)"})
-                .style('fill', function() {return 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';})
+                .append("rect")
+                .attr({"x": 10 * $scope.dx, "y": 10 * $scope.dy, "width": 0, "height": 0, "filter": "url(#f4)"})
+                .style("fill", function() {return "rgb(" + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")";})
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
-                .attr({'x': function(d) {return d.x * $scope.dx - d.size / 2;}, 'y': function(d) {return d.y * $scope.dy - d.size / 2;}, 'width': function(d) {return d.size;}, 'height': function(d) {return d.size;}});
+                .attr({"x": function(d) {return d.x * $scope.dx - d.size / 2;}, "y": function(d) {return d.y * $scope.dy - d.size / 2;}, "width": function(d) {return d.size;}, "height": function(d) {return d.size;}});
             rect.exit()
                 .transition()
                 .duration(1000)
                 .delay(function(d, i) {return i * 10;})
-                .attr({'x': 10 * $scope.dx, 'y': 10 * $scope.dy, 'width': 0, 'height': 0})
+                .attr({"x": 10 * $scope.dx, "y": 10 * $scope.dy, "width": 0, "height": 0})
                 .remove();
             var text = el.selectAll("text").data(data.squares);
-            var textColor = 'rgb(' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')';
+            var textColor = "rgb(" + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")";
             text.enter()
-                .append('text')
+                .append("text")
                 .text(function (d, i) {return i + 1;})
                 .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
                 .style({"fill": textColor, "font-size": "0", "font-weight": "bold"})
@@ -321,12 +319,12 @@ define([], function() {
         };
         $scope.toggleSquareVisibility = function() {
             $scope.isShowSquares = !$scope.isShowSquares;
-            if($scope.isShowSquares) $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-info'];
-            else $scope.toggleSquaresBtnClass = ['btn', 'btn-xs', 'btn-danger'];
+            if($scope.isShowSquares) $scope.toggleSquaresBtnClass = ["btn", "btn-xs", "btn-info"];
+            else $scope.toggleSquaresBtnClass = ["btn", "btn-xs", "btn-danger"];
         };
     }
 
-    deagookCtrl.$inject = ['$scope'];
+    deagookCtrl.$inject = ["$scope"];
 
     return deagookCtrl;
 });

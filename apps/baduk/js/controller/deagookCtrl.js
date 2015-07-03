@@ -51,7 +51,7 @@ define([], function() {
                 .append("circle")
                 .on("click", $scope.addStone)
                 .attr({"class": "panCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 1})
-                .style({"fill": "url(#gradient_3D_red)", "cursor": "hand"})
+                .style({"fill": "url(#gradient_3D_blue)"})
                 .transition()
                 .duration(1000)
                 .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 0});
@@ -86,7 +86,7 @@ define([], function() {
                 .append("circle")
                 .on("click", $scope.logLinkedStone)
                 .attr({"cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 0})
-                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }, "cursor": "hand"})
+                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }})
                 .transition()
                 .duration(10)
                 .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
@@ -107,7 +107,7 @@ define([], function() {
                 .duration(10)
                 .text(function (d) {return d.idxNo + 1;})
                 .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)";}, "font-size": "40", "font-weight": "bold", "cursor": "hand"});
+                .style({"fill": function(d) {return d.idxNo % 2 == 0 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)";}, "font-size": "40", "font-weight": "bold"});
             text.exit()
                 .transition()
                 .duration(10)
@@ -230,11 +230,10 @@ define([], function() {
         };
         $scope.addStoneRandom = function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
-                var tmpData = {x: Math.round(Math.random() * 18) + 1, y: Math.round(Math.random() * 18) + 1};
-                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === tmpData.x && d.y === tmpData.y && d.isShow});
+                var tmpStone = {x: Math.round(Math.random() * 18) + 1, y: Math.round(Math.random() * 18) + 1, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === tmpStone.x && d.y === tmpStone.y && d.isShow});
                 if (tmpArr.length == 0) {
-                    var newStone = {x: tmpData.x, y: tmpData.y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
-                    $scope.addStonesData(newStone);
+                    $scope.addStonesData(tmpStone);
                 }
             }
         };

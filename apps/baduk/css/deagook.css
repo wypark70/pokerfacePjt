@@ -11,11 +11,12 @@ svg {
     stroke-width: 2;
 }
 
-#panGroup circle.:hover {
-    stroke: #000000;
-    stroke-width: 2;
+#panGroup circle.panCircle:hover {
+    cursor: pointer;
 }
 
-#giboGroup circle {}
+#giboGroup circle:hover {
+    cursor: pointer;
+}
 
 #squaresGroup rect {}

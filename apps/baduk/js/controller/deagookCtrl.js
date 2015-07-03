@@ -196,16 +196,14 @@ define([], function() {
                             var curData = $scope.giboData.stones[$scope.giboData.stones.indexOf(linkedStone)];
                             curData.r = 0;
                             curData.isShow = false;
-                            var tmpCurData = {};
-                            $.extend(tmpCurData, curData);
-                            dieStoneArr.push(tmpCurData);
+                            dieStoneArr.push(curData);
                         });
                     }
                 });
             }
-            var tmpStone = $scope.giboData.stones[$scope.giboData.stones.indexOf(baseStone)];
-            tmpStone["dieStoneArr"] = [].concat(dieStoneArr);
-            tmpStone["paeArr"] = [].concat($scope.paeArr);
+            var tmpBaseStone = $scope.giboData.stones[$scope.giboData.stones.indexOf(baseStone)];
+            tmpBaseStone["dieStoneArr"] = [].concat(dieStoneArr);
+            tmpBaseStone["paeArr"] = [].concat($scope.paeArr);
             if (linkedStoneArr.length == 1 && blankCnt == 0 && dieStoneArr.length == 1) {
                 var dieStone = {};
                 $.extend(dieStone, dieStoneArr[0]);

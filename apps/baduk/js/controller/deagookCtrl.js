@@ -155,10 +155,10 @@ define([], function() {
             function getLinkedStone(baseStone) {
                 linkedStoneArr.push(baseStone);
                 var filteredStone = $scope.giboData.stones.filter(function (d) {
-                    var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.idxNo % 2 === d.idxNo % 2;
-                    var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.idxNo % 2 === d.idxNo % 2;
-                    var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.idxNo % 2 === d.idxNo % 2;
-                    var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.idxNo % 2 === d.idxNo % 2;
+                    var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.isShow;
+                    var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.isShow;
+                    var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.isShow;
+                    var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.idxNo % 2 === d.idxNo % 2 && d.isShow;
                     return isNorthStone || isEastStone || isSouthStone || isWestStone;
                 });
                 if (filteredStone.length > 0) {
@@ -241,13 +241,15 @@ define([], function() {
             }
         };
         $scope.removeStone = function() {
-            var tmpStone = $scope.giboData.stones[$scope.giboData.stones.length -1];
-            tmpStone.dieStoneArr.forEach(function(stone) {
-                stone.r = $scope.r;
-                stone.isShow = true;
-            });
-            $scope.paeArr = [].concat(tmpStone.paeArr);
-            $scope.giboData.stones.pop();
+            if ($scope.giboData.stones.length > 0) {
+                var tmpStone = $scope.giboData.stones[$scope.giboData.stones.length - 1];
+                tmpStone.dieStoneArr.forEach(function (stone) {
+                    stone.r = $scope.r;
+                    stone.isShow = true;
+                });
+                $scope.paeArr = [].concat(tmpStone.paeArr);
+                $scope.giboData.stones.pop();
+            }
         };
         $scope.clearStone = function() {
             $scope.giboData.stones = [];

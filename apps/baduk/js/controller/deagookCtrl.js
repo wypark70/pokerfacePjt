@@ -5,6 +5,15 @@
 'use strict';
 
 define([], function() {
+    function getIsBlackSotne(stone) {
+        return stone.idxNo % 2 == 0;
+    }
+    function getStoneFill(stone) {
+        return getIsBlackSotne(stone) ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)";
+    }
+    function getTextFill(stone) {
+        return getIsBlackSotne(stone) ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)";
+    }
     function deagookCtrl($scope) {
         $scope.isShowGibo = true;
         $scope.toggleGiboBtnClass = ["btn", "btn-xs", "btn-info"];
@@ -86,7 +95,7 @@ define([], function() {
                 .append("circle")
                 .on("click", $scope.logLinkedStone)
                 .attr({"cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 0})
-                .style({"fill": function(d) {return d.idxNo & 1 ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)"; }})
+                .style({"fill": function(d) {return getStoneFill(d);}})
                 .transition()
                 .duration(10)
                 .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
@@ -102,12 +111,12 @@ define([], function() {
                 .append("text")
                 .on("click", $scope.logLinkedStone)
                 .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.idxNo & 1 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)"; }, "font-size": "0px", "font-weight": "bold"})
+                .style({"fill": function(d) {return getTextFill(d);}, "font-size": "0px", "font-weight": "bold"})
                 .transition()
                 .duration(10)
                 .text(function (d) {return d.idxNo + 1;})
                 .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return d.idxNo & 1 ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)";}, "font-size": "40", "font-weight": "bold"});
+                .style({"fill": function(d) {return getTextFill(d);}, "font-size": "40", "font-weight": "bold"});
             text.exit()
                 .transition()
                 .duration(10)
@@ -141,8 +150,8 @@ define([], function() {
             if (linkedBlankCnt == 0) {
                 $scope.giboData.stones.pop();
             }
-            $scope.blackDieStones = $scope.giboData.stones.filter(function(d) {return d.idxNo & 1 && !d.isShow});
-            $scope.whiteDieStones = $scope.giboData.stones.filter(function(d) {return !(d.idxNo & 1) && !d.isShow});
+            $scope.blackDieStones = $scope.giboData.stones.filter(function(d) {return getIsBlackSotne(d) && !d.isShow});
+            $scope.whiteDieStones = $scope.giboData.stones.filter(function(d) {return !getIsBlackSotne(d) && !d.isShow});
         };
         $scope.logLinkedStone = function() {
             var data = d3.select(this).data()[0];
@@ -152,16 +161,19 @@ define([], function() {
             var linkedStoneArr = [];
             function getLinkedStone(baseStone) {
                 linkedStoneArr.push(baseStone);
+                var isBlackBaseStone = getIsBlackSotne(baseStone);
                 var filteredStone = $scope.giboData.stones.filter(function (d) {
-                    var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.idxNo & 1 === d.idxNo & 1 && d.isShow;
-                    var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.idxNo & 1 === d.idxNo & 1 && d.isShow;
-                    var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.idxNo & 1 === d.idxNo & 1 && d.isShow;
-                    var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.idxNo & 1 === d.idxNo & 1 && d.isShow;
+                    var isBlackStone = getIsBlackSotne(d);
+                    var isSameStoneColor = (isBlackBaseStone && isBlackStone) || (!isBlackBaseStone && !isBlackStone);
+                    var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && isSameStoneColor && d.isShow;
+                    var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && isSameStoneColor && d.isShow;
+                    var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && isSameStoneColor && d.isShow;
+                    var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && isSameStoneColor && d.isShow;
                     return isNorthStone || isEastStone || isSouthStone || isWestStone;
                 });
                 if (filteredStone.length > 0) {
                     filteredStone.forEach(function (stone) {
-                        var tmpStoneArr = linkedStoneArr.filter(function (d) {return stone.x === d.x && stone.y === d.y && stone.idxNo & 1 === d.idxNo & 1;});
+                        var tmpStoneArr = linkedStoneArr.filter(function (d) {return stone.x === d.x && stone.y === d.y && getIsBlackSotne(stone) === getIsBlackSotne(d);});
                         if (!(tmpStoneArr.length > 0)) {
                             getLinkedStone(stone);
                         }
@@ -175,11 +187,14 @@ define([], function() {
             var linkedStoneArr = $scope.findLinkedStone(baseStone);
             var blankCnt = $scope.getLinkedBlankCnt(linkedStoneArr);
             var dieStoneArr = [];
+            var isBlackBaseStone = getIsBlackSotne(baseStone);
             var filteredStone = $scope.giboData.stones.filter(function(d) {
-                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && baseStone.idxNo & 1 != d.idxNo & 1 && d.isShow;
-                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && baseStone.idxNo & 1 != d.idxNo & 1 && d.isShow;
-                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && baseStone.idxNo & 1 != d.idxNo & 1 && d.isShow;
-                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && baseStone.idxNo & 1 != d.idxNo & 1 && d.isShow;
+                var isBlackStone = getIsBlackSotne(d);
+                var isSameStoneColor = (isBlackBaseStone && isBlackStone) || (!isBlackBaseStone && !isBlackStone);
+                var isNorthStone = baseStone.x === d.x && baseStone.y - 1 === d.y && !isSameStoneColor && d.isShow;
+                var isEastStone = baseStone.x === d.x + 1 && baseStone.y === d.y && !isSameStoneColor && d.isShow;
+                var isSouthStone = baseStone.x === d.x && baseStone.y + 1 === d.y && !isSameStoneColor && d.isShow;
+                var isWestStone = baseStone.x === d.x - 1 && baseStone.y === d.y && !isSameStoneColor && d.isShow;
                 return isNorthStone || isEastStone || isSouthStone || isWestStone;
             });
             if (filteredStone.length > 0) {

@@ -104,13 +104,14 @@ define([], function() {
             console.log(findLinkedStone(data));
         };
         $scope.addStoneRandom = function() {
-            for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
+            for (var i = 0; i < 100; i++) {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
+                var idxNo = $scope.giboData.stones.length;
                 var isShow = true;
-                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === x && d.y === y && isShow});
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === x && d.y === y && d.isShow});
                 if (tmpArr.length == 0) {
-                    addStonesData(tmpStone);
+                    addStonesData({x: x, y: y, idxNo: idxNo, isShow: isShow});
                 }
             }
         };

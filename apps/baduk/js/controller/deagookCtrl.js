@@ -105,8 +105,10 @@ define([], function() {
         };
         $scope.addStoneRandom = function() {
             for (var i = 0; i < Math.round(Math.random() * 30 + 20); i++) {
-                var tmpStone = {x: Math.round(Math.random() * 18) + 1, y: Math.round(Math.random() * 18) + 1, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
-                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === tmpStone.x && d.y === tmpStone.y && d.isShow});
+                var x = Math.round(Math.random() * 18) + 1;
+                var y = Math.round(Math.random() * 18) + 1;
+                var isShow = true;
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === x && d.y === y && isShow});
                 if (tmpArr.length == 0) {
                     addStonesData(tmpStone);
                 }

@@ -341,7 +341,7 @@ define([], function() {
         initPanData();
     }
 
-    deagookCtrl.$inject = ["$scope"];
+    //deagookCtrl.$inject = ["$scope"];
 
     return deagookCtrl;
 });

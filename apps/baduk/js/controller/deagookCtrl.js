@@ -111,7 +111,7 @@ define([], function() {
                 var isShow = true;
                 var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === x && d.y === y && d.isShow});
                 if (tmpArr.length == 0) {
-                    addStonesData({x: x, y: y, idxNo: idxNo, isShow: isShow});
+                    addStonesData({x: x, y: y, r: $scope.r, idxNo: idxNo, isShow: isShow});
                 }
             }
         };

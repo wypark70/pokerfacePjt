@@ -4,7 +4,7 @@
 function indexCtrl($scope) {
     $scope.appName = 'Baduk';
     $scope.menus = [];
-    $scope.menus.push({name: '대기실', url: '#/home', class:''});
+    $scope.menus.push({name: '대기실', url: '#/waitingRoom', class:''});
     $scope.menus.push({name: '대국실', url: '#/deagook', class:''});
-    $scope.menus.push({name: '기보감상', url: '#/gibo', class:''});
+    $scope.menus.push({name: '기보', url: '#/gibo', class:''});
 }

@@ -11,6 +11,10 @@ define([], function() {
                 templateUrl: 'view/home.html',
                 controller: 'homeCtrl'
             })
+            .when('/waitingRoom', {
+                templateUrl: 'view/waitingRoom.html',
+                controller: 'waitingRoomCtrl'
+            })
             .when('/deagook', {
                 templateUrl: 'view/deagook.html',
                 controller: 'deagookCtrl'

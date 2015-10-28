@@ -31,9 +31,9 @@ requirejs.config({
      */
     paths:{
         //뒤에 js 확장자는 생략한다.
-        'jquery': 'libs/jquery/2.1.3/jquery-2.1.3',
+        'jquery': 'libs/jquery/2.1.3/jquery-2.1.3.min',
         'bootstrap': 'libs/bootstrap/3.3.2/js/bootstrap.min',
-        'angular': 'libs/angularjs/1.1.5/angular',
+        'angular': 'libs/angularjs/1.1.5/angular.min',
         'd3': 'libs/d3/3.0.8/d3.min',
         'angular-d3': 'js/angular-d3',
         'jPlayer': 'libs/jplayer/2.9.2/jplayer/jquery.jplayer.min',
@@ -53,8 +53,11 @@ requirejs.config({
         'angular-d3': {
             deps: ['angular', 'd3']
         },
+        'jPlayerPlaylist' : {
+            deps: ['jquery', 'jPlayer']
+        },
         'badukApp': {
-            deps: ['bootstrap', 'angular-d3','jPlayer', 'jPlayerPlaylist']
+            deps: ['jPlayerPlaylist', 'angular-d3', 'bootstrap']
         }
     },
     waitSeconds: 15

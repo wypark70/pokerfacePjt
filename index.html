@@ -1,249 +1,74 @@
-<!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>xlsToXml</title>
-
-    <link href="css/infragistics.theme.css" rel="stylesheet" />
-    <link href="css/infragistics.css" rel="stylesheet" />
-    <link href="css/infragistics.ui.treegrid.css" rel="stylesheet" />
-    <script src="js/modernizr-latest.js"></script>
-    <script src="libs/jquery/1.9.1/jquery-1.9.1.min.js"></script>
-    <script src="libs/jquery/plugin/jquery-ui.min.js"></script>
-    <script src="js/infragistics.core.js"></script>
-    <script src="js/infragistics.lob.js"></script>
-    <script src="js/infragistics.ui.treegrid.js"></script>
-    <script src="js/json2.js"></script>
-    <script src="libs/jquery/plugin/jquery.csv-0.71.js"></script>
-    <script src="libs/jquery/plugin/jquery.json2xml.js"></script>
-    <style>
-        #grid_container {
-            width: 100%;
-        }
-        body {
-            font: 12px "Segoe UI",Helvetica,Tahoma,Arial,Verdana,sans-serif;
-            min-width: 280px;
-            min-height: 700px;
-            color: #495555;
-        }
-    </style>
-
-    <link rel="stylesheet" href="css/codemirror.css">
-    <link rel="stylesheet" href="css/dialog.css">
-    <script src="js/codemirror.js"></script>
-    <script src="js/dialog.js"></script>
-    <script src="js/searchcursor.js"></script>
-    <script src="js/clike.js"></script>
-    <script src="js/matchbrackets.js"></script>
-    <script src="js/xml.js"></script>
-    <script src="js/vim.js"></script>
-    <style type="text/css">
-        .CodeMirror {
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-            height: 700px;
-        }
-    </style>
-
-    <script src="js/shim.js"></script>
-    <script src="js/xls.js"></script>
-
-    <style type="text/css">
-        fieldset {
-            display: block;
-            margin-left: 2px;
-            margin-right: 2px;
-            padding-top: 0.35em;
-            padding-bottom: 0.625em;
-            padding-left: 0.75em;
-            padding-right: 0.75em;
-            border: 2px groove;
-        }
-    </style>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<title>¿ìºñ</title>
+<style type="text/css">
+<!--
+/*
+.mail_title { font-size: 15px; font-weight: bold; padding-bottom: 15px; }
+.mail_contents { background: url('http://woobi.co.kr/image/mail_back.gif') repeat-y 0 0; padding: 20px 50px; min-height: 300px; font-size: 12px; }
+.mail_footer { background: url('http://woobi.co.kr/image/mail_bottom.gif') no-repeat 0 0; height: 45px; padding: 25px 40px; font-size: 11px!important; color: #949494; }
+*/
+-->
+</style>
 </head>
+
 <body>
-
-<fieldset style="float: left;">
-    <legend>Soruce XLS file</legend>
-    XLS íŒŒì¼ ì„ íƒ: <input id="the-file-input" type="file" accept=".xls">
-</fieldset>
-
-<fieldset>
-    <legend>XML Options</legend>
-    rootName: <input id="rootName" type="text" value="columns">&nbsp;&nbsp;
-    objectName: <input id="objectName" type="text" value="column">
-</fieldset>
-
-<div id="tabs">
-    <ul>
-        <li id="tab1"><a href="#tabs-1">csv source</a></li>
-        <li id="tab2"><a href="#tabs-2">to json</a></li>
-        <li id="tab3"><a href="#tabs-3">to xml</a></li>
-        <li id="tab4"><a href="#tabs-4">to grid</a></li>
-    </ul>
-    <div id="tabs-1" style="padding: 0px;">
-        <textarea id="csvData" name="csvData">Name,Required,Index,Condition,Value
-Ver,True,0,&gt;=,0
-Time,True,1,&gt;=,0
-Instance,True,2,&gt;=,0
-NE_Type,True,3,&gt;=,0
-NE_ID,True,4,&gt;=,0</textarea>
-    </div>
-    <div id="tabs-2" style="padding: 0px;">
-        <textarea id="json" name="json"></textarea>
-        <div id="jsonDiv"></div>
-    </div>
-    <div id="tabs-3" style="padding: 0px;">
-        <textarea id="xmlCode" name="xmlCode"></textarea>
-    </div>
-    <div id="tabs-4" style="padding: 0px;">
-        <div id="gridDiv"></div>
+<p style="margin: 0"><img src="http://woobi.co.kr/image/mail_top.gif" alt="¿ìºñ" border="0" usemap="#Map" /></p>
+<div style="background: url('http://woobi.co.kr/image/mail_back.gif') repeat-y 0 0; font-size: 12px; min-height: 300px; padding-left: 40px; width: 800px">
+<br />
+<h3>½ÅÃ»ÇÏ½Å À¥ È£½ºÆÃ ¼­ºñ½ºÀÇ ¼Â¾÷ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!</h3>
+<br />
+<br />
+<a href="http://woobi.co.kr/user/" target="_blank">[¸¶ÀÌÆäÀÌÁö]</a>¿¡¼­ ¼­ºñ½º °ü·Ã °¢Á¾ Á¤º¸ Á¶È¸ ¹× °ü¸®¸¦ ÇÒ ¼ö ÀÖ½À´Ï´Ù.<br />
+[¸¶ÀÌÆäÀÌÁö]ÀÇ ¼­ºñ½º °ü·Ã ÁÖ¿ä ±â´ÉÀº ´ÙÀ½°ú °°½À´Ï´Ù.<br />
+<br />
+<a href="http://woobi.co.kr/user/user_pay_report.php" target="_blank">¼­ºñ½º °áÁ¦</a> |
+<a href="http://woobi.co.kr/user/user_manual.php" target="_blank">¼­ºñ½º ³»¿ª Á¶È¸</a> |
+<a href="http://woobi.co.kr/user/user_alias_form.php" target="_blank">Ãß°¡ µµ¸ŞÀÎ °ü¸®</a><br />
+<a href="http://woobi.co.kr/user/user_edit_passwd_account.php" target="_blank">°èÁ¤/MySQL ºñ¹Ğ¹øÈ£ º¯°æ</a> |
+<a href="http://woobi.co.kr/user/user_disk.php" target="_blank">µğ½ºÅ© »ç¿ë·® Á¶È¸</a><br />
+<a href="http://woobi.co.kr/user/user_ip_form.php" target="_blank">SSH/FTP Á¢¼Ó IP ÁÖ¼Ò °ü¸®</a> |
+<a href="http://woobi.co.kr/user/user_sent.php" target="_blank">ÀÏÀÏ Àü¼Û·® Á¶È¸ ¹× ÃÊ±âÈ­</a><br />
+<br />
+ÀÌ ¿Ü¿¡µµ ´Ù¾çÇÑ ±â´ÉÀÌ ÁØºñµÇ¾î ÀÖÀ¸´Ï ¸¹Àº ÀÌ¿ë ¹Ù¶ø´Ï´Ù.<br />
+<br />
+<br />
+¸ğ¹ÙÀÏ Àü¿ë È¨ÆäÀÌÁö´Â <a href="http://m.atsoft.woobi.co.kr" target="_blank">m.atsoft.woobi.co.kr</a> ÀÔ´Ï´Ù.<br />
+[¸¶ÀÌÆäÀÌÁö] - <a href="http://woobi.co.kr/user/user_homepage_form.php" target="_blank">[Ã¹ÆäÀÌÁö °ü¸®]</a>¸¦ ÀÌ¿ëÇÏ½Ã¸é,<br />
+½º¸¶Æ®ÆùÀ¸·Î Á¢¼Ó½Ã ¸ğ¹ÙÀÏ Àü¿ë È¨ÆäÀÌÁö·Î Á¢¼ÓµÇµµ·Ï ¼³Á¤ÇÒ ¼ö ÀÖ½À´Ï´Ù.<br />
+<br />
+<br />
+ÀÌ¿ë Áß ±Ã±İÇÏ½Å »çÇ×Àº [ÀÚÁÖ ¹¯´Â Áú¹®]ÀÌ³ª [ÀÌ¿ë ¹®ÀÇ]¸¦ ÀÌ¿ëÇØ ÁÖ½Ã±â ¹Ù¶ø´Ï´Ù.<br />
+<br />
+<a href="http://woobi.co.kr/board/board_list.php?db=faq" target="_blank">ÀÚÁÖ ¹¯´Â Áú¹®</a> |
+<a href="http://woobi.co.kr/board/board_list.php?db=qna" target="_blank">ÀÌ¿ë ¹®ÀÇ</a><br />
+<br />
+<br />
+¡Ø µµ¸ŞÀÎ µî·Ï ¹× ³×ÀÓ¼­¹ö º¯°æ¿¡ ´ëÇØ ¾Ë·Áµå¸³´Ï´Ù.<br />
+<br />
+1. woobi.co.kr(¹«·á µµ¸ŞÀÎ)À» ½ÅÃ»ÇÏ½Å °æ¿ì, Áö±İ ¹Ù·Î µµ¸ŞÀÎÀ» »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.<br />
+2. ¿ìºñ¿¡ µµ¸ŞÀÎÀ» µî·ÏÇÏ½Å °æ¿ì, 24½Ã°£ ÀÌ³»¿¡ µµ¸ŞÀÎÀ» »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.<br />
+3. Å¸»ç¿¡ µµ¸ŞÀÎÀ» µî·ÏÇÏ½Å °æ¿ì, ³×ÀÓ¼­¹ö¸¦ ¾Æ·¡¿Í °°ÀÌ º¯°æÇÏ°í 1 ~ 2ÀÏ ÈÄ »ç¿ëÀÌ °¡´ÉÇÕ´Ï´Ù.<br />
+&nbsp; &nbsp; 1Â÷ : ns1.woobi.co.kr 110.45.140.2<br />
+&nbsp; &nbsp; 2Â÷ : ns2.woobi.co.kr 110.45.141.212<br />
+&nbsp; &nbsp; 3Â÷ : ns3.woobi.co.kr 14.63.162.246<br />
+<br />
+<br />
+¿ìºñ¸¦ ÀÌ¿ëÇØ ÁÖ¼Å¼­ °¨»çÇÕ´Ï´Ù.<br />
+<br />
+    <div style="border-top: 2px solid #D0E1FF; padding: 0 auto; text-align: center; width: 710px">
+        <a href="http://woobi.co.kr/sub4_01_guide.html" target="blank"><img src="http://woobi.co.kr/image/mail_banner_mcbldr.gif" border="0" style="border: 1px solid #666666; margin-top: 20px" /></a>
     </div>
 </div>
-
-
-<script>
-    $(function () {
-        var csvEditor = CodeMirror.fromTextArea(document.getElementById("csvData"), {
-            lineNumbers: true,
-            mode: "xml",
-            keyMap: "vim",
-            matchBrackets: true,
-            showCursorWhenSelecting: true
-        });
-
-        var jsonEditor = CodeMirror.fromTextArea(document.getElementById("json"), {
-            lineNumbers: true,
-            matchBrackets: true,
-            continueComments: "Enter",
-            extraKeys: {"Ctrl-Q": "toggleComment"}
-        });
-
-        var xmlEditor = CodeMirror.fromTextArea(document.getElementById("xmlCode"), {
-            lineNumbers: true,
-            mode: "xml",
-            keyMap: "vim",
-            matchBrackets: true,
-            showCursorWhenSelecting: true
-        });
-
-        $("#tabs").tabs({
-            activate: function(event, ui) {
-                var csvData = csvEditor.getValue();
-                var data = $.csv.toObjects(csvData);
-                var tabId = $(ui.newTab).attr("id");
-                if ("tab1" == tabId) {
-                    csvEditor.refresh();
-                }
-                else if ("tab2" == tabId) {
-                    jsonEditor.setValue(JSON.stringify(data, null, '\t'));
-                    jsonEditor.refresh();
-                }
-                else if ("tab3" == tabId) {
-                    var newData = new Array();
-                    $.each(data, function() {
-                        //newData.push($.extend(this, {"Value": {"Condition": this.Condition, "Value": this.Value}}));
-                        newData.push({
-                            "Name" : this.Name,
-                            "Required": this.Required,
-                            "Index": this.Index,
-                            "Value": {"Condition": this.Condition, "Value": this.Value}
-                        });
-                    });
-                    console.log(JSON.stringify(newData, null, '\t'));
-                    var data2 = eval("({" + $("#objectName").val() + ": newData})");
-                    var xmlCode = $.json2xml(data2, {rootTagName: $("#rootName").val(), formatOutput: true});
-                    xmlEditor.setValue(xmlCode);
-                    xmlEditor.refresh();
-                }
-                else if ("tab4" == tabId) {
-                    var $gridDiv = $("#gridDiv");
-                    var $gridTable = $('<table id="grid"></table>');
-                    $gridDiv.empty();
-                    $gridDiv.append($gridTable);
-                    $gridTable.igGrid({
-                        dataSource: data,
-                        features: [
-                            {
-                                name: "Filtering",
-                                type: "local"
-                            },
-                            {
-                                name: "Sorting",
-                                type: "local"
-                            },
-                            {
-                                name: 'Paging',
-                                type: "local",
-                                pageSize: 20
-                            }
-                        ]
-                    });
-                }
-            }
-        });
-
-        function xw_xfer(data, cb) {
-            var worker = new Worker("js/xlsworker2.js");
-            console.log(worker);
-            worker.onmessage = function(e) {
-                switch(e.data.t) {
-                    case 'ready': break;
-                    case 'e': break;
-                    default: xx=ab2str(e.data).replace(/\n/g,"\\n").replace(/\r/g,"\\r"); console.log("done"); cb(JSON.parse(xx)); break;
-                }
-            };
-            var val = s2ab(data);
-            worker.postMessage(val[1], [val[1]]);
-        }
-
-        function ab2str(data) {
-            var o = "", l = 0, w = 10240;
-            for(; l<data.byteLength/w; ++l) o+=String.fromCharCode.apply(null,new Uint16Array(data.slice(l*w,l*w+w)));
-            o+=String.fromCharCode.apply(null, new Uint16Array(data.slice(l*w)));
-            return o;
-        }
-
-        function s2ab(s) {
-            var b = new ArrayBuffer(s.length*2), v = new Uint16Array(b);
-            for (var i=0; i != s.length; ++i) v[i] = s.charCodeAt(i);
-            return [v, b];
-        }
-
-        function process_wb(wb) {
-            XLS.SSF.load_table(wb.SSF);
-            var output = to_csv(wb);
-            csvEditor.setValue(output);
-            $("#tabs").tabs("option", "active", 0);
-        }
-
-        function to_csv(workbook) {
-            var result = [];
-            workbook.SheetNames.forEach(function(sheetName) {
-                var csv = XLS.utils.sheet_to_csv(workbook.Sheets[sheetName]);
-                if(csv.length > 0){
-                    //result.push("SHEET: " + sheetName);
-                    //result.push("");
-                    result.push(csv);
-                }
-                return false;
-            });
-            return result.join("\n");
-        }
-
-        $("#the-file-input").change(function(evt) {
-            var file = evt.target.files[0];
-            console.log(file);
-            var reader = new FileReader();
-            reader.readAsBinaryString(file);
-            reader.onload = function(event) {
-                var data = event.target.result;
-                xw_xfer(data, process_wb);
-            };
-            reader.onerror = function () {
-                alert('Unable to read ' + file.fileName);
-            };
-        });
-    });
-</script>
+<div style="background: url('http://woobi.co.kr/image/mail_bottom.gif') no-repeat 0 0; height: 145px; padding: 25px 40px; font-size: 11px!important; color: #949494;">
+»óÈ£ : MYCGI / ´ëÇ¥ : Á¤¹®¿ë / »ç¾÷ÀÚµî·Ï¹øÈ£ : 120-04-13563 / Åë½ÅÆÇ¸Å¹øÈ£ : 2012-¼­¿ï±¸·Î-0935<br />
+ÀüÈ­ : 070-7092-9771<br />
+COPYRIGHT (C) 1999-2013 MYCGI. ALL RIGHTS RESERVED.
+</div>
+<map name="Map" id="Map">
+    <area shape="rect" coords="15,15,220,80" href="http://woobi.co.kr/" target="_blank" alt="¿ìºñ" />
+</map>
 </body>
+
 </html>

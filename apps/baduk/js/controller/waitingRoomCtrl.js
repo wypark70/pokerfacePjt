@@ -13,6 +13,10 @@ define([], function () {
         }, [
             {
                 title:"Cro Magnon Man",
+                mp3:"../../music/001.mp3"
+            },
+            {
+                title:"Cro Magnon Man",
                 mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
                 oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
             },

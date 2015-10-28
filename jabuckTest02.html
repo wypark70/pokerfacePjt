@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
+<script>
+    function buildHTML(vo) {
+        var htmlAllArr = new Array();
+        htmlAllArr.push("<html>");
+        htmlAllArr.push("<head>");
+        htmlAllArr.push("</head>");
+        htmlAllArr.push("<body>");
+        htmlAllArr.push("   <div>/__CNAME__/</div>");
+        htmlAllArr.push("   <div>/__INAME__/</div>");
+        htmlAllArr.push("   <div>/__CODAT__/</div>");
+        htmlAllArr.push("   <div>/__CORNM__/</div>");
+        htmlAllArr.push("   <div>/__COPER__/</div>");
+        htmlAllArr.push("   <div>/__FTEXT__/</div>");
+        htmlAllArr.push("   <div>/__COSTEN__/</div>");
+        htmlAllArr.push("</body>");
+        htmlAllArr.push("</html>");
+
+        var htmlAll = htmlAllArr.join("\n");
+
+        var ptnCname  = "/__CNAME__/";
+        var ptnIname  = "/__INAME__/";
+        var ptnCodat  = "/__CODAT__/";
+        var ptnCornm  = "/__CORNM__/";
+        var ptnCoper  = "/__COPER__/";
+        var ptnFtext  = "/__FTEXT__/";
+        var ptnCosten = "/__COSTEN__/";
+
+        htmlAll = htmlAll.replace(ptnCname, vo.CNAME);
+        htmlAll = htmlAll.replace(ptnIname, vo.INAME);
+        htmlAll = htmlAll.replace(ptnCodat, vo.CODAT);
+        htmlAll = htmlAll.replace(ptnCornm, vo.CORNM);
+        htmlAll = htmlAll.replace(ptnCoper, vo.COPER);
+        htmlAll = htmlAll.replace(ptnFtext, vo.FTEXT);
+        if(vo.COSEL == 'X') {
+            htmlAll = htmlAll.replace(ptnCosten, vo.COSTEN);
+        } else {
+            htmlAll = htmlAll.replace(ptnCosten, '');
+        }
+
+        return htmlAll;
+    }
+
+    var vo = {
+        CNAME: "CNAME0000",
+        INAME: "INAME0000",
+        CODAT: "CODAT0000",
+        CORNM: "CORNM0000",
+        COPER: "COPER0000",
+        FTEXT: "FTEXT0000"
+    }
+
+    console.log(buildHTML(vo));
+</script>
+</body>
+</html>

@@ -41,32 +41,29 @@ define([], function() {
             var cir1 = el.selectAll("circle.dotCircle").data(data.dotCircles);
             cir1.enter()
                 .append("circle")
-                .attr({"class": "dotCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "r": 0, "opacity": 0})
-                .style("fill", "black")
+                .attr({"class": "dotCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "r": 0})
                 .transition()
                 .duration(1000)
-                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
+                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
             var cir2 = el.selectAll("circle.panCircle").data(data.panCircles);
             cir2.enter()
                 .append("circle")
                 .on("click", $scope.addStone)
-                .attr({"class": "panCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 1})
-                .style({"fill": "url(#gradient_3D_blue)"})
+                .attr({"class": "panCircle", "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "r": 0})
                 .transition()
                 .duration(1000)
-                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 0});
+                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
         };
         $scope.giboRenderer = function(el, data) {
             var cir1 = el.selectAll("circle").data(data.stones);
-            cir1.attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
+            cir1.attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
             cir1.enter()
                 .append("circle")
                 .on("click", $scope.logLinkedStone)
-                .attr({"cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 0})
-                .style({"fill": function(d) {return getStoneFill(d);}})
+                .attr({"class": function(d) {return getStoneClass(d);}, "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 0})
                 .transition()
                 .duration(10)
-                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}, "opacity": 1});
+                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
             cir1.exit()
                 .transition()
                 .duration(10)
@@ -78,13 +75,13 @@ define([], function() {
             text.enter()
                 .append("text")
                 .on("click", $scope.logLinkedStone)
-                .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return getTextFill(d);}, "font-size": "0px", "font-weight": "bold"})
+                .attr({"class": function(d) {return getTextClass(d);}, "dx": 10 * $scope.dx, "dy": 10 * $scope.dy})
+                .style({"font-size": "0", "font-weight": "bold", "display": ($scope.isShowNumber ? "" : "none")})
                 .transition()
                 .duration(10)
                 .text(function (d) {return d.idxNo + 1;})
-                .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": function(d) {return getTextFill(d);}, "font-size": "40", "font-weight": "bold"});
+                .attr({"class": function(d) {return getTextClass(d);}, "dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}})
+                .style({"font-size": "40", "font-weight": "bold"});
             text.exit()
                 .transition()
                 .duration(10)
@@ -202,11 +199,11 @@ define([], function() {
         function getIsBlackStone(stone) {
             return stone.idxNo % 2 == 0;
         }
-        function getStoneFill(stone) {
-            return getIsBlackStone(stone) ? "url(#gradient_3D_black)" : "url(#gradient_3D_white)";
+        function getStoneClass(stone) {
+            return getIsBlackStone(stone) ? "blackStone" : "whiteStone";
         }
-        function getTextFill(stone) {
-            return getIsBlackStone(stone) ? "url(#gradient_3D_white)" : "url(#gradient_3D_black)";
+        function getTextClass(stone) {
+            return getIsBlackStone(stone) ? "blackStoneText" : "whiteStoneText";
         }
         function findLinkedStone(baseStone) {
             var linkedStoneArr = [];

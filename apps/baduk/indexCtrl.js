@@ -7,4 +7,8 @@ function indexCtrl($scope) {
     $scope.menus.push({name: '대기실', url: '#/waitingRoom', class:''});
     $scope.menus.push({name: '대국실', url: '#/deagook', class:''});
     $scope.menus.push({name: '기보', url: '#/gibo', class:''});
+
+    $(function() {
+        $("#mainContainer").show();
+    });
 }

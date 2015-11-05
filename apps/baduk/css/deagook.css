@@ -42,12 +42,14 @@ svg {
 }
 
 #giboGroup > text.blackStoneText {
+    font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
     fill: white;
 }
 
 #giboGroup > text.whiteStoneText {
+    font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
     fill: black;

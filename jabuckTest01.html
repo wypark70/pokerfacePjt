@@ -1,90 +1,53 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <style type="text/css">
+        #musicContainer {
+            width: 500px;
+        }
+        #musicContainer > audio {
+            width: 100%;
+        }
+        #musicContainer > canvas {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
 <body>
-<table id="extendConTB">
-    <thead>
-        <th>&nbsp;</th>
-        <th>가족관계명</th>
-        <th>가족관계</th>
-        <th>주민등록변호</th>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-<img src = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==">
-<div id="testDiv">..........</div>
+<div id="musicContainer">
+    <audio autoplay controls>
+        <source src="./music/001.mp3" type="audio/mpeg" />
+    </audio>
+    <canvas></canvas>
+</div>
 <script src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
 <script>
-    function callbackAjax(list) { //성공시 처리문. callback함수가 있을 경우 callback함수를 호출해줌.
-        $('#extendConTB tbody').empty();
+    var canvas = document.querySelector('canvas');
+    var ctx = canvas.getContext('2d');
 
-        for(var i=0; i < list.length; i++) {
-            var $last = $('#extendConTB > tbody:last');
-            var $tmpTr, $tmpTd, $tmpRadio;
+    // here we create our chain
+    var audio = document.querySelector('audio');
+    var audioContext = new AudioContext();
+    var source = audioContext.createMediaElementSource(audio);
+    var analyser = audioContext.createAnalyser();
 
-            $tmpTr = $('<tr></tr>');
-            $tmpTd= $('<td class="t_center"></td>');
-            $tmpRadio = $('<input type="radio" name="radio" onclick="goCheckView(this);">');
-            $tmpRadio.data(list[i]);
-            $tmpTd.append($tmpRadio);
-            $tmpTr.append($tmpTd);
+    var width = canvas.width;
+    var height = canvas.height * 2.5;
 
-            $tmpTd= $('<td class="t_center"></td>');
-            $tmpTd.append(list[i].FNAME);
-            $tmpTr.append($tmpTd);
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
 
-            $tmpTd= $('<td class="t_center"></td>');
-            $tmpTd.append(list[i].ZTEXT);
-            $tmpTr.append($tmpTd);
+    setInterval(function(){
+        var freqData = new Uint8Array(analyser.frequencyBinCount);
 
-            $tmpTd= $('<td class="t_center"></td>');
-            $tmpTd.append(list[i].REGNO);
-            $tmpTr.append($tmpTd);
-
-            $last.append($tmpTr);
+        analyser.getByteFrequencyData(freqData);
+        ctx.clearRect(0, 0, width, height);
+        for (var i = 0; i < freqData.length; i++ ) {
+            var magnitude = freqData[i];
+            ctx.fillRect(i*1.5, height, 1, -magnitude * 2);
         }
-    }
-    function goCheckView(arg) {
-        var data = $(arg).data();
-        console.log(data.FNAME);
-        console.log(data.FAMILY);
-        console.log(data.REGNO);
-    }
-
-    var testArray = new Array();
-    testArray.push({"FNAME": "이름", "FAMILY": "관계명", "ZTEXT": "관계", "REGNO": "주민번호"});
-    testArray.push({"FNAME": "이름0", "FAMILY": "관계명0", "ZTEXT": "관계0", "REGNO": "주민번호0"});
-    testArray.push({"FNAME": "이름00", "FAMILY": "관계명00", "ZTEXT": "관계00", "REGNO": "주민번호00"});
-    callbackAjax(testArray);
-
-
-
-    var imgText;
-    var $tmpLi, $tmpLin, $tmpImg;
-
-    imgText = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==";
-
-    $tmpLi = $('<li></li>');
-    $tmpLink = $('<a></a>');
-    $tmpImg = $('<img></img>');
-
-    $tmpLink.attr("href", "#");
-    $tmpImg.css("cursor", "pointor");
-    $tmpImg.attr("src", imgText);
-    $tmpImg.click({"param1" : "0000"}, check);
-
-    $tmpLink.append($tmpImg);
-    $tmpLi.append($tmpLink);
-
-
-    $("#testDiv").append($tmpLi);
-
-    function check(event) {
-        event.c
-        console.log("check function called!!!");
-        console.log(event.data.param1);
-    }
-
+    }, 33);
 </script>
 </body>
 </html>

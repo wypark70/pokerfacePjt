@@ -76,12 +76,12 @@ define([], function() {
                 .append("text")
                 .on("click", $scope.logLinkedStone)
                 .attr({"class": function(d) {return getTextClass(d);}, "dx": 10 * $scope.dx, "dy": 10 * $scope.dy})
-                .style({"font-size": "0", "font-weight": "bold", "display": ($scope.isShowNumber ? "" : "none")})
+                .style({"font-size": "0", "display": ($scope.isShowNumber ? "" : "none")})
                 .transition()
                 .duration(10)
                 .text(function (d) {return d.idxNo + 1;})
                 .attr({"class": function(d) {return getTextClass(d);}, "dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}})
-                .style({"font-size": "40", "font-weight": "bold"});
+                .style({"font-size": "35"});
             text.exit()
                 .transition()
                 .duration(10)

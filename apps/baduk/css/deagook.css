@@ -12,7 +12,7 @@ svg {
 }
 
 #panGroup > circle.dotCircle {
-    fill: red;
+    fill: black;
     opacity: 1;
 }
 
@@ -22,7 +22,7 @@ svg {
 }
 
 #panGroup > circle.panCircle:hover {
-    fill: url(#gradient_3D_yellow);
+    fill: url(#gradient_3D_white);
     opacity: 0.5;
     cursor: pointer;
 }

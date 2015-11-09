@@ -17,12 +17,11 @@ svg {
 }
 
 #panGroup > circle.panCircle {
-    fill: url(#gradient_3D_red);
+    fill: url(#gradient_3D_black);
     opacity: 0;
 }
 
 #panGroup > circle.panCircle:hover {
-    fill: url(#gradient_3D_white);
     opacity: 0.5;
     cursor: pointer;
 }

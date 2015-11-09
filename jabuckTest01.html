@@ -3,7 +3,7 @@
 <head>
     <style type="text/css">
         #musicContainer {
-            width: 500px;
+            width: 300px;
         }
         #musicContainer > audio {
             width: 100%;
@@ -16,13 +16,15 @@
 </head>
 <body>
 <div id="musicContainer">
-    <audio autoplay controls>
-        <source src="./music/001.mp3" type="audio/mpeg" />
+    <audio controls>
+        <source src="./music/001.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
     <canvas></canvas>
+
 </div>
-<script src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
-<script>
+<script type="text/javascript" src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
+<script type="text/javascript">
     var canvas = document.querySelector('canvas');
     var ctx = canvas.getContext('2d');
 
@@ -43,11 +45,14 @@
 
         analyser.getByteFrequencyData(freqData);
         ctx.clearRect(0, 0, width, height);
+        console.log(freqData);
         for (var i = 0; i < freqData.length; i++ ) {
             var magnitude = freqData[i];
             ctx.fillRect(i*1.5, height, 1, -magnitude * 2);
         }
-    }, 33);
+    }, 50);
+
+    audio.play();
 </script>
 </body>
 </html>

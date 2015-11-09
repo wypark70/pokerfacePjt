@@ -60,14 +60,8 @@ define([], function() {
             cir1.enter()
                 .append("circle")
                 .on("click", $scope.logLinkedStone)
-                .attr({"class": function(d) {return getStoneClass(d);}, "cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "opacity": 0})
-                .transition()
-                .duration(10)
-                .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
+                .attr({"class": function(d) {return getStoneClass(d);}, "cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
             cir1.exit()
-                .transition()
-                .duration(10)
-                .attr({"cx": 10 * $scope.dx, "cy": 10 * $scope.dy, "r": 0})
                 .remove();
             var text = el.selectAll("text").data(data.stones);
             text.attr("opacity", function (d) {return d.isShow ? 1 : 0;})
@@ -75,19 +69,10 @@ define([], function() {
             text.enter()
                 .append("text")
                 .on("click", $scope.logLinkedStone)
-                .attr({"class": function(d) {return getTextClass(d);}, "dx": 10 * $scope.dx, "dy": 10 * $scope.dy})
-                .style({"font-size": "0", "display": ($scope.isShowNumber ? "" : "none")})
-                .transition()
-                .duration(10)
                 .text(function (d) {return d.idxNo + 1;})
                 .attr({"class": function(d) {return getTextClass(d);}, "dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}})
-                .style({"font-size": "35"});
+                .style({"font-size": "35", "display": ($scope.isShowNumber ? "" : "none")});
             text.exit()
-                .transition()
-                .duration(10)
-                .text("")
-                .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-size": "0"})
-                .style({"font-size": "0"})
                 .remove();
         };
         $scope.addStone = function() {
@@ -95,6 +80,16 @@ define([], function() {
             var newStone = {x: data.x, y: data.y, r: data.r, idxNo: $scope.giboData.stones.length, isShow: true};
             addStonesData(newStone);
             $scope.$apply();
+            $scope.setPanCircleFill();
+        };
+        $scope.setPanCircleFill = function() {
+            var $panCircle = $("#panGroup > circle.panCircle");
+            if ($scope.giboData.stones.length % 2 == 0) {
+                $panCircle.css("fill", "url(#gradient_3D_black)");
+            }
+            else {
+                $panCircle.css("fill", "url(#gradient_3D_white)");
+            }
         };
         $scope.logLinkedStone = function() {
             var data = d3.select(this).data()[0];
@@ -121,6 +116,7 @@ define([], function() {
                 });
                 $scope.paeArr = [].concat(tmpStone.paeArr);
                 $scope.giboData.stones.pop();
+                $scope.setPanCircleFill();
             }
         };
         $scope.clearStone = function() {

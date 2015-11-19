@@ -5,57 +5,26 @@
     <title></title>
     <meta charset="utf-8">
     <style>
+        svg {
+            border-width: thin;
+            border-style: solid;
+        }
     </style>
-    <script src="js/d3.js"></script>
 </head>
 
 <body>
-    <script>
-        var svg = d3.select("body")
-            .append("svg")
-            .attr("width", 800)
-            .attr("height", 600)
-            .append("g")
-            .attr("transform", "translate(50,50)");
-        var tree = d3.layout.tree()
-            .size([400, 500]);
-        d3.json("data-files/myTreeData.json", function (data) {
-            var nodes = tree.nodes(data);
-            var links = tree.links(nodes);
+<svg width="200" height="200">
+    <g transform="translate(20,20)">
+        <circle cx="0" cy="0" r="20" fill="green" />
+    </g>
+    <g>
+        <rect x="110" y="110" height="30" width="30" fill="blue" />
+        <rect x="160" y="160" height="30" width="30" fill="red" />
+    </g>
+</svg>
+<script>
 
-            console.log(nodes);
-
-            var node = svg.selectAll(".node")
-                .data(nodes)
-                .enter()
-                .append("g")
-                .attr("class", "node")
-                .attr("transform", function (d) {
-                    return "translate(" + d.y + ", " + d.x + ")";
-                });
-            node.append("circle")
-                .attr("r", 5)
-                .attr("fill", "steelblue");
-            node.append("text")
-                .text(function (d) {
-                    return d.name
-                });
-
-            var diagonal = d3.svg.diagonal()
-                .projection(function (d) {
-                    return [d.y, d.x];
-                });
-            svg.selectAll(".link")
-                .data(links)
-                .enter()
-                .append("path")
-                .attr("class", "link")
-                .attr("fill", "none")
-                .attr("stroke", "#ADADAD")
-                .attr("d", diagonal);
-
-        });
-    </script>
+</script>
 </body>
 
 </html>

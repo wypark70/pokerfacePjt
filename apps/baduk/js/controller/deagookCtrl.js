@@ -55,24 +55,24 @@ define([], function() {
                 .attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
         };
         $scope.giboRenderer = function(el, data) {
-            var cir1 = el.selectAll("circle").data(data.stones);
-            cir1.attr({"cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
-            cir1.enter()
-                .append("circle")
-                .on("click", $scope.logLinkedStone)
-                .attr({"class": function(d) {return getStoneClass(d);}, "cx": function(d) {return d.x * $scope.dx;}, "cy": function(d) {return d.y * $scope.dy;}, "r": function(d) {return d.r;}});
-            cir1.exit()
-                .remove();
-            var text = el.selectAll("text").data(data.stones);
-            text.attr("opacity", function (d) {return d.isShow ? 1 : 0;})
-                .text(function (d) {return d.isShow ? d.idxNo + 1 : "";});
-            text.enter()
-                .append("text")
-                .on("click", $scope.logLinkedStone)
-                .text(function (d) {return d.idxNo + 1;})
-                .attr({"class": function(d) {return getTextClass(d);}, "dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}})
-                .style({"font-size": "35", "display": ($scope.isShowNumber ? "" : "none")});
-            text.exit()
+            var grp1 = el.selectAll("g").data(data.stones);
+            grp1.attr({"transform": function(d) {return "translate(" + d.x * $scope.dx + "," + d.y * $scope.dy + ")";}});
+            grp1.style({"display": function(d) {return d.isShow ? "" : "none";}});
+
+            var grp2 = grp1.enter().append("g");
+            grp2.attr({"transform": function(d) {return "translate(" + d.x * $scope.dx + "," + d.y * $scope.dy + ")";}});
+
+            var cri1 = grp2.append("circle");
+            cri1.on("click", $scope.logLinkedStone);
+            cri1.attr({"class": function(d) {return getStoneClass(d);}, "cx": 0, "cy": 0, "r": function(d) {return d.r;}});
+
+            var txt1 = grp2.append("text");
+            txt1.on("click", $scope.logLinkedStone);
+            txt1.text(function (d) {return d.idxNo + 1;});
+            txt1.attr({"class": function(d) {return getTextClass(d);}, "dx": 0, "dy": 0});
+            txt1.style({"font-size": "35", "display": ($scope.isShowNumber ? "" : "none")});
+
+            grp1.exit()
                 .remove();
         };
         $scope.addStone = function() {

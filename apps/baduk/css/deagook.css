@@ -26,28 +26,28 @@ svg {
     cursor: pointer;
 }
 
-#giboGroup > circle {
+#giboGroup > g > circle {
     opacity: 1;
 }
 
-#giboGroup > circle.blackStone {
+#giboGroup > g > circle.blackStone {
     fill: url(#gradient_3D_black);
     opacity: 1;
 }
 
-#giboGroup > circle.whiteStone {
+#giboGroup > g > circle.whiteStone {
     fill: url(#gradient_3D_white);
     opacity: 1;
 }
 
-#giboGroup > text.blackStoneText {
+#giboGroup > g > text.blackStoneText {
     font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
     fill: white;
 }
 
-#giboGroup > text.whiteStoneText {
+#giboGroup > g > text.whiteStoneText {
     font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
@@ -55,7 +55,7 @@ svg {
 }
 
 
-#giboGroup > circle:hover {
+#giboGroup > g > circle:hover {
     cursor: pointer;
 }
 

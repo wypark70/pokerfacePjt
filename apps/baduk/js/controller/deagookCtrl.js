@@ -140,58 +140,6 @@ define([], function() {
                 $("text", "#giboGroup").hide();
             }
         };
-        $scope.squareRenderer = function(el, data) {
-            var rect = el.selectAll("rect").data(data.squares);
-            rect.enter()
-                .append("rect")
-                .attr({"x": 10 * $scope.dx, "y": 10 * $scope.dy, "width": 0, "height": 0, "filter": "url(#f4)"})
-                .style("fill", function() {return "rgb(" + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")";})
-                .transition()
-                .duration(1000)
-                .delay(function(d, i) {return i * 10;})
-                .attr({"x": function(d) {return d.x * $scope.dx - d.size / 2;}, "y": function(d) {return d.y * $scope.dy - d.size / 2;}, "width": function(d) {return d.size;}, "height": function(d) {return d.size;}});
-            rect.exit()
-                .transition()
-                .duration(1000)
-                .delay(function(d, i) {return i * 10;})
-                .attr({"x": 10 * $scope.dx, "y": 10 * $scope.dy, "width": 0, "height": 0})
-                .remove();
-            var text = el.selectAll("text").data(data.squares);
-            var textColor = "rgb(" + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")";
-            text.enter()
-                .append("text")
-                .text(function (d, i) {return i + 1;})
-                .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": textColor, "font-size": "0", "font-weight": "bold"})
-                .transition()
-                .duration(1000)
-                .delay(function(d, i) {return i * 10;})
-                .attr({"dx": function(d) {return d.x * $scope.dx;}, "dy": function(d) {return d.y * $scope.dy;}, "text-anchor": "middle", "alignment-baseline": "middle"})
-                .style({"fill": textColor, "font-size": "40", "font-weight": "bold"});
-            text.exit()
-                .transition()
-                .duration(1000)
-                .delay(function(d, i) {return i * 10;})
-                .attr({"dx": 10 * $scope.dx, "dy": 10 * $scope.dy})
-                .style({"font-size": "0px"})
-                .remove();
-        };
-        $scope.addSquares = function() {
-            for (var i = 0; i < 50; i++) {
-                var x = Math.round((Math.random() * 18)) + 1;
-                var y = Math.round((Math.random() * 18)) + 1;
-                var s = $scope.r * 2 - 10;
-                $scope.squareData.squares.push({x: x, y: y, size: s});
-            }
-        };
-        $scope.clearSquares = function() {
-            $scope.squareData.squares = [];
-        };
-        $scope.toggleSquareVisibility = function() {
-            $scope.isShowSquares = !$scope.isShowSquares;
-            if($scope.isShowSquares) $scope.toggleSquaresBtnClass = ["btn", "btn-xs", "btn-info"];
-            else $scope.toggleSquaresBtnClass = ["btn", "btn-xs", "btn-danger"];
-        };
         function getIsBlackStone(stone) {
             return stone.idxNo % 2 == 0;
         }

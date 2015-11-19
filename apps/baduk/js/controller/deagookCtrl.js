@@ -161,7 +161,9 @@ define([], function() {
                 });
                 if (filteredStone.length > 0) {
                     filteredStone.forEach(function (stone) {
-                        var tmpStoneArr = linkedStoneArr.filter(function (d) {return stone.x === d.x && stone.y === d.y && getIsBlackStone(stone) === getIsBlackStone(d);});
+                        var tmpStoneArr = linkedStoneArr.filter(function (d) {
+                            return stone.x === d.x && stone.y === d.y && getIsBlackStone(stone) === getIsBlackStone(d);
+                        });
                         if (!(tmpStoneArr.length > 0)) {
                             getLinkedStone(stone);
                         }
@@ -191,7 +193,6 @@ define([], function() {
                     var tmpBlankCnt = getLinkedBlankCnt(tmpLinkedStoneArr);
                     if (tmpLinkedStoneArr.length > 0 && tmpBlankCnt < 1) {
                         tmpLinkedStoneArr.forEach(function(linkedStone) {
-                            linkedStone.r = 0;
                             linkedStone.isShow = false;
                             dieStoneArr.push(linkedStone);
                         });

@@ -2,11 +2,11 @@
 
 <div class="panel panel-default reveal-animation">
     <div class="panel-heading">
-        <button type="button" ng-class="toggleNumberBtnClass" ng-click="toggleNumberVisibility()">번호보기</button>
-        <button type="button" class="btn btn-xs btn-info" ng-click="addStoneRandom()">무작위진행</button>
-        <button type="button" class="btn btn-xs btn-info" ng-click="removeStone()">한수물르기</button>
-        <button type="button" class="btn btn-xs btn-info" ng-click="clearStone()">조기화</button>
-        <button type="button" ng-class="toggleGiboBtnClass" ng-click="toggleGiboVisibility()">TS</button>
+        <button type="button" ng-class="toggleNumberBtnClass" ng-click="toggleNumberVisibility()">번호</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="addStoneRandom()">진행</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="removeStone()">물르기</button>
+        <button type="button" class="btn btn-xs btn-info" ng-click="clearStone()">초기화</button>
+        <button type="button" ng-class="toggleGiboBtnClass" ng-click="toggleGiboVisibility()">숨기기</button>
     </div>
     <div class="panel-body">
         <svg viewBox="0 0 2000 2000">
@@ -66,9 +66,8 @@
 </div>
 
 <div class="alert alert-info reveal-animation" role="alert">
-    <strong>stonesLength: {{giboData.stones.length}}</strong><br />
-    <strong>blackDieStonesLength: {{blackDieStones.length}}</strong><br />
-    <strong>whiteDieStonesLength: {{whiteDieStones.length}}</strong><br />
-    <strong>panCirclesLength: {{panData.panCircles.length}}</strong><br />
-    <strong>squaresLength: {{squareData.squares.length}}</strong><br />
+    <strong>진행수: {{giboData.stones.length}}</strong><br />
+    <strong>흑사석: {{blackDieStones.length}}</strong><br />
+    <strong>백사석: {{whiteDieStones.length}}</strong><br />
+    <strong>전체칸수: {{panData.panCircles.length}}</strong><br />
 </div>

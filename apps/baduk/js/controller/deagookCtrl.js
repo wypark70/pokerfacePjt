@@ -8,8 +8,6 @@ define([], function() {
     function deagookCtrl($scope) {
         $scope.isShowGibo = true;
         $scope.toggleGiboBtnClass = ["btn", "btn-xs", "btn-info"];
-        $scope.isShowSquares = true;
-        $scope.toggleSquaresBtnClass = ["btn", "btn-xs", "btn-info"];
 
         $scope.width = 2000;
         $scope.height = 2000;
@@ -28,7 +26,6 @@ define([], function() {
 
         $scope.panData = {lines: [], dotCircles: [], panCircles: []};
         $scope.giboData = {stones: []};
-        $scope.squareData = {squares: []};
 
         $scope.blackDieStones = [];
         $scope.whiteDieStones = [];
@@ -56,15 +53,14 @@ define([], function() {
         };
         $scope.giboRenderer = function(el, data) {
             var grp1 = el.selectAll("g").data(data.stones);
-            grp1.attr({"transform": function(d) {return "translate(" + d.x * $scope.dx + "," + d.y * $scope.dy + ")";}});
             grp1.style({"display": function(d) {return d.isShow ? "" : "none";}});
 
             var grp2 = grp1.enter().append("g");
             grp2.attr({"transform": function(d) {return "translate(" + d.x * $scope.dx + "," + d.y * $scope.dy + ")";}});
 
-            var cri1 = grp2.append("circle");
-            cri1.on("click", $scope.logLinkedStone);
-            cri1.attr({"class": function(d) {return getStoneClass(d);}, "cx": 0, "cy": 0, "r": function(d) {return d.r;}});
+            var cir1 = grp2.append("circle");
+            cir1.on("click", $scope.logLinkedStone);
+            cir1.attr({"class": function(d) {return getStoneClass(d);}, "cx": 0, "cy": 0, "r": function(d) {return d.r;}});
 
             var txt1 = grp2.append("text");
             txt1.on("click", $scope.logLinkedStone);

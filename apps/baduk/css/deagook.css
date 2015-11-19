@@ -26,10 +26,6 @@ svg {
     cursor: pointer;
 }
 
-#giboGroup > g > circle {
-    opacity: 1;
-}
-
 #giboGroup > g > circle.blackStone {
     fill: url(#gradient_3D_black);
     opacity: 1;

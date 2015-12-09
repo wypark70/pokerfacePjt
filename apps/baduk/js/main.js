@@ -84,7 +84,7 @@ requirejs(
 
         //페이지가 완전히 로드된 뒤에 실행
         $(document).ready(function () {
-            //위의 디펜던시 중 myApp이 포함된 app.js가 로드된 이후에 아래가 수행된다.
+            //위의 디펜던시 중 myApp이 포함된 badukApp.js가 로드된 이후에 아래가 수행된다.
             //임의로 앵귤러 부트스트래핑을 수행한다.
             angular.bootstrap(document, ['badukApp']);
         });

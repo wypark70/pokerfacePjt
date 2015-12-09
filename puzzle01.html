@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        #myCanvas {
+            padding: 5px;
+            border-style: solid;
+            border-width: thin;
+            border-color: black;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bootstrap theme</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Nav header</li>
+                        <li><a href="#">Separated link</a></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h1>Puzzle</h1>
+        <p>
+            What puzzles me is why he left the country without telling anyone.
+            내가 이해할 수 없는 것은 왜 그가 아무에게도 말하지 않고 이 나라를 떠났는가 하는 점이다.
+        </p>
+    </div>
+    <div class="page-header">
+        <h1>Puzzle</h1>
+    </div>
+    <div>
+        <p>
+            <button id="mixBth" type="button" class="btn btn-xs btn-primary">mix</button>
+            <button id="solveBth" type="button" class="btn btn-xs btn-primary">solve</button>
+            <button id="stopBth" type="button" class="btn btn-xs btn-primary">stop</button>
+        </p>
+        <p>
+            <canvas id="myCanvas" width="800" height="600"></canvas>
+        </p>
+    </div>
+</div>
+<script type="text/javascript" src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script>
+    $(function() {
+        var canvas = document.getElementById('myCanvas');
+        var context = canvas.getContext('2d');
+        var imageObj = new Image();
+        var imgDataArr = [];
+        var maxCol = 5;
+        var maxRow = 5;
+        var gab = 1;
+        var nw, nh, dx, dy;
+        var curIdx = maxCol * maxRow - 1;
+        var moveArr = [];
+        var isStop = false;
+
+        imageObj.src = 'images/images01.jpg';
+
+        imageObj.onload = function() {
+            nw = this.naturalWidth;
+            nh = this.naturalHeight;
+            dx = Math.floor(nw / maxCol);
+            dy = Math.floor(nh / maxRow);
+
+            canvas.width = nw + gab * maxCol;
+            canvas.height = nh + gab * maxRow;
+
+            context.drawImage(imageObj, 0, 0, nw, nh, 0, 0, canvas.width, canvas.height);
+            context.fillRect((maxCol - 1) * dx, (maxRow - 1) * dy, dx, dy);
+
+
+            for (var row = 0; row < maxRow; row++) {
+                for (var col = 0; col < maxCol; col++) {
+                    var sx = col * dx;
+                    var sy = row * dy;
+                    if (row < (maxRow - 1) || col < (maxCol - 1)) {
+                        context.font = "18px Arial";
+                        context.fillStyle = "white";
+                        context.textAlign = "center";
+                        context.fillText((col + row * maxRow + 1) + "", sx + dx / 2, sy + dy / 2);
+                    }
+                    imgDataArr.push({image: context.getImageData(sx, sy, dx, dy), x: col, y: row, idx: imgDataArr.length});
+                }
+            }
+
+            drawData();
+        };
+
+        function swap(a, b) {
+            var tmpData = {image: imgDataArr[a].image, idx: imgDataArr[a].idx};
+
+            imgDataArr[a].image = imgDataArr[b].image;
+            imgDataArr[a].idx = imgDataArr[b].idx;
+            imgDataArr[b].image = tmpData.image;
+            imgDataArr[b].idx = tmpData.idx;
+
+            drawImage(imgDataArr[a]);
+            drawImage(imgDataArr[b]);
+        }
+
+        function goNorth() {
+            var y = Math.floor(curIdx / maxCol);
+
+            if (y > 0) {
+                var targetIdx = curIdx - maxCol;
+                swap(curIdx, targetIdx);
+                curIdx = targetIdx;
+                if (!isStop) moveArr.push(2);
+            }
+        }
+
+        function goEast() {
+            var x = curIdx % maxCol;
+
+            if (x < maxCol - 1) {
+                var targetIdx = curIdx + 1;
+                swap(curIdx, targetIdx);
+                curIdx = targetIdx;
+                if (!isStop) moveArr.push(3);
+            }
+        }
+
+        function goSouth() {
+            var y = Math.floor(curIdx / maxCol);
+            if (y < maxRow - 1) {
+                var targetIdx = curIdx + maxCol;
+                swap(curIdx, targetIdx);
+                curIdx = targetIdx;
+                if (!isStop) moveArr.push(0);
+            }
+        }
+
+        function goWest() {
+            var x = curIdx % maxCol;
+
+            if (x > 0) {
+                var targetIdx = curIdx - 1;
+                swap(curIdx, targetIdx);
+                curIdx = targetIdx;
+                if (!isStop) moveArr.push(1);
+            }
+        }
+
+        function drawData() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            imgDataArr.forEach(function(v, i) {
+                drawImage(v);
+            });
+        }
+
+        function drawImage(data) {
+            var sx = data.x * (dx + gab);
+            var sy = data.y * (dy + gab);
+            context.putImageData(data.image, sx, sy);
+        }
+
+        var timerId;
+
+        $("#mixBth").click(function () {
+            clearInterval(timerId);
+            isStop = false;
+            timerId = setInterval(function() {
+                var m = Math.floor(Math.random() * 4);
+                if (m == 0) {
+                    goNorth();
+                }
+                else if (m == 1) {
+                    goEast();
+                }
+                else if (m == 2) {
+                    goSouth();
+                }
+                else if (m == 3) {
+                    goWest();
+                }
+            }, 100);
+        });
+
+
+        $("#solveBth").click(function () {
+            clearInterval(timerId);
+            isStop = true;
+            timerId = setInterval(function() {
+                var m = moveArr.pop();
+                if (m == 0) {
+                    goNorth();
+                }
+                else if (m == 1) {
+                    goEast();
+                }
+                else if (m == 2) {
+                    goSouth();
+                }
+                else if (m == 3) {
+                    goWest();
+                }
+                else {
+                    clearInterval(timerId);
+                    isStop = false;
+                }
+            }, 100);
+        });
+
+        $("#stopBth").click(function () {
+            isStop = false;
+            clearInterval(timerId);
+        });
+
+        window.addEventListener('keydown', function(event) {
+            switch (event.keyCode) {
+                case 37: // Left
+                    goEast();
+                    break;
+                case 38: // Up
+                    goSouth();
+                    break;
+                case 39: // Right
+                    goWest();
+                    break;
+                case 40: // Down
+                    goNorth();
+                    break;
+            }
+        }, false);
+    });
+</script>
+</body>
+</html>

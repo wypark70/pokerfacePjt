@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Pragma" content="no-cache">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     <style>
@@ -9,10 +11,10 @@
             padding: 0px;
         }
         #myCanvas {
-            padding: 5px;
-            border-style: solid;
-            border-width: thin;
-            border-color: black;
+            border: 1px solid black;
+            padding: 4px;
+            border-radius: 4px;
+            background: black;
         }
     </style>
 </head>
@@ -51,11 +53,10 @@
 </nav>
 
 <div class="container theme-showcase" role="main">
-    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <h1>Puzzle</h1>
         <p>
-            What puzzles me is why he left the country without telling anyone.
+            What puzzles me is why he left the country without telling anyone.<br />
             내가 이해할 수 없는 것은 왜 그가 아무에게도 말하지 않고 이 나라를 떠났는가 하는 점이다.
         </p>
     </div>
@@ -65,13 +66,40 @@
     <div>
         <p>
             <button id="mixBth" type="button" class="btn btn-xs btn-primary">mix</button>
+            <button id="mixBth2" type="button" class="btn btn-xs btn-primary">mix2</button>
             <button id="solveBth" type="button" class="btn btn-xs btn-primary">solve</button>
             <button id="stopBth" type="button" class="btn btn-xs btn-primary">stop</button>
+            Max Col:
+            <select class="selectBox" id="maxCol">
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7" selected>7</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+            Max Row:
+            <select class="selectBox" id="maxRow">
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7" selected>7</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
         </p>
         <p>
             <canvas id="myCanvas" width="800" height="600"></canvas>
         </p>
     </div>
+    <div class="page-header">
+        <h1>Images</h1>
+    </div>
+    <p>
+        <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" src="./images/images.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
+        <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" src="./images/images01.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
+        <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" src="./images/images02.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
+    </p>
 </div>
 <script type="text/javascript" src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -80,48 +108,45 @@
         var canvas = document.getElementById('myCanvas');
         var context = canvas.getContext('2d');
         var imageObj = new Image();
-        var imgDataArr = [];
-        var maxCol = 5;
-        var maxRow = 5;
+        var maxCol, maxRow;
         var gab = 1;
         var nw, nh, dx, dy;
-        var curIdx = maxCol * maxRow - 1;
-        var moveArr = [];
-        var isStop = false;
+        var curIdx;
+        var imgDataArr, moveHistoryArr;
+        var isHistoryStop;
+        var isShowNumber;
 
-        imageObj.src = 'images/images01.jpg';
+        imageObj.src = 'images/images.jpg';
 
         imageObj.onload = function() {
+            maxCol = parseInt($("#maxCol").val());
+            maxRow = parseInt($("#maxRow").val());
+            curIdx = maxCol * maxRow - 1;
+            isHistoryStop = false;
+            isShowNumber = true;
+            imgDataArr = [];
+            moveHistoryArr = [];
             nw = this.naturalWidth;
             nh = this.naturalHeight;
             dx = Math.floor(nw / maxCol);
             dy = Math.floor(nh / maxRow);
-
-            canvas.width = nw + gab * maxCol;
-            canvas.height = nh + gab * maxRow;
+            canvas.width = dx * maxCol + gab * (maxCol - 1);
+            canvas.height = dy * maxRow + gab * (maxRow - 1);
 
             context.drawImage(imageObj, 0, 0, nw, nh, 0, 0, canvas.width, canvas.height);
             context.fillRect((maxCol - 1) * dx, (maxRow - 1) * dy, dx, dy);
-
 
             for (var row = 0; row < maxRow; row++) {
                 for (var col = 0; col < maxCol; col++) {
                     var sx = col * dx;
                     var sy = row * dy;
-                    if (row < (maxRow - 1) || col < (maxCol - 1)) {
-                        context.font = "18px Arial";
-                        context.fillStyle = "white";
-                        context.textAlign = "center";
-                        context.fillText((col + row * maxRow + 1) + "", sx + dx / 2, sy + dy / 2);
-                    }
                     imgDataArr.push({image: context.getImageData(sx, sy, dx, dy), x: col, y: row, idx: imgDataArr.length});
                 }
             }
-
             drawData();
         };
 
-        function swap(a, b) {
+        function swapData(a, b) {
             var tmpData = {image: imgDataArr[a].image, idx: imgDataArr[a].idx};
 
             imgDataArr[a].image = imgDataArr[b].image;
@@ -133,51 +158,52 @@
             drawImage(imgDataArr[b]);
         }
 
-        function goNorth() {
+        function moveUp() {
             var y = Math.floor(curIdx / maxCol);
 
             if (y > 0) {
                 var targetIdx = curIdx - maxCol;
-                swap(curIdx, targetIdx);
+                swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isStop) moveArr.push(2);
+                if (!isHistoryStop) moveHistoryArr.push(2);
             }
         }
 
-        function goEast() {
+        function moveRight() {
             var x = curIdx % maxCol;
 
             if (x < maxCol - 1) {
                 var targetIdx = curIdx + 1;
-                swap(curIdx, targetIdx);
+                swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isStop) moveArr.push(3);
+                if (!isHistoryStop) moveHistoryArr.push(3);
             }
         }
 
-        function goSouth() {
+        function moveDown() {
             var y = Math.floor(curIdx / maxCol);
             if (y < maxRow - 1) {
                 var targetIdx = curIdx + maxCol;
-                swap(curIdx, targetIdx);
+                swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isStop) moveArr.push(0);
+                if (!isHistoryStop) moveHistoryArr.push(0);
             }
         }
 
-        function goWest() {
+        function moveLeft() {
             var x = curIdx % maxCol;
 
             if (x > 0) {
                 var targetIdx = curIdx - 1;
-                swap(curIdx, targetIdx);
+                swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isStop) moveArr.push(1);
+                if (!isHistoryStop) moveHistoryArr.push(1);
             }
         }
 
         function drawData() {
             context.clearRect(0, 0, canvas.width, canvas.height);
+
             imgDataArr.forEach(function(v, i) {
                 drawImage(v);
             });
@@ -187,74 +213,124 @@
             var sx = data.x * (dx + gab);
             var sy = data.y * (dy + gab);
             context.putImageData(data.image, sx, sy);
+            if (isShowNumber && data.idx < (maxCol * maxRow) - 1) {
+                context.font = "18px Arial";
+                context.fillStyle = "white";
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+                context.fillText("" + (data.idx + 1), sx + dx / 2, sy + dy / 2);
+            }
+        }
+
+        function moveByIdx(m) {
+            if (m == 0) {
+                moveUp();
+            }
+            else if (m == 1) {
+                moveRight();
+            }
+            else if (m == 2) {
+                moveDown();
+            }
+            else if (m == 3) {
+                moveLeft();
+            }
+        }
+
+        function getMousePos(evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left + 5,
+                y: evt.clientY - rect.top + 5
+            };
         }
 
         var timerId;
 
         $("#mixBth").click(function () {
             clearInterval(timerId);
-            isStop = false;
+            isHistoryStop = false;
             timerId = setInterval(function() {
-                var m = Math.floor(Math.random() * 4);
-                if (m == 0) {
-                    goNorth();
-                }
-                else if (m == 1) {
-                    goEast();
-                }
-                else if (m == 2) {
-                    goSouth();
-                }
-                else if (m == 3) {
-                    goWest();
-                }
+                moveByIdx(Math.floor(Math.random() * 4));
             }, 100);
         });
 
+        $("#mixBth2").click(function () {
+            clearInterval(timerId);
+            isHistoryStop = false;
+            for (var i = 0; i < 500; i ++) {
+                moveByIdx(Math.floor(Math.random() * 4));
+            }
+        });
 
         $("#solveBth").click(function () {
             clearInterval(timerId);
-            isStop = true;
+            isHistoryStop = true;
             timerId = setInterval(function() {
-                var m = moveArr.pop();
-                if (m == 0) {
-                    goNorth();
-                }
-                else if (m == 1) {
-                    goEast();
-                }
-                else if (m == 2) {
-                    goSouth();
-                }
-                else if (m == 3) {
-                    goWest();
+                if (moveHistoryArr.length > 0) {
+                    moveByIdx(moveHistoryArr.pop());
                 }
                 else {
                     clearInterval(timerId);
-                    isStop = false;
+                    isHistoryStop = false;
                 }
             }, 100);
         });
 
         $("#stopBth").click(function () {
-            isStop = false;
             clearInterval(timerId);
+            isHistoryStop = false;
+        });
+
+        $("img.img-thumbnail").click(function() {
+            clearInterval(timerId);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            imageObj.src = this.src;
+        });
+
+        $("select.selectBox").change(function() {
+            clearInterval(timerId);
+            $(imageObj).trigger("onload");
+        });
+
+        $(canvas).mousedown(function(event) {
+            var pos = getMousePos(event);
+            var x = Math.floor(pos.x / dx);
+            var y = Math.floor(pos.y / dy);
+            var imgData = imgDataArr[curIdx];
+
+            if (x < imgData.x) {
+                for (var i = 0; i < imgData.x - x; i ++) moveLeft();
+            }
+            else {
+                for (var i = 0; i < x - imgData.x; i ++) moveRight();
+            }
+            if (y < imgData.y) {
+                for (var i = 0; i < imgData.y - y; i ++) moveUp();
+            }
+            else {
+                for (var i = 0; i < y - imgData.y; i ++) moveDown();
+            }
         });
 
         window.addEventListener('keydown', function(event) {
-            switch (event.keyCode) {
-                case 37: // Left
-                    goEast();
-                    break;
-                case 38: // Up
-                    goSouth();
-                    break;
-                case 39: // Right
-                    goWest();
-                    break;
-                case 40: // Down
-                    goNorth();
-                    break;
+            if (event.keyCode > 36 && event.keyCode < 41) {
+                event.preventDefault();
+                event.stopPropagation();
+                switch (event.keyCode) {
+                    case 37: // Left
+                        moveRight();
+                        break;
+                    case 38: // Up
+                        moveDown();
+                        break;
+                    case 39: // Right
+                        moveLeft();
+                        break;
+                    case 40: // Down
+                        moveUp();
+                        break;
+                }
             }
         }, false);
     });

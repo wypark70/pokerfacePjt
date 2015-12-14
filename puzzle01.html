@@ -71,34 +71,48 @@
             <button id="stopBth" type="button" class="btn btn-xs btn-primary">stop</button>
             Max Col:
             <select class="selectBox" id="maxCol">
+                <option value="2">2</option>
                 <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="7" selected>7</option>
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="7">7</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
             </select>
             Max Row:
             <select class="selectBox" id="maxRow">
+                <option value="2">2</option>
                 <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="7" selected>7</option>
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="7">7</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
             </select>
+            <span>History Count :</span>
+            <span id="historyCnt">0</span>
         </p>
-        <p>
+        <div>
             <canvas id="myCanvas" width="800" height="600"></canvas>
-        </p>
+            <div id="progressBar" class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                    100% Complete (success)
+                </div>
+            </div>
+        </div>
     </div>
     <div class="page-header">
         <h1>Images</h1>
     </div>
     <p>
-        <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" src="./images/images.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
-        <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" src="./images/images01.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
-        <img data-src="holder.js/200x200" class="img-thumbnail" alt="200x200" src="./images/images02.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images01.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images02.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images03.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images04.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images05.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
     </p>
 </div>
 <script type="text/javascript" src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
@@ -115,6 +129,9 @@
         var imgDataArr, moveHistoryArr;
         var isHistoryStop;
         var isShowNumber;
+
+        var $historyCnt = $("#historyCnt");
+        var $progressBar = $(".progress-bar:first", "#progressBar");
 
         imageObj.src = 'images/images.jpg';
 
@@ -144,6 +161,9 @@
                 }
             }
             drawData();
+
+            $("#progressBar").width(canvas.width + 10);
+            setProgressBar();
         };
 
         function swapData(a, b) {
@@ -165,7 +185,11 @@
                 var targetIdx = curIdx - maxCol;
                 swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isHistoryStop) moveHistoryArr.push(2);
+                if (!isHistoryStop) {
+                    moveHistoryArr.push(2);
+                    $historyCnt.text(moveHistoryArr.length);
+                }
+                setProgressBar();
             }
         }
 
@@ -176,7 +200,11 @@
                 var targetIdx = curIdx + 1;
                 swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isHistoryStop) moveHistoryArr.push(3);
+                if (!isHistoryStop) {
+                    moveHistoryArr.push(3);
+                    $historyCnt.text(moveHistoryArr.length);
+                }
+                setProgressBar();
             }
         }
 
@@ -186,7 +214,11 @@
                 var targetIdx = curIdx + maxCol;
                 swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isHistoryStop) moveHistoryArr.push(0);
+                if (!isHistoryStop) {
+                    moveHistoryArr.push(0);
+                    $historyCnt.text(moveHistoryArr.length);
+                }
+                setProgressBar();
             }
         }
 
@@ -197,7 +229,11 @@
                 var targetIdx = curIdx - 1;
                 swapData(curIdx, targetIdx);
                 curIdx = targetIdx;
-                if (!isHistoryStop) moveHistoryArr.push(1);
+                if (!isHistoryStop) {
+                    moveHistoryArr.push(1);
+                    $historyCnt.text(moveHistoryArr.length);
+                }
+                setProgressBar();
             }
         }
 
@@ -245,6 +281,18 @@
             };
         }
 
+        function getProgress() {
+            var totalCnt = imgDataArr.length;
+            var completCnt = imgDataArr.filter(function(d) {return d.idx == (d.x + d.y * maxCol)}).length;
+            return Math.floor(completCnt / totalCnt * 100);
+        }
+
+        function setProgressBar() {
+            var progress = getProgress();
+            $progressBar.css("width", progress + "%");
+            $progressBar.empty().append(progress + "% Complete (success)");
+        }
+
         var timerId;
 
         $("#mixBth").click(function () {
@@ -269,6 +317,7 @@
             timerId = setInterval(function() {
                 if (moveHistoryArr.length > 0) {
                     moveByIdx(moveHistoryArr.pop());
+                    $historyCnt.text(moveHistoryArr.length);
                 }
                 else {
                     clearInterval(timerId);

@@ -17,7 +17,7 @@ define([], function () {
         $scope.dy = 0;
         $scope.isShowNumber = true;
 
-        var canvas = document.getElementById('myCanvas');
+        var canvas = document.getElementById('puzzleCanvas');
         var context = canvas.getContext('2d');
         var imageObj = new Image();
 
@@ -50,6 +50,7 @@ define([], function () {
                     var sx = col * $scope.dx;
                     var sy = row * $scope.dy;
                     $scope.imgDataArr.push({image: context.getImageData(sx, sy, $scope.dx, $scope.dy), x: col, y: row, idx: $scope.imgDataArr.length});
+                    console.log(convertImgDataToBase64URL(context.getImageData(sx, sy, $scope.dx, $scope.dy), "image/png"))
                 }
             }
 
@@ -58,9 +59,40 @@ define([], function () {
             $scope.$apply();
         };
 
+        function convertImgToBase64URL(url, callback, outputFormat){
+            var img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = function(){
+                var canvas = document.createElement('CANVAS'),
+                    ctx = canvas.getContext('2d'), dataURL;
+                canvas.height = this.height;
+                canvas.width = this.width;
+                ctx.drawImage(this, 0, 0);
+                dataURL = canvas.toDataURL(outputFormat);
+                callback(dataURL);
+                console.log(dataURL);
+                canvas = null;
+            };
+            img.src = url;
+        }
+        convertImgToBase64URL("../../images/images.jpg", function() {}, "image/png");
+
+        function convertImgDataToBase64URL(imageData, outputFormat){
+            var canvas = document.createElement('CANVAS');
+            var ctx = canvas.getContext('2d');
+            var dataURL;
+            canvas.height = imageData.height;
+            canvas.width = imageData.width;
+            ctx.putImageData(imageData, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            console.log(dataURL);
+            return dataURL;
+        }
+
         function swapData(a, b) {
             var tmpData = {image: $scope.imgDataArr[a].image, idx: $scope.imgDataArr[a].idx};
 
+            console.log(tmpData.image.data);
             $scope.imgDataArr[a].image = $scope.imgDataArr[b].image;
             $scope.imgDataArr[a].idx = $scope.imgDataArr[b].idx;
             $scope.imgDataArr[b].image = tmpData.image;

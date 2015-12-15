@@ -50,9 +50,12 @@ define([], function () {
                     var sx = col * $scope.dx;
                     var sy = row * $scope.dy;
                     $scope.imgDataArr.push({image: context.getImageData(sx, sy, $scope.dx, $scope.dy), x: col, y: row, idx: $scope.imgDataArr.length});
-                    //console.log(convertImgDataToBase64URL(context.getImageData(sx, sy, $scope.dx, $scope.dy), "image/png"))
                 }
             }
+
+            $scope.imgDataArr.forEach(function(v){
+                console.log(convertImgDataToBase64URL(v.image, ""));
+            });
 
             drawData();
             setProgressBar();
@@ -70,7 +73,6 @@ define([], function () {
                 ctx.drawImage(this, 0, 0);
                 dataURL = canvas.toDataURL(outputFormat);
                 callback(dataURL);
-                console.log(dataURL);
                 canvas = null;
             };
             img.src = url;
@@ -85,14 +87,12 @@ define([], function () {
             canvas.width = imageData.width;
             ctx.putImageData(imageData, 0, 0);
             dataURL = canvas.toDataURL(outputFormat);
-            console.log(dataURL);
             return dataURL;
         }
 
         function swapData(a, b) {
             var tmpData = {image: $scope.imgDataArr[a].image, idx: $scope.imgDataArr[a].idx};
 
-            console.log(tmpData.image.data);
             $scope.imgDataArr[a].image = $scope.imgDataArr[b].image;
             $scope.imgDataArr[a].idx = $scope.imgDataArr[b].idx;
             $scope.imgDataArr[b].image = tmpData.image;

@@ -2,71 +2,58 @@
 
 <div class="panel panel-default reveal-animation">
     <div class="panel-heading">
-        /images/ColorSplash/colorsplash7.jpg
+        <button id="mixBth" type="button" class="btn btn-xs btn-primary">mix</button>
+        <button id="mixBth2" type="button" class="btn btn-xs btn-primary">mix2</button>
+        <button id="solveBth" type="button" class="btn btn-xs btn-primary">solve</button>
+        <button id="stopBth" type="button" class="btn btn-xs btn-primary">stop</button>
+        Max Col:
+        <select id="maxCol" ng-model="maxCol">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+        Max Row:
+        <select id="maxRow" ng-model="maxRow">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+        <span>History Count : {{moveHistoryArr.length}}</span>
     </div>
     <div class="panel-body">
-        <svg viewBox="0 0 300 270">
-            <defs>
-                <filter id="filter0" primitiveUnits="objectBoundingBox" filterUnits="userSpaceOnUse">
-                    <feImage xlink:href="../../images/ColorSplash/colorsplash5.jpg" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none"/>
-                </filter>
-                <radialGradient id="gradient_3D_red" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
-                    <stop stop-color="white" offset="0"/>
-                    <stop stop-color="rgb(255,0,0)" offset="25%"/>
-                    <stop stop-color="rgb(192,0,0)" offset="50%"/>
-                    <stop stop-color="rgb(127,0,0)" offset="70%"/>
-                    <stop stop-color="rgb(64,0,0)" offset="85%"/>
-                    <stop stop-color="rgb(0,0,0)" offset="100%"/>
-                </radialGradient>
-                <radialGradient id="gradient_3D_yellow" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
-                    <stop stop-color="white" offset="0"/>
-                    <stop stop-color="rgb(255,255,0)" offset="25%"/>
-                    <stop stop-color="rgb(192,192,0)" offset="50%"/>
-                    <stop stop-color="rgb(127,127,0)" offset="70%"/>
-                    <stop stop-color="rgb(64,64,0)" offset="85%"/>
-                    <stop stop-color="rgb(0,0,0)" offset="100%"/>
-                </radialGradient>
-                <radialGradient id="gradient_3D_blue" cx="20%" cy="20%" r="100%" fx="30%" fy="30%">
-                    <stop stop-color="white" offset="0"/>
-                    <stop stop-color="rgb(0,0,255)" offset="25%"/>
-                    <stop stop-color="rgb(0,0,192)" offset="50%"/>
-                    <stop stop-color="rgb(0,0,127)" offset="70%"/>
-                    <stop stop-color="rgb(0,0,64)" offset="85%"/>
-                    <stop stop-color="rgb(0,0,0)" offset="100%"/>
-                </radialGradient>
-                <clipPath id = "clip0">
-                    <circle cx="" cy="" r="20" />
-                </clipPath>
-                <clipPath id = "clip1">
-                    <circle cx="50%" cy="50%" r="20" />
-                </clipPath>
-            </defs>
-            <circle cx="50%" cy="50%" r="20" filter="url(#filter0)" clip-path="url(#clip1)"/>
-            <path d="M150,20 L240,240 L30,90 L270,90 L60,240 Z" fill="blue" opacity=".25" stroke="lightgrey" stroke-width="3" id="theMotionPath"/>
-            <circle cx="" cy="" r="20" fill="url(#gradient_3D_red)">
-                <animateMotion dur="1s" repeatCount="indefinite">
-                    <mpath xlink:href="#theMotionPath"/>
-                </animateMotion>
-            </circle>
-            <circle cx="" cy="" r="20" fill="url(#gradient_3D_yellow)">
-                <animateMotion dur="3s" repeatCount="indefinite">
-                    <mpath xlink:href="#theMotionPath"/>
-                </animateMotion>
-            </circle>
-            <circle cx="" cy="" r="20" fill="url(#gradient_3D_blue)">
-                <animateMotion dur="5s" repeatCount="indefinite">
-                    <mpath xlink:href="#theMotionPath"/>
-                </animateMotion>
-            </circle>
-            <circle cx="" cy="" r="20" filter="url(#filter0)" clip-path="url(#clip0)">
-                <animateMotion dur="7s" repeatCount="indefinite">
-                    <mpath xlink:href="#theMotionPath"/>
-                </animateMotion>
-            </circle>
-        </svg>
+        <div id="puzzleDiv">
+            <canvas id="myCanvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<div id="progressBar" class="progress">
+    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+        100% Complete (success)
     </div>
 </div>
 
 <div class="alert alert-info reveal-animation" role="alert">
-    {{message}}
+    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images01.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images02.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images03.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images04.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images05.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+</div>
+
+<div class="alert alert-info reveal-animation" role="alert">
+    maxCol: {{maxCol}}<br />
+    maxCol: {{maxRow}}<br />
+    curIdx: {{curIdx}}<br />
 </div>

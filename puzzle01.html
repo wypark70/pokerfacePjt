@@ -94,7 +94,7 @@
             <span>History Count :</span>
             <span id="historyCnt">0</span>
         </p>
-        <div>
+        <div id="puzzleDiv">
             <canvas id="myCanvas" width="800" height="600"></canvas>
             <div id="progressBar" class="progress">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
@@ -132,10 +132,12 @@
 
         var $historyCnt = $("#historyCnt");
         var $progressBar = $(".progress-bar:first", "#progressBar");
+        var divWidth;
 
         imageObj.src = 'images/images.jpg';
 
         imageObj.onload = function() {
+            divWidth = $("#puzzleDiv").width() - 10;
             maxCol = parseInt($("#maxCol").val());
             maxRow = parseInt($("#maxRow").val());
             curIdx = maxCol * maxRow - 1;
@@ -145,8 +147,8 @@
             moveHistoryArr = [];
             nw = this.naturalWidth;
             nh = this.naturalHeight;
-            dx = Math.floor(nw / maxCol);
-            dy = Math.floor(nh / maxRow);
+            dx = Math.floor((divWidth - (gab * maxCol)) / maxCol);
+            dy = Math.floor((divWidth * (nh/nw)  - (gab * maxRow)) / maxRow);
             canvas.width = dx * maxCol + gab * (maxCol - 1);
             canvas.height = dy * maxRow + gab * (maxRow - 1);
 
@@ -160,10 +162,13 @@
                     imgDataArr.push({image: context.getImageData(sx, sy, dx, dy), x: col, y: row, idx: imgDataArr.length});
                 }
             }
+
             drawData();
 
             $("#progressBar").width(canvas.width + 10);
             setProgressBar();
+
+            $historyCnt.text(moveHistoryArr.length);
         };
 
         function swapData(a, b) {
@@ -362,7 +367,12 @@
             }
         });
 
-        window.addEventListener('keydown', function(event) {
+        $(window).resize(function(event) {
+            clearInterval(timerId);
+            $(imageObj).trigger("onload");
+        });
+
+        $(window).keydown(function(event) {
             if (event.keyCode > 36 && event.keyCode < 41) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -381,7 +391,7 @@
                         break;
                 }
             }
-        }, false);
+        });
     });
 </script>
 </body>

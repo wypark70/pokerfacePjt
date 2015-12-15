@@ -1,8 +1,16 @@
-svg {
-    background-image: url("../../../images/ColorSplash/colorsplash7.jpg");
-    background-size: cover;
-    opacity: 0.75;
-}
 .panel-body{
     padding: 2px;
+}
+#puzzleDiv {
+    text-align: center;
+}
+#progressBar {
+    margin-top: -15px;
+}
+#myCanvas {
+    width: 100%;
+    border: 1px solid black;
+    padding: 4px;
+    border-radius: 4px;
+    background: white;
 }

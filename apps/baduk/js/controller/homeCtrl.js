@@ -50,7 +50,7 @@ define([], function () {
                     var sx = col * $scope.dx;
                     var sy = row * $scope.dy;
                     $scope.imgDataArr.push({image: context.getImageData(sx, sy, $scope.dx, $scope.dy), x: col, y: row, idx: $scope.imgDataArr.length});
-                    console.log(convertImgDataToBase64URL(context.getImageData(sx, sy, $scope.dx, $scope.dy), "image/png"))
+                    //console.log(convertImgDataToBase64URL(context.getImageData(sx, sy, $scope.dx, $scope.dy), "image/png"))
                 }
             }
 

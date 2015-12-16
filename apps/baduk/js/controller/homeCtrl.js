@@ -68,10 +68,17 @@ define([], function () {
 
         $scope.puzzleRenderer = function(el, data) {
             var grp1 = el.selectAll("g").data(data);
+            var img1 = grp1.selectAll("image");
+            img1.on("click", function() {});
+            img1.attr({"id": function (d) {return "G_" + d.idx;}, "preserveAspectRatio": "xMinYMin meet", "xlink:href": function (d) {return d.image2;}});
+            img1.style({"width": $scope.dx + "px", "height": $scope.dy + "px"})
+            var txt1 = grp1.selectAll("text");
+            txt1.text(function (d) {return d.idx + 1;});
+            txt1.attr({"dx": $scope.dx / 2, "dy": $scope.dy / 2});
+            txt1.style({"font-size": "30px", "display": ($scope.isShowNumber ? "" : "none")});
 
             var grp2 = grp1.enter().append("g");
             grp2.attr({"transform": function(d) {return "translate(" + d.x * $scope.dx + "," + d.y * $scope.dy + ")";}});
-
             var img1 = grp2.append("image");
             img1.on("click", function() {});
             img1.attr({"id": function (d) {return "G_" + d.idx;}, "preserveAspectRatio": "xMinYMin meet", "xlink:href": function (d) {return d.image2;}});

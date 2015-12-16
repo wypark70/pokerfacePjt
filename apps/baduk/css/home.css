@@ -10,7 +10,33 @@
 #puzzleCanvas {
     width: 100%;
     border: 1px solid black;
-    padding: 4px;
-    border-radius: 4px;
+    padding: 5px;
+    border-radius: 5px;
     background: white;
+}
+svg {
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    border-radius: 5px;
+    border: thin solid black;
+}
+svg>g>image {
+    opacity: 1;
+}
+svg>g>image:hover {
+    cursor: pointer;
+    opacity: 0.25;
+}
+svg>g>text {
+    font-weight: bold;
+    text-anchor: middle;
+    alignment-baseline: middle;
+    fill: black;
+    opacity: 0.25;
+}
+svg>g>text:hover {
+    cursor: pointer;
+    fill: red;
+    opacity: 0.7;
 }

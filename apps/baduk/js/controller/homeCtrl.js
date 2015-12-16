@@ -21,11 +21,14 @@ define([], function () {
         var context = canvas.getContext('2d');
         var imageObj = new Image();
 
+        var $puzzleSvg = $("#puzzleSvg");
         var $progressBar = $(".progress-bar:first", "#progressBar");
 
         imageObj.src = '../../images/images.jpg';
 
         imageObj.onload = function() {
+            //$puzzleSvg.empty();
+
             $scope.curIdx = $scope.maxCol * $scope.maxRow - 1;
             $scope.isHistoryStop = false;
             $scope.isShowNumber = true;
@@ -49,7 +52,7 @@ define([], function () {
                 for (var col = 0; col < $scope.maxCol; col++) {
                     var sx = col * $scope.dx;
                     var sy = row * $scope.dy;
-                    $scope.imgDataArr.push({image: context.getImageData(sx, sy, $scope.dx, $scope.dy), x: col, y: row, idx: $scope.imgDataArr.length});
+                    $scope.imgDataArr.push({image: context.getImageData(sx, sy, $scope.dx, $scope.dy), image2: convertImgDataToBase64URL(context.getImageData(sx, sy, $scope.dx, $scope.dy), "image/png"), x: col, y: row, idx: $scope.imgDataArr.length});
                 }
             }
 
@@ -57,9 +60,29 @@ define([], function () {
                 console.log(convertImgDataToBase64URL(v.image, ""));
             });
 
+            $puzzleSvg.get(0).setAttribute("viewBox", "0 0 " + ($scope.maxCol * $scope.dx + $scope.gab * ($scope.maxCol - 1)) + " " + ($scope.maxRow * $scope.dy + $scope.gab * ($scope.maxRow - 1)));
             drawData();
             setProgressBar();
             $scope.$apply();
+        };
+
+        $scope.puzzleRenderer = function(el, data) {
+            var grp1 = el.selectAll("g").data(data);
+
+            var grp2 = grp1.enter().append("g");
+            grp2.attr({"transform": function(d) {return "translate(" + d.x * $scope.dx + "," + d.y * $scope.dy + ")";}});
+
+            var img1 = grp2.append("image");
+            img1.on("click", function() {});
+            img1.attr({"id": function (d) {return "G_" + d.idx;}, "preserveAspectRatio": "xMinYMin meet", "xlink:href": function (d) {return d.image2;}});
+            img1.style({"width": $scope.dx + "px", "height": $scope.dy + "px"})
+            var txt1 = grp2.append("text");
+            txt1.text(function (d) {return d.idx + 1;});
+            txt1.attr({"dx": $scope.dx / 2, "dy": $scope.dy / 2});
+            txt1.style({"font-size": "30px", "display": ($scope.isShowNumber ? "" : "none")});
+
+            var grp3 = grp1.exit();
+            grp3.remove();
         };
 
         function convertImgToBase64URL(url, callback, outputFormat){

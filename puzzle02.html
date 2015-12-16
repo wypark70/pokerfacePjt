@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        svg {
+            width: 100%;
+            height: auto;
+            padding: 0px;
+            border: thin solid black;
+        }
+        svg>g>image {
+        }
+        svg>g>image:hover {
+            cursor: pointer;
+        }
+        svg>g>text {
+            font-weight: bold;
+            text-anchor: middle;
+            alignment-baseline: middle;
+            fill: blue;
+            opacity: 0.25;
+        }
+        svg>g>text:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bootstrap theme</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Nav header</li>
+                        <li><a href="#">Separated link</a></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+    <div class="jumbotron">
+        <h1>Clock</h1>
+        <p>
+            It was ten past six by the kitchen clock.<br />
+            부엌 시계를 보니 6시 10분이었다.
+        </p>
+    </div>
+    <div class="page-header">
+        <h1>Clock</h1>
+    </div>
+    <style>
+        image:hover {
+            opacity: .5;
+        }
+    </style>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 630"></svg>
+    <div>
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images01.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images02.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images03.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images04.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+        <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="./images/images05.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+    </div>
+</div>
+
+<script type="text/javascript" src="libs/jquery/1.11.2/jquery-1.11.2.js"></script>
+<script type="text/javascript" src="libs/d3/3.5.5/d3.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script>
+    $(function() {
+        var imgDataArr = [];
+        var nw, nh, dx, dy;
+        var maxCol = 10, maxRow = 10;
+        var isShowNumber = true;
+        var curIdx;
+        var imageObj = new Image();
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext('2d');
+
+        imageObj.src = 'images/images03.jpg';
+
+        imageObj.onload = function () {
+            curIdx = maxCol * maxRow - 1;
+            imgDataArr = [];
+            nw = this.naturalWidth;
+            nh = this.naturalHeight;
+            dx = Math.floor(nw / maxCol);
+            dy = Math.floor(nh / maxRow);
+            canvas.width = dx * maxCol;
+            canvas.height = dy * maxRow;
+
+            context.drawImage(imageObj, 0, 0, nw, nh, 0, 0, canvas.width, canvas.height);
+            context.fillRect((maxCol - 1) * dx, (maxRow - 1) * dy, dx, dy);
+
+            for (var row = 0; row < maxRow; row++) {
+                for (var col = 0; col < maxCol; col++) {
+                    var sx = col * dx;
+                    var sy = row * dy;
+                    imgDataArr.push({image: convertImgDataToBase64URL(context.getImageData(sx, sy, dx, dy), "image/png"), x: col, y: row, idx: imgDataArr.length});
+                }
+            }
+            testSvg();
+        };
+
+        function svgEl(tagName) {
+            return document.createElementNS("http://www.w3.org/2000/svg", tagName);
+        }
+
+        function convertImgDataToBase64URL(imageData, outputFormat){
+            var canvas = document.createElement('CANVAS');
+            var ctx = canvas.getContext('2d');
+            var dataURL;
+            canvas.height = imageData.height;
+            canvas.width = imageData.width;
+            ctx.putImageData(imageData, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            return dataURL;
+        }
+
+        function shuffle(array) {
+            array.sort(function() {
+                return Math.random() - .5;
+            });
+        }
+
+        function onClickImage() {
+            var $group = $(this);
+            var data = $group.data();
+            var imgData = $("svg>g:eq(" + curIdx + ")").data();
+            if (data.x < imgData.x) {
+                for (var i = 0; i < imgData.x - data.x; i ++) moveLeft();
+            }
+            else {
+                for (var i = 0; i < data.x - imgData.x; i ++) moveRight();
+            }
+            if (data.y < imgData.y) {
+                for (var i = 0; i < imgData.y - data.y; i ++) moveUp();
+            }
+            else {
+                for (var i = 0; i < data.y - imgData.y; i ++) moveDown();
+            }
+        }
+
+        function swapData(srcIdx, tarIdx) {
+            var $src = $("svg>g:eq(" + srcIdx +")");
+            var $tar = $("svg>g:eq(" + tarIdx +")");
+            var srcData = $src.data();
+            var tarData = $tar.data();
+            var tmpData = $.extend({}, srcData);
+
+            srcData.image = tarData.image;
+            srcData.idx = tarData.idx;
+            tarData.image = tmpData.image;
+            tarData.idx = tmpData.idx;
+
+            var $srcClone = $("image:first, text:first", $src).clone(true);
+            var $tarClone = $("image:first, text:first", $tar).clone(true);
+
+            $src.empty().append($tarClone);
+            $tar.empty().append($srcClone);
+
+            /*
+            $("image:first", $a).get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", adata.image);
+            $("image:first", $b).get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", bdata.image);
+            $("text:first", $a).text(adata.idx + 1).css({"font-size": "35", "display": ((isShowNumber && adata.idx < (maxCol * maxRow - 1))? "" : "none")});
+            $("text:first", $b).text(bdata.idx + 1).css({"font-size": "35", "display": ((isShowNumber && bdata.idx < (maxCol * maxRow - 1))? "" : "none")});
+            */
+
+        }
+
+        function moveUp() {
+            var y = Math.floor(curIdx / maxCol);
+
+            if (y > 0) {
+                var targetIdx = curIdx - maxCol;
+                swapData(curIdx, targetIdx);
+                curIdx = targetIdx;
+            }
+        }
+
+        function moveRight() {
+            var x = curIdx % maxCol;
+
+            if (x < maxCol - 1) {
+                var targetIdx = curIdx + 1;
+                swapData(curIdx, targetIdx);
+                curIdx = targetIdx;
+            }
+        }
+
+        function moveDown() {
+            var y = Math.floor(curIdx / maxCol);
+            if (y < maxRow - 1) {
+                var targetIdx = curIdx + maxCol;
+                swapData(curIdx, targetIdx);
+                curIdx = targetIdx;
+            }
+        }
+
+        function moveLeft() {
+            var x = curIdx % maxCol;
+
+            if (x > 0) {
+                var targetIdx = curIdx - 1;
+                swapData(curIdx, targetIdx);
+                curIdx = targetIdx;
+            }
+        }
+
+        function testSvg() {
+            var $svgPath = $("#svgPath");
+            var $svg = $("svg:first");
+
+            $svg.empty();
+            $svg.get(0).setAttribute("viewBox", "0 0 " + (maxCol * dx) + " " + (maxRow * dy));
+            console.log($svg.attr("viewBox"));
+            //shuffle(imgDataArr);
+            imgDataArr.forEach(function(v, i) {
+                var tx = (i % maxCol) * dx;
+                var ty = Math.floor(i / maxCol) * dy;
+
+                var $group = $(svgEl("g"));
+                $group.attr({"transform": "translate(" + tx + "," + ty + ")"});
+
+                var $image = $(svgEl("image"));
+                $image.attr({"preserveAspectRatio": "xMinYMin meet", "style": "width: " + dx + "px; height: " + dy + "px; margin-left: " + Math.floor(i / maxCol) + ";"});
+                $image.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", v.image);
+                $group.append($image);
+
+                var $text = $(svgEl("text"));
+                $text.text(v.idx + 1);
+                $text.attr({"dx": dx / 2, "dy": dy / 2});
+                $text.css({"font-size": "35", "display": ((isShowNumber && v.idx < (maxCol * maxRow - 1))? "" : "none")});
+                $group.append($text);
+
+                $group.data(v);
+                $group.click(onClickImage);
+
+                $svg.append($group);
+            });
+
+            for (var y = 0; y < 5; y++) {
+                for (var x = 0; x < 5; x++) {
+                    var sx = x * dx;
+                    var sy = y * dy;
+                    var $rect = $(svgEl("rect"));
+                    $rect.attr("x", sx);
+                    $rect.attr("y", sy);
+                    $rect.attr("width", dx);
+                    $rect.attr("height", dy);
+                    $rect.attr("style","fill:none; stroke-width:1; stroke:rgb(0,0,0); opacity: .5");
+                    //$svg.append($rect);
+                    //$svg.append('<rect x="' + sx + '" y="' + sy + '" style="fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)" width="' + dx + '" height="' + dy + '"></rect>');
+                }
+            }
+            //$("#image").css("clip-path", "url(#svgPath)");
+        }
+
+        $("img.img-thumbnail").click(function() {
+            imageObj.src = this.src;
+        });
+
+        $(window).keydown(function(event) {
+            if (event.keyCode > 36 && event.keyCode < 41) {
+                event.preventDefault();
+                event.stopPropagation();
+                switch (event.keyCode) {
+                    case 37: // Left
+                        moveRight();
+                        break;
+                    case 38: // Up
+                        moveDown();
+                        break;
+                    case 39: // Right
+                        moveLeft();
+                        break;
+                    case 40: // Down
+                        moveUp();
+                        break;
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -28,7 +28,6 @@
             <option value="10">10</option>
             <option value="15">15</option>
         </select>
-        <span>History Count : {{moveHistoryArr.length}}</span>
     </div>
     <div class="panel-body">
         <svg id="puzzleSvg" viewBox="0 0 700 700">
@@ -43,17 +42,12 @@
     </div>
 </div>
 
-<div class="alert alert-info reveal-animation" role="alert">
-    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
-    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images01.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
-    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images02.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
-    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images03.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
-    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images04.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
-    <img data-src="holder.js/100x100" class="img-thumbnail" alt="100x100" src="../../images/images05.jpg" data-holder-rendered="true" style="width: 100px; height: 100px;">
+<div id="srcImageDiv">
+    <svg id="imgSvg" viewBox="0 0 300 200">
+        <g id="imageGroup" d3 d3-data="srcImageArr" d3-renderer="srcImageRenderer"></g>
+    </svg>
 </div>
 
 <div class="alert alert-info reveal-animation" role="alert">
-    maxCol: {{maxCol}}<br />
-    maxCol: {{maxRow}}<br />
-    curIdx: {{curIdx}}<br />
+    History Count : {{moveHistoryArr.length}}
 </div>

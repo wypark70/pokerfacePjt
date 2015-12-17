@@ -17,6 +17,14 @@ define([], function () {
         $scope.dy = 0;
         $scope.isShowNumber = true;
         $scope.fontSize = 18;
+        $scope.srcImageArr = [];
+
+        $scope.srcImageArr.push({x: 0, y: 0, src: "../../images/images.jpg"});
+        $scope.srcImageArr.push({x: 1, y: 0, src: "../../images/images01.jpg"});
+        $scope.srcImageArr.push({x: 2, y: 0, src: "../../images/images02.jpg"});
+        $scope.srcImageArr.push({x: 0, y: 1, src: "../../images/images03.jpg"});
+        $scope.srcImageArr.push({x: 1, y: 1, src: "../../images/images04.jpg"});
+        $scope.srcImageArr.push({x: 2, y: 1, src: "../../images/images05.jpg"});
 
         var imageObj = new Image();
         var $puzzleSvg = $("#puzzleSvg");
@@ -24,8 +32,10 @@ define([], function () {
         var $progressBar = $(".progress-bar:first", "#progressBar");
         var canvas = document.createElement("canvas");
         var context = canvas.getContext('2d');
+        var timerId;
+        var currentImageSrc = $scope.srcImageArr[0].src;
 
-        imageObj.src = '../../images/images.jpg';
+        imageObj.src = currentImageSrc;
 
         imageObj.onload = function() {
             $scope.blankIdx = $scope.maxCol * $scope.maxRow - 1;
@@ -62,13 +72,11 @@ define([], function () {
         $scope.puzzleRenderer = function(el, data) {
             //modify
             var grp1 = el.selectAll("g").data(data);
-            grp1.attr({"data-x": function(d) {return d.x;}, "data-y": function(d) {return d.y;}});
-            grp1.transition().duration(1).attr({"transform": function(d) {return "translate(" + (d.x * $scope.dx + d.x * $scope.gab) + "," + (d.y * $scope.dy + d.y * $scope.gab) + ")";}});
+            grp1.attr({"transform": function(d) {return "translate(" + (d.x * $scope.dx + d.x * $scope.gab) + "," + (d.y * $scope.dy + d.y * $scope.gab) + ")";}});
 
             //add
             var grp2 = grp1.enter().append("g");
             grp2.attr({"transform": function(d) {return "translate(" + (d.x * $scope.dx + d.x * $scope.gab) + "," + (d.y * $scope.dy + d.y * $scope.gab) + ")";}});
-            grp2.attr({"data-x": function(d) {return d.x;}, "data-y": function(d) {return d.y;}});
             var img2 = grp2.append("image");
             img2.on("click", onClickImage);
             img2.attr({"id": function (d) {return "G_" + d.idx;}, "preserveAspectRatio": "xMinYMin meet", "xlink:href": function (d) {return d.image;}});
@@ -78,6 +86,24 @@ define([], function () {
             txt2.text(function (d) {return d.idx + 1;});
             txt2.attr({"dx": $scope.dx / 2, "dy": $scope.dy / 2});
             txt2.style({"font-size": $scope.fontSize + "px", "display": ($scope.isShowNumber ? "" : "none")});
+
+            //remove
+            var grp3 = grp1.exit();
+            grp3.remove();
+        };
+
+        $scope.srcImageRenderer = function(el, data) {
+            //modify
+            var grp1 = el.selectAll("g").data(data);
+            grp1.attr({"transform": function(d) {return "translate(" + (d.x * 100) + "," + (d.y * 100) + ")";}});
+
+            //add
+            var grp2 = grp1.enter().append("g");
+            grp2.attr({"transform": function(d, i) {return "translate(" + (d.x * 100) + "," + (d.y * 100) + ")";}});
+            var img2 = grp2.append("image");
+            img2.on("click", onClickSrcImage);
+            img2.attr({"preserveAspectRatio": "xMidYMid slice", "xlink:href": function (d) {return d.src;}});
+            img2.style({"width": "100px", "height": "100px"});
 
             //remove
             var grp3 = grp1.exit();
@@ -193,8 +219,6 @@ define([], function () {
             $progressBar.empty().append(progress + "% Complete (success)");
         }
 
-        var timerId;
-
         $("#mixBth").click(function () {
             clearInterval(timerId);
             $scope.isHistoryStop = false;
@@ -231,12 +255,6 @@ define([], function () {
             $scope.isHistoryStop = false;
         });
 
-        $("img.img-thumbnail").click(function() {
-            clearInterval(timerId);
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            imageObj.src = this.src;
-        });
-
         $("#maxCol").change(function() {
             clearInterval(timerId);
             $scope.maxCol = parseInt($(this).val());
@@ -248,6 +266,15 @@ define([], function () {
             $scope.maxRow = parseInt($(this).val());
             $(imageObj).trigger("onload");
         });
+
+        function onClickSrcImage() {
+            clearInterval(timerId);
+            var clickData = d3.select(this).data()[0];
+            if (currentImageSrc != clickData.src) {
+                currentImageSrc = clickData.src;
+                imageObj.src = currentImageSrc;
+            }
+        };
 
         function onClickImage() {
             var clickData = d3.select(this).data()[0];

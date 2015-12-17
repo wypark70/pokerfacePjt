@@ -21,22 +21,21 @@ svg {
     border-radius: 5px;
     border: thin solid black;
 }
-svg>g>image {
+svg>g>g>image {
+    cursor: pointer;
     opacity: 1;
 }
-svg>g>image:hover {
-    cursor: pointer;
-    opacity: 0.25;
+svg>g>g>image:hover {
+    opacity: 0.75;
 }
-svg>g>text {
+svg>g>g>text {
+    cursor: pointer;
     font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
     fill: black;
     opacity: 0.25;
 }
-svg>g>text:hover {
-    cursor: pointer;
+svg>g>g>text:hover {
     fill: red;
-    opacity: 0.7;
 }

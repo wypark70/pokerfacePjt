@@ -42,3 +42,7 @@ svg>g>g>text {
 svg>g>g>text:hover {
     fill: red;
 }
+#jp_container_1 {
+    width: 100%;
+    min-width: 410px;
+}

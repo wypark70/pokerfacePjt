@@ -22,9 +22,9 @@ define([], function () {
         $scope.srcImageArr.push({x: 0, y: 0, src: "../../images/images.jpg"});
         $scope.srcImageArr.push({x: 1, y: 0, src: "../../images/images01.jpg"});
         $scope.srcImageArr.push({x: 2, y: 0, src: "../../images/images02.jpg"});
-        $scope.srcImageArr.push({x: 0, y: 1, src: "../../images/images03.jpg"});
-        $scope.srcImageArr.push({x: 1, y: 1, src: "../../images/images04.jpg"});
-        $scope.srcImageArr.push({x: 2, y: 1, src: "../../images/images05.jpg"});
+        $scope.srcImageArr.push({x: 3, y: 0, src: "../../images/images03.jpg"});
+        $scope.srcImageArr.push({x: 4, y: 0, src: "../../images/images04.jpg"});
+        $scope.srcImageArr.push({x: 5, y: 0, src: "../../images/images05.jpg"});
 
         var imageObj = new Image();
         var $puzzleSvg = $("#puzzleSvg");

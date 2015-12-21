@@ -12,45 +12,17 @@ define([], function () {
             cssSelectorAncestor: "#jp_container_1"
         }, [
             {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
+                title:"윤미래 - 너를 사랑해.mp3",
+                mp3:"../../music/윤미래 - 너를 사랑해.mp3"
             },
             {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
+                title:"백지영 - 잊지 말아요.mp3",
+                mp3:"../../music/백지영 - 잊지 말아요.mp3"
             },
             {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
+                title:"백지영 - 총맞은것처럼.mp3",
+                mp3:"../../music/백지영 - 총맞은것처럼.mp3"
             },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            },
-            {
-                title:"001 yun mi re",
-                mp3:"../../music/001.mp3"
-            }
         ], {
             swfPath: "../../../libs/jplayer/2.9.2/jplayer",
             supplied: "oga, mp3",

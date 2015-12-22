@@ -14,16 +14,16 @@
             -ms-user-select: none;
             user-select: none;
         }
-        
+
         #mainContainer {
             min-width: 500px;
             padding-left: 5px;
             padding-right: 5px;
         }
-        
+
         .reveal-animation {
             /* Chrome, Safari, Opera */
-            
+
             -webkit-animation-name: enter_sequence;
             -webkit-animation-duration: 1s;
             -webkit-animation-timing-function: linear;
@@ -34,7 +34,7 @@
             -webkit-animation-play-state: running;
             */
             /* Standard syntax */
-            
+
             animation-name: enter_sequence;
             animation-duration: 1s;
             animation-timing-function: linear;
@@ -46,7 +46,7 @@
             */
         }
         /* Chrome, Safari, Opera */
-        
+
         @-webkit-keyframes enter_sequence {
             from {
                 opacity: 0.75;
@@ -56,7 +56,7 @@
             }
         }
         /* Standard syntax */
-        
+
         @keyframes enter_sequence {
             from {
                 opacity: 0.75;
@@ -68,7 +68,7 @@
     </style>
 </head>
 <body>
-    <div id="mainContainer" class="container theme-showcase" role="main" style="display: none;" ng-controller="indexCtrl">
+    <div id="mainContainer" class="container theme-showcase" role="main">
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
@@ -78,11 +78,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#/home">{{appName}}</a>
+                    <a class="navbar-brand" href="#/home">Baduk</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li ng-class="menu.class" ng-repeat="menu in menus"><a href="{{menu.url}}">{{menu.name}}</a></li>
+                        <li><a href="#/waitingRoom">대기실</a></li>
+                        <li><a href="#/deagook">대국실</a></li>
+                        <li><a href="#/gibo">기보함</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -101,7 +103,6 @@
         </nav>
         <div ng-view></div>
     </div>
-    <script type="text/javascript" src="indexCtrl.js"></script>
     <script type="text/javascript" data-main="js/main" src="../../libs/requirejs/2.1.16/require.js"></script>
 </body>
 </html>

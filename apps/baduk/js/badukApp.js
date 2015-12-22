@@ -27,15 +27,15 @@ define(
         //여기서는 badukApp이라는 앵귤러 모듈을 리턴한다.
 
         //모듈 선언
-        var app = angular.module('badukApp', ['d3']);
+        var badukApp = angular.module('badukApp', ['ngRoute']);
 
         //공통 컨트롤러 설정 - 모든 컨트롤러에서 공통적으로 사용하는 부분들 선언
-        app.config(config);
-        app.controller('homeCtrl', homeCtrl);
-        app.controller('waitingRoomCtrl', waitingRoomCtrl);
-        app.controller('deagookCtrl', deagookCtrl);
-        app.controller('giboCtrl', giboCtrl);
+        badukApp.config(config);
+        badukApp.controller('homeCtrl', homeCtrl);
+        badukApp.controller('waitingRoomCtrl', waitingRoomCtrl);
+        badukApp.controller('deagookCtrl', deagookCtrl);
+        badukApp.controller('giboCtrl', giboCtrl);
 
-        return app;
+        return badukApp;
     }
 );

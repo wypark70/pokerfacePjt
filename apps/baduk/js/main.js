@@ -35,7 +35,7 @@ requirejs.config({
         'bootstrap': 'libs/bootstrap/3.3.2/js/bootstrap.min',
         'angular': 'libs/angular/1.1.5/angular.min',
         'd3': 'libs/d3/3.0.8/d3.min',
-        'angular-d3': 'js/angular-d3',
+        'angular-d3': 'libs/angular-d3/angular-d3.min',
         'jPlayer': 'libs/jplayer/2.9.2/jplayer/jquery.jplayer.min',
         'jPlayerPlaylist': 'libs/jplayer/2.9.2/add-on/jplayer.playlist.min',
         'badukApp': 'apps/baduk/js/badukApp'

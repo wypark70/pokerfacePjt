@@ -555,11 +555,11 @@ angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
            .controller('ExampleController', ['$scope', function($scope) {
              $scope.snippet =
                'Pretty text with some links:\n'+
-               'http://angularjs.org/,\n'+
+               'http://angular.org/,\n'+
                'mailto:us@somewhere.org,\n'+
                'another@somewhere.org,\n'+
                'and one more: ftp://127.0.0.1/.';
-             $scope.snippetWithTarget = 'http://angularjs.org/';
+             $scope.snippetWithTarget = 'http://angular.org/';
            }]);
        </script>
        <div ng-controller="ExampleController">
@@ -598,14 +598,14 @@ angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
      <file name="protractor.js" type="protractor">
        it('should linkify the snippet with urls', function() {
          expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
-             toBe('Pretty text with some links: http://angularjs.org/, us@somewhere.org, ' +
+             toBe('Pretty text with some links: http://angular.org/, us@somewhere.org, ' +
                   'another@somewhere.org, and one more: ftp://127.0.0.1/.');
          expect(element.all(by.css('#linky-filter a')).count()).toEqual(4);
        });
 
        it('should not linkify snippet without the linky filter', function() {
          expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText()).
-             toBe('Pretty text with some links: http://angularjs.org/, mailto:us@somewhere.org, ' +
+             toBe('Pretty text with some links: http://angular.org/, mailto:us@somewhere.org, ' +
                   'another@somewhere.org, and one more: ftp://127.0.0.1/.');
          expect(element.all(by.css('#escaped-html a')).count()).toEqual(0);
        });
@@ -623,7 +623,7 @@ angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
        it('should work with the target property', function() {
         expect(element(by.id('linky-target')).
             element(by.binding("snippetWithTarget | linky:'_blank'")).getText()).
-            toBe('http://angularjs.org/');
+            toBe('http://angular.org/');
         expect(element(by.css('#linky-target a')).getAttribute('target')).toEqual('_blank');
        });
      </file>

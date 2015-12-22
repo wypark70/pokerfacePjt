@@ -446,11 +446,11 @@ angular.module('ngSanitize').directive('ngBindHtml', ['$sanitize', function($san
          function Ctrl($scope) {
            $scope.snippet =
              'Pretty text with some links:\n'+
-             'http://angularjs.org/,\n'+
+             'http://angular.org/,\n'+
              'mailto:us@somewhere.org,\n'+
              'another@somewhere.org,\n'+
              'and one more: ftp://127.0.0.1/.';
-           $scope.snippetWithTarget = 'http://angularjs.org/';
+           $scope.snippetWithTarget = 'http://angular.org/';
          }
        </script>
        <div ng-controller="Ctrl">
@@ -490,7 +490,7 @@ angular.module('ngSanitize').directive('ngBindHtml', ['$sanitize', function($san
        it('should linkify the snippet with urls', function() {
          expect(using('#linky-filter').binding('snippet | linky')).
            toBe('Pretty text with some links:&#10;' +
-                '<a href="http://angularjs.org/">http://angularjs.org/</a>,&#10;' +
+                '<a href="http://angular.org/">http://angular.org/</a>,&#10;' +
                 '<a href="mailto:us@somewhere.org">us@somewhere.org</a>,&#10;' +
                 '<a href="mailto:another@somewhere.org">another@somewhere.org</a>,&#10;' +
                 'and one more: <a href="ftp://127.0.0.1/">ftp://127.0.0.1/</a>.');
@@ -499,7 +499,7 @@ angular.module('ngSanitize').directive('ngBindHtml', ['$sanitize', function($san
        it ('should not linkify snippet without the linky filter', function() {
          expect(using('#escaped-html').binding('snippet')).
            toBe("Pretty text with some links:\n" +
-                "http://angularjs.org/,\n" +
+                "http://angular.org/,\n" +
                 "mailto:us@somewhere.org,\n" +
                 "another@somewhere.org,\n" +
                 "and one more: ftp://127.0.0.1/.");
@@ -514,7 +514,7 @@ angular.module('ngSanitize').directive('ngBindHtml', ['$sanitize', function($san
 
        it('should work with the target property', function() {
         expect(using('#linky-target').binding("snippetWithTarget | linky:'_blank'")).
-          toBe('<a target="_blank" href="http://angularjs.org/">http://angularjs.org/</a>');
+          toBe('<a target="_blank" href="http://angular.org/">http://angular.org/</a>');
        });
      </doc:scenario>
    </doc:example>

@@ -27,7 +27,7 @@
  * # Installation
  * To use $resource make sure you have included the `angular-resource.js` that comes in Angular
  * package. You can also find this file on Google CDN, bower as well as at
- * {@link http://code.angularjs.org/ code.angularjs.org}.
+ * {@link http://code.angular.org/ code.angular.org}.
  *
  * Finally load the module in your application:
  *

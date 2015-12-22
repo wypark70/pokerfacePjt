@@ -57,7 +57,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.4.8/' +
+    message += '\nhttp://errors.angular.org/1.4.8/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2806,7 +2806,7 @@ function JQLite(element) {
   }
   if (!(this instanceof JQLite)) {
     if (argIsString && element.charAt(0) != '<') {
-      throw jqLiteMinErr('nosel', 'Looking up elements via selectors is not supported by jqLite! See: http://docs.angularjs.org/api/angular.element');
+      throw jqLiteMinErr('nosel', 'Looking up elements via selectors is not supported by jqLite! See: http://docs.angular.org/api/angular.element');
     }
     return new JQLite(element);
   }
@@ -4518,7 +4518,7 @@ function createInjector(modulesToLoad, strictDi) {
         fn = fn[length];
       }
 
-      // http://jsperf.com/angularjs-invoke-apply-vs-switch
+      // http://jsperf.com/angular-invoke-apply-vs-switch
       // #5388
       return fn.apply(self, args);
     }
@@ -10155,11 +10155,11 @@ function $HttpProvider() {
     <button id="samplegetbtn" ng-click="updateModel('GET', 'http-hello.html')">Sample GET</button>
     <button id="samplejsonpbtn"
       ng-click="updateModel('JSONP',
-                    'https://angularjs.org/greet.php?callback=JSON_CALLBACK&name=Super%20Hero')">
+                    'https://angular.org/greet.php?callback=JSON_CALLBACK&name=Super%20Hero')">
       Sample JSONP
     </button>
     <button id="invalidjsonpbtn"
-      ng-click="updateModel('JSONP', 'https://angularjs.org/doesntexist&callback=JSON_CALLBACK')">
+      ng-click="updateModel('JSONP', 'https://angular.org/doesntexist&callback=JSON_CALLBACK')">
         Invalid JSONP
       </button>
     <pre>http status code: {{status}}</pre>
@@ -10212,7 +10212,7 @@ function $HttpProvider() {
   });
 
 // Commented out due to flakes. See https://github.com/angular/angular.js/issues/9185
-// it('should make a JSONP request to angularjs.org', function() {
+// it('should make a JSONP request to angular.org', function() {
 //   sampleJsonpBtn.click();
 //   fetchBtn.click();
 //   expect(status.getText()).toMatch('200');
@@ -10831,7 +10831,7 @@ $interpolateMinErr.throwNoconcat = function(text) {
   throw $interpolateMinErr('noconcat',
       "Error while interpolating: {0}\nStrict Contextual Escaping disallows " +
       "interpolations that concatenate multiple expressions when a trusted value is " +
-      "required.  See http://docs.angularjs.org/api/ng.$sce", text);
+      "required.  See http://docs.angular.org/api/ng.$sce", text);
 };
 
 $interpolateMinErr.interr = function(text, err) {
@@ -12564,7 +12564,7 @@ var $parseMinErr = minErr('$parse');
 // Similarly we prevent invocations of function known to be dangerous, as well as assignments to
 // native objects.
 //
-// See https://docs.angularjs.org/guide/security
+// See https://docs.angular.org/guide/security
 
 
 function ensureSafeMemberName(name, fullExpression) {
@@ -17266,7 +17266,7 @@ function $SceProvider() {
       throw $sceMinErr('iequirks',
         'Strict Contextual Escaping does not support Internet Explorer version < 11 in quirks ' +
         'mode.  You can fix this by adding the text <!doctype html> to the top of your HTML ' +
-        'document.  See http://docs.angularjs.org/api/ng.$sce for more information.');
+        'document.  See http://docs.angular.org/api/ng.$sce for more information.');
     }
 
     var sce = shallowCopy(SCE_CONTEXTS);

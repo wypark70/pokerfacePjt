@@ -7111,7 +7111,7 @@ var getterFnCache = {};
 
 /**
  * Implementation of the "Black Hole" variant from:
- * - http://jsperf.com/angularjs-parse-getter/4
+ * - http://jsperf.com/angular-parse-getter/4
  * - http://jsperf.com/path-evaluation-simplified/7
  */
 function cspSafeGetterFn(key0, key1, key2, key3, key4) {
@@ -9918,8 +9918,8 @@ function $HttpProvider() {
             <input type="text" ng-model="url" size="80"/>
             <button ng-click="fetch()">fetch</button><br>
             <button ng-click="updateModel('GET', 'http-hello.html')">Sample GET</button>
-            <button ng-click="updateModel('JSONP', 'http://angularjs.org/greet.php?callback=JSON_CALLBACK&name=Super%20Hero')">Sample JSONP</button>
-            <button ng-click="updateModel('JSONP', 'http://angularjs.org/doesntexist&callback=JSON_CALLBACK')">Invalid JSONP</button>
+            <button ng-click="updateModel('JSONP', 'http://angular.org/greet.php?callback=JSON_CALLBACK&name=Super%20Hero')">Sample JSONP</button>
+            <button ng-click="updateModel('JSONP', 'http://angular.org/doesntexist&callback=JSON_CALLBACK')">Invalid JSONP</button>
             <pre>http status code: {{status}}</pre>
             <pre>http response data: {{data}}</pre>
           </div>
@@ -9961,7 +9961,7 @@ function $HttpProvider() {
             expect(binding('data')).toMatch(/Hello, \$http!/);
           });
 
-          it('should make a JSONP request to angularjs.org', function() {
+          it('should make a JSONP request to angular.org', function() {
             element(':button:contains("Sample JSONP")').click();
             element(':button:contains("fetch")').click();
             expect(binding('status')).toBe('200');

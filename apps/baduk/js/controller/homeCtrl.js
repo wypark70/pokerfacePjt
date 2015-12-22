@@ -258,12 +258,14 @@ define([], function () {
         $("#maxCol").change(function() {
             clearInterval(timerId);
             $scope.maxCol = parseInt($(this).val());
+            console.log($scope.maxCol);
             $(imageObj).trigger("onload");
         });
 
         $("#maxRow").change(function() {
             clearInterval(timerId);
             $scope.maxRow = parseInt($(this).val());
+            console.log($scope.maxRow);
             $(imageObj).trigger("onload");
         });
 

@@ -255,20 +255,6 @@ define([], function () {
             $scope.isHistoryStop = false;
         });
 
-        $("#maxCol").change(function() {
-            clearInterval(timerId);
-            $scope.maxCol = parseInt($(this).val());
-            console.log($scope.maxCol);
-            $(imageObj).trigger("onload");
-        });
-
-        $("#maxRow").change(function() {
-            clearInterval(timerId);
-            $scope.maxRow = parseInt($(this).val());
-            console.log($scope.maxRow);
-            $(imageObj).trigger("onload");
-        });
-
         function onClickSrcImage() {
             clearInterval(timerId);
             var clickData = d3.select(this).data()[0];

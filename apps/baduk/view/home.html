@@ -7,28 +7,8 @@
         <button id="mixBth2" type="button" class="btn btn-xs btn-primary">mix2</button>
         <button id="solveBth" type="button" class="btn btn-xs btn-primary">solve</button>
         <button id="stopBth" type="button" class="btn btn-xs btn-primary">stop</button>
-        Max Col:
-        <select id="maxCol" ng-model="maxCol">
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="7">7</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-        </select>
-        Max Row:
-        <select id="maxRow" ng-model="maxRow">
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="7">7</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-        </select>
+        Max Col: <select ng-options="maxCol as maxCol for maxCol in maxColArr" ng-model="maxCol"></select>
+        Max Row: <select ng-options="maxRow as maxRow for maxRow in maxRowArr" ng-model="maxRow"></select>
     </div>
     <div class="panel-body">
         <svg id="puzzleSvg" viewBox="0 0 700 700">

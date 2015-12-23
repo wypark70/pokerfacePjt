@@ -9,6 +9,8 @@ define([], function () {
         $scope.imgDataArr = [];
         $scope.moveHistoryArr = [];
         $scope.isHistoryStop = false;
+        $scope.maxColArr = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15];
+        $scope.maxRowArr = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15];
         $scope.maxCol = 5;
         $scope.maxRow = 5;
         $scope.blankIdx = 0;
@@ -34,6 +36,16 @@ define([], function () {
         var context = canvas.getContext('2d');
         var timerId;
         var currentImageSrc = $scope.srcImageArr[0].src;
+
+        $scope.$watch('maxCol', function(newValue, oldValue) {
+            clearInterval(timerId);
+            $(imageObj).trigger('load');
+        });
+
+        $scope.$watch('maxRow', function(newValue, oldValue) {
+            clearInterval(timerId);
+            $(imageObj).trigger('load');
+        });
 
         imageObj.src = currentImageSrc;
 

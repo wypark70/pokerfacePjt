@@ -92,7 +92,9 @@ define([], function() {
             console.log(findLinkedStone(data));
         };
         $scope.addStoneRandom = function() {
+            /*
             for (var i = 0; i < 100; i++) {
+                if ($scope.giboData.stones.length > 300) break;
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
                 var idxNo = $scope.giboData.stones.length;
@@ -102,6 +104,36 @@ define([], function() {
                     addStonesData({x: x, y: y, r: $scope.r, idxNo: idxNo, isShow: isShow});
                 }
             }
+            */
+
+            function getRandomSton() {
+                var x = Math.round(Math.random() * 18) + 1;
+                var y = Math.round(Math.random() * 18) + 1;
+                var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === x && d.y === y && d.isShow});
+                var stone = {x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
+
+                console.log(stone);
+                if (tmpArr.length == 0) {
+                    return stone;
+                }
+                else {
+                    getRandomSton();
+                }
+            }
+
+            var timerId;
+            timerId = setInterval(function() {
+                var stone = getRandomSton();
+                if ($scope.giboData.stones.length > 300) {
+                    clearInterval(timerId);
+                }
+                else {
+                    if (stone != undefined) {
+                        addStonesData(stone);
+                        $scope.$apply();
+                    }
+                }
+            }, 100);
         };
         $scope.removeStone = function() {
             if ($scope.giboData.stones.length > 0) {

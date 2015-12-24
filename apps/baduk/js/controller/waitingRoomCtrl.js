@@ -7,6 +7,23 @@
 define([], function () {
     function waitingRoomCtrl($scope) {
         $scope.message = "Waiting room !!!!";
+        $("#cardDiv").load("../../images/Color_52_Faces_v.2.0.svg", function() {
+            function hide() {
+                $("#layer1 text").animate({opacity: 0}, 5000, function() {
+                    $(this).css({opacity: 1});
+                    hide();
+                });
+                $("#layer1 g").animate({opacity: 1}, 5000, function() {
+                    $(this).css({opacity: 0});
+                    hide();
+                });
+            }
+            hide();
+        });
+
+        $('#video2').videoExtend({
+        });
+
         new jPlayerPlaylist({
             jPlayer: "#jquery_jplayer_1",
             cssSelectorAncestor: "#jp_container_1"

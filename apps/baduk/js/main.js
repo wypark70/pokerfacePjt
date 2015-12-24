@@ -38,6 +38,7 @@ requirejs.config({
         'd3': 'libs/d3/3.5.5/d3.min',
         'jPlayer': 'libs/jplayer/2.9.2/jplayer/jquery.jplayer.min',
         'jPlayerPlaylist': 'libs/jplayer/2.9.2/add-on/jplayer.playlist.min',
+        'jqueryVideoExtend': 'libs/jquery/plugin/jquery.video-extend',
         'badukApp': 'apps/baduk/js/badukApp'
     },
 
@@ -57,7 +58,7 @@ requirejs.config({
             deps: ['jquery', 'jPlayer']
         },
         'badukApp': {
-            deps: ['angular-route', 'jPlayerPlaylist', 'bootstrap']
+            deps: ['angular-route', 'jPlayerPlaylist', 'jqueryVideoExtend', 'bootstrap']
         }
     },
     waitSeconds: 15
@@ -74,6 +75,7 @@ requirejs(
         'd3',
         'jPlayer',
         'jPlayerPlaylist',
+        'jqueryVideoExtend',
         'badukApp'
     ],
 

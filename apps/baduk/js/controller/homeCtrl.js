@@ -20,6 +20,7 @@ define([], function () {
         $scope.isShowNumber = true;
         $scope.fontSize = 18;
         $scope.srcImageArr = [];
+        $scope.currentImageSrc = "";
 
         $scope.srcImageArr.push({x: 0, y: 0, src: "../../images/images.jpg"});
         $scope.srcImageArr.push({x: 1, y: 0, src: "../../images/images01.jpg"});
@@ -27,6 +28,7 @@ define([], function () {
         $scope.srcImageArr.push({x: 3, y: 0, src: "../../images/images03.jpg"});
         $scope.srcImageArr.push({x: 4, y: 0, src: "../../images/images04.jpg"});
         $scope.srcImageArr.push({x: 5, y: 0, src: "../../images/images05.jpg"});
+        $scope.currentImageSrc = $scope.srcImageArr[0].src;
 
         var imageObj = new Image();
         var $puzzleSvg = $("#puzzleSvg");
@@ -35,19 +37,18 @@ define([], function () {
         var canvas = document.createElement("canvas");
         var context = canvas.getContext('2d');
         var timerId;
-        var currentImageSrc = $scope.srcImageArr[0].src;
 
         $scope.$watch('maxCol', function(newValue, oldValue) {
             clearInterval(timerId);
-            $(imageObj).trigger('load');
+            imageObj.src = $scope.currentImageSrc;
         });
 
         $scope.$watch('maxRow', function(newValue, oldValue) {
             clearInterval(timerId);
-            $(imageObj).trigger('load');
+            imageObj.src = $scope.currentImageSrc;
         });
 
-        imageObj.src = currentImageSrc;
+        imageObj.src = $scope.currentImageSrc;
 
         imageObj.onload = function() {
             $scope.blankIdx = $scope.maxCol * $scope.maxRow - 1;
@@ -73,7 +74,6 @@ define([], function () {
                     $scope.imgDataArr.push({image: convertImgDataToBase64URL(context.getImageData(sx, sy, $scope.dx, $scope.dy), "image/png"), x: col, y: row, idx: $scope.imgDataArr.length});
                 }
             }
-
 
             $puzzleSvg.get(0).setAttribute("viewBox", "0 0 " + ($scope.maxCol * $scope.dx + $scope.gab * ($scope.maxCol - 1)) + " " + ($scope.maxRow * $scope.dy + $scope.gab * ($scope.maxRow - 1)));
             $puzzleGroup.empty();
@@ -270,9 +270,9 @@ define([], function () {
         function onClickSrcImage() {
             clearInterval(timerId);
             var clickData = d3.select(this).data()[0];
-            if (currentImageSrc != clickData.src) {
-                currentImageSrc = clickData.src;
-                imageObj.src = currentImageSrc;
+            if ($scope.currentImageSrc != clickData.src) {
+                $scope.currentImageSrc = clickData.src;
+                imageObj.src = $scope.currentImageSrc;
             }
         };
 

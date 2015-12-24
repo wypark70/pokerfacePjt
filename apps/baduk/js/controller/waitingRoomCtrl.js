@@ -7,6 +7,7 @@
 define([], function () {
     function waitingRoomCtrl($scope) {
         $scope.message = "Waiting room !!!!";
+
         $("#cardDiv").load("../../images/Color_52_Faces_v.2.0.svg", function() {
             function hide() {
                 $("#layer1 text").animate({opacity: 0}, 5000, function() {

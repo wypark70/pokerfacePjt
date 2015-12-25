@@ -110,11 +110,9 @@ define([], function() {
                 var x = Math.round(Math.random() * 18) + 1;
                 var y = Math.round(Math.random() * 18) + 1;
                 var tmpArr = $scope.giboData.stones.filter(function(d) {return d.x === x && d.y === y && d.isShow});
-                var stone = {x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
 
-                console.log(stone);
                 if (tmpArr.length == 0) {
-                    return stone;
+                    return  {x: x, y: y, r: $scope.r, idxNo: $scope.giboData.stones.length, isShow: true};
                 }
                 else {
                     getRandomSton();
@@ -124,7 +122,7 @@ define([], function() {
             var timerId;
             timerId = setInterval(function() {
                 var stone = getRandomSton();
-                if ($scope.giboData.stones.length > 300) {
+                if ($scope.giboData.stones.length > 400) {
                     clearInterval(timerId);
                 }
                 else {
@@ -246,13 +244,16 @@ define([], function() {
         function getLinkedBlankCnt(linkedStoneArr) {
             var blankCnt = 0;
             linkedStoneArr.forEach(function(stone) {
-                var maxBlankCnt = 4;
-                if (stone.x < 2 || stone.x > 18) {
-                    maxBlankCnt --;
-                }
-                if (stone.y < 2 || stone.y > 18) {
-                    maxBlankCnt --;
-                }
+                var isLeftLine = stone.x < 2;
+                var isRightLine = stone.x > 18;
+                var isTopLine = stone.y < 2;
+                var isBottonLine = stone.y > 18;
+                var isLeftTop = stone.x < 2 && stone.y < 2;
+                var isRightTop = stone.x > 18 && stone.y < 2;
+                var isLeftBotton = stone.x < 2 && stone.y > 18;
+                var isRightBotton = stone.x > 18 && stone.y > 18;
+                var maxBlankCnt = (isLeftTop || isRightTop || isLeftBotton || isRightBotton) ? 2 : ((isLeftLine || isRightLine || isTopLine || isBottonLine) ? 3 : 4);
+                console.log("isRightLine: " + isRightLine);
                 var filteredStone = $scope.giboData.stones.filter(function(d) {
                     var isNorthStone = stone.x === d.x && stone.y - 1 === d.y && d.isShow;
                     var isEastStone = stone.x === d.x + 1 && stone.y === d.y && d.isShow;
@@ -260,6 +261,7 @@ define([], function() {
                     var isWestStone = stone.x === d.x - 1 && stone.y === d.y && d.isShow;
                     return isNorthStone || isEastStone || isSouthStone || isWestStone;
                 });
+                console.log("filteredStone.length: " + filteredStone.length);
                 blankCnt += maxBlankCnt - filteredStone.length;
             });
             return blankCnt;

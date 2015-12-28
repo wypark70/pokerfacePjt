@@ -33,12 +33,12 @@ requirejs.config({
         //뒤에 js 확장자는 생략한다.
         'jquery': 'libs/jquery/2.1.3/jquery-2.1.3.min',
         'bootstrap': 'libs/bootstrap/3.3.2/js/bootstrap.min',
+        'jqueryVideoExtend': 'libs/jquery/plugin/jquery.video-extend',
+        'jPlayer': 'libs/jplayer/2.9.2/jplayer/jquery.jplayer.min',
+        'jPlayerPlaylist': 'libs/jplayer/2.9.2/add-on/jplayer.playlist.min',
         'angular': 'libs/angular/1.4.8/angular.min',
         'angularRoute': 'libs/angular/1.4.8/angular-route.min',
         'd3': 'libs/d3/3.5.5/d3.min',
-        'jPlayer': 'libs/jplayer/2.9.2/jplayer/jquery.jplayer.min',
-        'jPlayerPlaylist': 'libs/jplayer/2.9.2/add-on/jplayer.playlist.min',
-        'jqueryVideoExtend': 'libs/jquery/plugin/jquery.video-extend',
         'badukApp': 'apps/baduk/js/badukApp'
     },
 
@@ -51,11 +51,14 @@ requirejs.config({
         'bootstrap':{
             deps:['jquery']
         },
-        'angularRoute': {
-            deps: ['angular']
+        'jqueryVideoExtend': {
+            deps: ['jquery']
         },
         'jPlayerPlaylist' : {
             deps: ['jquery', 'jPlayer']
+        },
+        'angularRoute': {
+            deps: ['angular']
         },
         'badukApp': {
             deps: ['angularRoute', 'jPlayerPlaylist', 'jqueryVideoExtend', 'bootstrap']

@@ -97,7 +97,7 @@ define([], function () {
             txt2.on("click", onClickImage);
             txt2.text(function (d) {return d.idx + 1;});
             txt2.attr({"dx": $scope.dx / 2, "dy": $scope.dy / 2});
-            txt2.style({"font-size": $scope.fontSize + "px", "display": ($scope.isShowNumber ? "" : "none")});
+            txt2.style({"font-size": $scope.fontSize + "px", "display": function(d) {return ($scope.isShowNumber && d.idx != $scope.blankIdx) ? "" : "none"}});
 
             //remove
             var grp3 = grp1.exit();

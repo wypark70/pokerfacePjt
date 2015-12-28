@@ -22,8 +22,22 @@ define([], function () {
             hide();
         });
 
+        var $listGroupItem = $("ul.list-group>li.list-group-item");
+
+        $listGroupItem.css("cursor", "pointer");
+        $($listGroupItem.get(0)).css("background", "bisque");
+        $listGroupItem.click(function() {
+            var $iframe = $('<iframe width="633" height="355" src="' + $(this).data().src + '" frameborder="0" allowfullscreen></iframe>');
+            $("div.embed-responsive").empty().append($iframe);
+
+            $listGroupItem.css("background", "#fff");
+            $(this).css("background", "bisque");
+        });
+
+        /*
         $('#video2').videoExtend({
         });
+        */
 
         new jPlayerPlaylist({
             jPlayer: "#jquery_jplayer_1",

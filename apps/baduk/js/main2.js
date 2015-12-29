@@ -65,6 +65,9 @@ requirejs.config({
         'metisMenu': {
             deps:['jquery']
         },
+        'sbAdmin': {
+            deps:['jquery', 'metisMenu']
+        },
         'badukApp': {
             deps: ['angularRoute', 'jPlayerPlaylist', 'jqueryVideoExtend', 'bootstrap', 'metisMenu', 'sbAdmin']
         }

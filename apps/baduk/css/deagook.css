@@ -1,5 +1,6 @@
 svg {
     background-color: darkgoldenrod;
+    width: 100%;
 }
 
 .panel-body {
@@ -17,7 +18,7 @@ svg {
 }
 
 #panGroup > circle.panCircle {
-    fill: url(#gradient_3D_black);
+    fill: url('#gradient_3D_black');
     opacity: 0;
 }
 
@@ -27,12 +28,12 @@ svg {
 }
 
 #giboGroup > g > circle.blackStone {
-    fill: url(#gradient_3D_black);
+    fill: url('#gradient_3D_black');
     opacity: 1;
 }
 
 #giboGroup > g > circle.whiteStone {
-    fill: url(#gradient_3D_white);
+    fill: url('#gradient_3D_white');
     opacity: 1;
 }
 
@@ -54,5 +55,3 @@ svg {
 #giboGroup > g > circle:hover {
     cursor: pointer;
 }
-
-#squaresGroup > rect {}

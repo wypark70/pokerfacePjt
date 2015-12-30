@@ -92,7 +92,7 @@ define([], function () {
             var img2 = grp2.append("image");
             img2.on("click", onClickImage);
             img2.attr({"id": function (d) {return "G_" + d.idx;}, "preserveAspectRatio": "xMinYMin meet", "xlink:href": function (d) {return d.image;}});
-            img2.style({"width": $scope.dx + "px", "height": $scope.dy + "px"});
+            img2.attr({"width": $scope.dx, "height": $scope.dy});
             var txt2 = grp2.append("text");
             txt2.on("click", onClickImage);
             txt2.text(function (d) {return d.idx + 1;});
@@ -115,7 +115,7 @@ define([], function () {
             var img2 = grp2.append("image");
             img2.on("click", onClickSrcImage);
             img2.attr({"preserveAspectRatio": "xMidYMid slice", "xlink:href": function (d) {return d.src;}});
-            img2.style({"width": "100px", "height": "100px"});
+            img2.attr({"width": 100, "height": 100});
 
             //remove
             var grp3 = grp1.exit();

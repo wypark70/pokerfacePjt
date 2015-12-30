@@ -66,7 +66,7 @@ define([], function() {
             txt1.on("click", $scope.logLinkedStone);
             txt1.text(function (d) {return d.idxNo + 1;});
             txt1.attr({"class": function(d) {return getTextClass(d);}, "dx": 0, "dy": 0});
-            txt1.style({"font-size": "35", "display": ($scope.isShowNumber ? "" : "none")});
+            txt1.attr({"font-size": "35", "display": ($scope.isShowNumber ? "" : "none")});
 
             var grp3 = grp1.exit();
             grp3.remove();

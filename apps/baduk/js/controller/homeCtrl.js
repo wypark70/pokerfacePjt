@@ -344,11 +344,6 @@ define([], function () {
             smoothPlayBar: true,
             keyEnabled: true
         });
-
-        $("#requestFullScreen").click(function() {
-            $puzzleSvg.get(0).webkitRequestFullScreen();
-            $puzzleSvg.css({width: "100%", eight: "100%"});
-        });
     };
 
     homeCtrl.$inject = ['$scope'];

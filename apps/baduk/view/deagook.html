@@ -1,4 +1,63 @@
-<link rel="stylesheet" href="css/deagook.css">
+<!--link rel="stylesheet" href="css/deagook.css" -->
+<style>
+    .panel-body {
+        padding: 2px;
+    }
+
+    svg {
+        background-color: darkgoldenrod;
+        width: 100%;
+    }
+
+    #panGroup > line {
+        stroke: #000000;
+        stroke-width: 2;
+    }
+
+    #panGroup > circle.dotCircle {
+        fill: black;
+        opacity: 1;
+    }
+
+    #panGroup > circle.panCircle {
+        fill: url('#gradient_3D_black');
+        opacity: 0;
+    }
+
+    #panGroup > circle.panCircle:hover {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+    #giboGroup > g > circle.blackStone {
+        fill: url('#gradient_3D_black');
+        opacity: 1;
+    }
+
+    #giboGroup > g > circle.whiteStone {
+        fill: url('#gradient_3D_white');
+        opacity: 1;
+    }
+
+    #giboGroup > g > text.blackStoneText {
+        font-weight: bold;
+        text-anchor: middle;
+        alignment-baseline: middle;
+        fill: white;
+    }
+
+    #giboGroup > g > text.whiteStoneText {
+        font-weight: bold;
+        text-anchor: middle;
+        alignment-baseline: middle;
+        fill: black;
+    }
+
+
+    #giboGroup > g > circle:hover {
+        cursor: pointer;
+    }
+</style>
 
 <div class="panel panel-default reveal-animation">
     <div class="panel-heading">

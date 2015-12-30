@@ -66,7 +66,7 @@ define([], function() {
             txt1.on("click", $scope.logLinkedStone);
             txt1.text(function (d) {return d.idxNo + 1;});
             txt1.attr({"class": function(d) {return getTextClass(d);}, "dx": 0, "dy": 0});
-            txt1.attr({"font-size": "35", "display": ($scope.isShowNumber ? "" : "none")});
+            txt1.attr({"font-size": "35", "display": ($scope.isShowNumber ? "block" : "none")});
 
             var grp3 = grp1.exit();
             grp3.remove();
@@ -81,10 +81,10 @@ define([], function() {
         $scope.setPanCircleFill = function() {
             var $panCircle = $("#panGroup > circle.panCircle");
             if ($scope.giboData.stones.length % 2 == 0) {
-                $panCircle.css("fill", "url(#gradient_3D_black)");
+                $panCircle.css("fill", "url('#gradient_3D_black')");
             }
             else {
-                $panCircle.css("fill", "url(#gradient_3D_white)");
+                $panCircle.css("fill", "url('#gradient_3D_white')");
             }
         };
         $scope.logLinkedStone = function() {
@@ -171,6 +171,9 @@ define([], function() {
         }
         function getStoneClass(stone) {
             return getIsBlackStone(stone) ? "blackStone" : "whiteStone";
+        }
+        function getStoneStyle(stone) {
+            return getIsBlackStone(stone) ? {fill: "url('#gradient_3D_black')", opacity: 1} : {fill: "url('#gradient_3D_white')", opacity: 1};
         }
         function getTextClass(stone) {
             return getIsBlackStone(stone) ? "blackStoneText" : "whiteStoneText";

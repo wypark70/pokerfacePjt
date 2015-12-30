@@ -3,14 +3,12 @@
 
 <div class="panel panel-default reveal-animation">
     <div class="panel-heading">
-        <button id="mixBth" type="button" class="btn btn-xs btn-primary">mix</button>
-        <button id="mixBth2" type="button" class="btn btn-xs btn-primary">mix2</button>
-        <button id="solveBth" type="button" class="btn btn-xs btn-primary">solve</button>
-        <button id="stopBth" type="button" class="btn btn-xs btn-primary">stop</button>
-        <button id="requestFullScreen" type="button" class="btn btn-xs btn-primary">requestFullScreen</button>
-
-        Max Col: <select ng-options="maxCol as maxCol for maxCol in maxColArr" ng-model="maxCol"></select>
-        Max Row: <select ng-options="maxRow as maxRow for maxRow in maxRowArr" ng-model="maxRow"></select>
+        <button id="mixBth" type="button" class="btn btn-primary btn-xs">mix</button>
+        <button id="mixBth2" type="button" class="btn btn-primary btn-xs">mix2</button>
+        <button id="solveBth" type="button" class="btn btn-primary btn-xs">solve</button>
+        <button id="stopBth" type="button" class="btn btn-primary btn-xs">stop</button>
+        Max Col: <label><select class="form-control" style="height: 21px; font-size: 11px; padding: 0px;" ng-options="maxCol as maxCol for maxCol in maxColArr" ng-model="maxCol"></select></label>
+        Max Row: <label><select class="form-control" style="height: 21px; font-size: 11px; padding: 0px;" ng-options="maxRow as maxRow for maxRow in maxRowArr" ng-model="maxRow"></select></label>
     </div>
     <div class="panel-body">
         <svg id="puzzleSvg" viewBox="0 0 700 700">

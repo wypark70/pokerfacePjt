@@ -111,7 +111,7 @@ define([], function () {
 
             //add
             var grp2 = grp1.enter().append("g");
-            grp2.attr({"transform": function(d, i) {return "translate(" + (d.x * 100) + "," + (d.y * 100) + ")";}});
+            grp2.attr({"transform": function(d) {return "translate(" + (d.x * 100) + "," + (d.y * 100) + ")";}});
             var img2 = grp2.append("image");
             img2.on("click", onClickSrcImage);
             img2.attr({"preserveAspectRatio": "xMidYMid slice", "xlink:href": function (d) {return d.src;}});
@@ -274,7 +274,7 @@ define([], function () {
                 $scope.currentImageSrc = clickData.src;
                 imageObj.src = $scope.currentImageSrc;
             }
-        };
+        }
 
         function onClickImage() {
             var clickData = d3.select(this).data()[0];
@@ -322,20 +322,14 @@ define([], function () {
         new jPlayerPlaylist({
             jPlayer: "#jquery_jplayer_1",
             cssSelectorAncestor: "#jp_container_1"
-        }, [
-            {
-                title:"윤미래 - 너를 사랑해.mp3",
-                mp3:"../../music/윤미래 - 너를 사랑해.mp3"
-            },
-            {
-                title:"백지영 - 잊지 말아요.mp3",
-                mp3:"../../music/백지영 - 잊지 말아요.mp3"
-            },
-            {
-                title:"백지영 - 총맞은것처럼.mp3",
-                mp3:"../../music/백지영 - 총맞은것처럼.mp3"
-            },
-        ], {
+        },
+        [
+            {title:"윤미래 - 너를 사랑해", mp3:"../../music/윤미래 - 너를 사랑해.mp3"},
+            {title:"백지영 - 잊지 말아요", mp3:"../../music/백지영 - 잊지 말아요.mp3"},
+            {title:"이선희 - 그 중에 그대를 만나", mp3:"../../music/이선희 - 그 중에 그대를 만나.mp3"},
+            {title:"백지영 - 총맞은것처럼", mp3:"../../music/백지영 - 총맞은것처럼.mp3"}
+        ],
+        {
             swfPath: "../../../libs/jplayer/2.9.2/jplayer",
             supplied: "oga, mp3",
             wmode: "window",
@@ -344,7 +338,7 @@ define([], function () {
             smoothPlayBar: true,
             keyEnabled: true
         });
-    };
+    }
 
     homeCtrl.$inject = ['$scope'];
     return homeCtrl;

@@ -60,7 +60,7 @@
             d.polygon[0] = projection(d[0]);
             d.polygon[1] = projection(d[1]);
             d.polygon[2] = projection(d[2]);
-            if (d.visible = d.polygon.area() > 0) {
+            if (d.visible == d.polygon.area() > 0) {
                 context.fillStyle = d.fill;
                 context.beginPath();
                 drawTriangle(d.polygon);

@@ -28,6 +28,7 @@ define([], function () {
         $scope.srcImageArr.push({x: 3, y: 0, src: "../../images/images03.jpg"});
         $scope.srcImageArr.push({x: 4, y: 0, src: "../../images/images04.jpg"});
         $scope.srcImageArr.push({x: 5, y: 0, src: "../../images/images05.jpg"});
+        $scope.srcImageArr.push({x: 5, y: 0, src: "../../images/images07.jpg"});
         $scope.currentImageSrc = $scope.srcImageArr[0].src;
 
         var imageObj = new Image();
